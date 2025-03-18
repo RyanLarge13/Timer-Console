@@ -19,7 +19,7 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE. 
+SOFTWARE.
 */
 
 #include <iostream>
@@ -55,22 +55,30 @@ int takeInput() {
   return selection;
 }
 
+void reset() {
+  system("clear");
+  printMenu();
+}
+
 void branchApp(const int& selection) {
   // Flip through the various cases comparing selection to local ENUM
   switch (selection) {
     case AppFunction::ALARM:
     {
       // Handle alarm
+      reset();
     }
     break;
     case AppFunction::STOPWATCH:
     {
       // Handle stopwatch
+      reset();
     }
     break;
     case AppFunction::TIMER:
     {
       // Handle timer
+      reset();
     }
     break;
     case AppFunction::QUIT:
@@ -80,8 +88,7 @@ void branchApp(const int& selection) {
     }
     break;
     default: {
-      system("clear");
-      printMenu();
+      reset();
     }
   }
 }
