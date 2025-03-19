@@ -23,6 +23,7 @@ SOFTWARE.
 */
 
 #include <iostream>
+#include "./Timer/timer.h"
 
 enum AppFunction {
   ALARM = 1,
@@ -60,6 +61,12 @@ void reset() {
   printMenu();
 }
 
+// Functionality Methods - - - - - - - - -
+void handleTimer() {
+  Timer timer;
+}
+// Functionality Methods - - - - - - - - -
+
 void branchApp(const int& selection) {
   // Flip through the various cases comparing selection to local ENUM
   switch (selection) {
@@ -78,7 +85,8 @@ void branchApp(const int& selection) {
     case AppFunction::TIMER:
     {
       // Handle timer
-      reset();
+      handleTimer();
+       reset();
     }
     break;
     case AppFunction::QUIT:
@@ -102,5 +110,6 @@ int main() {
 
   // Take selection and branch off to handle each functionality
   branchApp(selection);
+  
   return 0;
 }
