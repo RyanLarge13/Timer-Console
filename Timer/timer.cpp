@@ -51,7 +51,6 @@ void Timer::loadTimers() {
 
 void Timer::printTimers() {
   for (const Timer::TimerData& t: timeData) {
-      // Implement printing time functions based on if timer has been running
     if (t.on) {
       printNewTime(t.currentTime);
     } else {
@@ -60,11 +59,22 @@ void Timer::printTimers() {
   }
 }
 
+void printTime(const std::chrono::steady_clock::time_point& aTime) {
+  using namespace std::chrono
+  
+  auto milliseconds = duration_cast
+  std::cout << 
+}
+
+void printNewTime(const std::chrono::steady_clock::time_point& aTime) {
+  
+}
+
 void Timer::printOptions() {
   std::cout << "1. Add" << "\n";
 }
 
-void addTime() {
+void Timer::addTime() {
   auto startRef = std::chrono::steady_clock::now();
 
   Timer::TimerData newTimer = Timer::TimerData(startRef, true);

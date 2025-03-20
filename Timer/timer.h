@@ -47,6 +47,7 @@ class Timer {
   void loadTimers();
   void printTimers();
   void printOptions();
+  void addTime();
 
   protected:
   private:
