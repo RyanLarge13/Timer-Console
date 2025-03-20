@@ -32,22 +32,13 @@ SOFTWARE.
 class Timer {
   public:
 
-  struct TimerData {
-    std::chrono::steady_clock::time_point currentTime;
-    bool isOn;
-
-    TimerData(const std::chrono::steady_clock::time_point& ct, const bool& isOn): currentTime(ct),
-    isOn(isOn) {}
-  };
-
   Timer();
 
   std::vector < TimerData > timeData;
+  bool looping;
 
   void loadTimers();
   void printTimers();
-  void printOptions();
-  void addTime();
 
   protected:
   private:

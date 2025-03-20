@@ -32,6 +32,25 @@ using json = nlohmann::json;
 Files::Files() {}
 
 std::vector < Timer::TimerData > Files::getTimers() {
+
+/*
+  Timer JSON type
+  {
+    "error": boolean,
+    timers: [
+      {
+        "on": boolean,
+        "start": std::time_t,
+        "hours": int,
+        "minutes" int,
+        "seconds": int,
+        "milliseconds": int
+      },
+      ...
+    ]
+  }
+*/
+
   std::string basePath = Files::getAppDataPath();
   std::filesystem::create_directories(basePath);
 
@@ -39,24 +58,25 @@ std::vector < Timer::TimerData > Files::getTimers() {
 
   json timerFileData = deserializeJson(timerFile);
 
-  std::vector < Timer::TimerData > times;
+  std::vector < Timer::TimerData > times = {};
 
   if (timerFileData["error"] == true) {
-    return {};
+    return times;
   }
 
   if (!timerFileData.contains("timers")) {
-    return {};
+    return times;
   }
+
+int index = 0;
 
   for (const std::string& timer: timerFileData["timers"]) {
 
-    Timer::TimerData data = Timer::TimerData(
-      std::chrono::steady_clock::to_time_t(timer.time),
-      timer.on
-    );
+    Timer::TimerData data = Timer::TimerData(index, timer.hours, timer.minutes, timer.seconds, timer.milliseconds, timer.on);
 
     times.push_back(data);
+
+    index++;
   }
 
   return times;

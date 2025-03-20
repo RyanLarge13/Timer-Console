@@ -23,12 +23,16 @@ SOFTWARE.
 */
 
 #include "./timer.h"
+#include "./timerData.h"
 #include "../Config/files.h"
 #include <iostream>
 #include <vector>
 #include <chrono>
 
-std::vector < Timer::TimerData > timeData = {};
+std::vector < TimerData > timeData = {};
+bool looping = false;
+
+// To save TimerData last time use duration_cast <millis> since last epoch
 
 Timer::Timer() {
   system("clear");
@@ -42,42 +46,34 @@ void Timer::loadTimers() {
   timeData = timerFileHandler.getTimers();
 
   if (timeData.size() < 1) {
-    printOptions();
+    printTimerOptions();
     return;
   }
 
-  printTimers();
+  looping = true;
+
+  while(looping) {
+    printTimers();
+    printTimerOptions();
+    std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    std::cout << "\033[2J\033[1;1H";
+  }
 }
 
 void Timer::printTimers() {
-  for (const Timer::TimerData& t: timeData) {
-    if (t.on) {
-      printNewTime(t.currentTime);
+  for (const TimerData& t: timeData) {
+    if (!t.on) {
+      t.print();
     } else {
-      printTime(t.currentTime);
+      t.printUpdate();
     }
   }
 }
 
-void printTime(const std::chrono::steady_clock::time_point& aTime) {
-  using namespace std::chrono
-  
-  auto milliseconds = duration_cast
-  std::cout << 
-}
-
-void printNewTime(const std::chrono::steady_clock::time_point& aTime) {
-  
-}
-
-void Timer::printOptions() {
-  std::cout << "1. Add" << "\n";
-}
-
-void Timer::addTime() {
-  auto startRef = std::chrono::steady_clock::now();
-
-  Timer::TimerData newTimer = Timer::TimerData(startRef, true);
-
-  timeData.push_back(newTimer);
+void Timer::printTimerOptions() {
+  std::cout << "'a': Add Timer" << "\n";
+  std::cout << "'rm': Remove Timer" << "\n";
+  std::cout << "'d': Delete All Timers" << "\n";
+  std::cout << "'o': Reset All Timers" << "\n";
+  std::cout << "'q': Exit Timer" << "\n";
 }
