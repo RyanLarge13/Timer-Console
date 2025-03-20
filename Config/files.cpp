@@ -22,18 +22,44 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+#include "../includes/json.hpp"
+#include "../Timer/timer.h"
 #include "./files.h"
 #include <fstream>
 
+using json = nlohmann::json;
+
 Files::Files() {}
 
-std::string Files::getTimers() {
+std::vector < Timer::TimerData > Files::getTimers() {
   std::string basePath = Files::getAppDataPath();
   std::filesystem::create_directories(basePath);
 
-  std::ofstream timerFile(basePath + "timer.json");
-  
-  return "";
+  std::ifstream timerFile(basePath + "timer.json");
+
+  json timerFileData = deserializeJson(timerFile);
+
+  std::vector < Timer::TimerData > times;
+
+  if (timerFileData["error"] == true) {
+    return {};
+  }
+
+  if (!timerFileData.contains("timers")) {
+    return {};
+  }
+
+  for (const std::string& timer: timerFileData["timers"]) {
+
+    Timer::TimerData data = Timer::TimerData(
+      std::chrono::steady_clock::to_time_t(timer.time),
+      timer.on
+    );
+
+    times.push_back(data);
+  }
+
+  return times;
 };
 
 void Files::getAlarms() {};
@@ -42,3 +68,25 @@ void Files::getStopwatch() {};
 void Files::setTimers() {};
 void Files::setAlarms() {};
 void Files::setStopwatch() {};
+
+json deserializeJson(const std::ifstream& inFile) {
+  json j;
+
+  if (!inFile.is_open()) {
+    j["error"] = true;
+    return j;
+  }
+
+  try {
+    inFile >> j;
+    j["error"] = false;
+    return j;
+  } catch (const json::parse_error& e) {
+    std::cerr << "Parse error: " << e.what() << std::endl;
+  } catch (const json::type_error& e) {
+    std::cerr << "Type error: " << e.what() << std::endl;
+  } catch (const json::out_of_range& e) {
+    std::cerr << "Out of range error: " << e.what() << std::endl;
+  }
+
+};

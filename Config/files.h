@@ -28,6 +28,10 @@ SOFTWARE.
 #include <iostream>
 #include <fstream>
 #include <filesystem>
+#include "../Timer/timer.h"
+#include "../includes/adl_serializer.hpp" 
+#include "../includes/json.hpp"
+
 #ifdef _WIN32
 #include <windows.h>
 #include <shlobj.h>
@@ -38,7 +42,7 @@ class Files {
   public:
   Files();
 
-  std::string getTimers();
+  std::vector < Timer::TimerData > getTimers();
   void getAlarms();
   void getStopwatch();
 
@@ -62,6 +66,8 @@ class Files {
     #endif
     return "";
   }
+
+  nlohmann::json deserializeJson(const std::ifstream& inFile);
 
   private:
 };

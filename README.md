@@ -18,7 +18,7 @@ First make sure clang is installed. If you are on Mac it comes pre installed
 ### Compile 
 
 ```
-~$ clang++ -o timer main.cpp -L Alarm/ -L Stopwatch/ -L Timer/ -L Config/
+~$ clang++ -o timer main.cpp Timer/timer.cpp Config/files.cpp - ITimer -IConfig
 ```
 
 ## Compile with GCC

@@ -39,28 +39,35 @@ Timer::Timer() {
 void Timer::loadTimers() {
   Files timerFileHandler;
 
-  std::string timerJsonData = timerFileHandler.getTimers();
+  timeData = timerFileHandler.getTimers();
 
-  if (timerJsonData.empty()) {
+  if (timeData.size() < 1) {
     printOptions();
+    return;
   }
+
+  printTimers();
 }
 
 void Timer::printTimers() {
-  std::cout << "printing" << "\n";
-  // Read timer file
+  for (const Timer::TimerData& t: timeData) {
+      // Implement printing time functions based on if timer has been running
+    if (t.on) {
+      printNewTime(t.currentTime);
+    } else {
+      printTime(t.currentTime);
+    }
+  }
 }
 
 void Timer::printOptions() {
-  std::cout << "1. Start" << "\n";
-
-
+  std::cout << "1. Add" << "\n";
 }
 
 void addTime() {
   auto startRef = std::chrono::steady_clock::now();
 
   Timer::TimerData newTimer = Timer::TimerData(startRef, true);
-  
+
   timeData.push_back(newTimer);
 }
