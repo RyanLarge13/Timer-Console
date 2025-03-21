@@ -95,3 +95,11 @@ void TimerData::printUpdate(const int& yStart) {
   // Reprint new updated time in the same place
   Write::printInSection(1, this->index + yStart, timeString);
 }
+
+void TimerData::reset() {
+  
+}
+
+void TimerData::stop() {
+
+}

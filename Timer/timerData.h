@@ -47,6 +47,9 @@ class TimerData {
   void print(const int& yStart);
   void printUpdate(const int& yStart);
 
+  void reset();
+  void stop();
+
   protected:
   private:
 };

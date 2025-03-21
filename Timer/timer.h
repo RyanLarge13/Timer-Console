@@ -44,6 +44,10 @@ class Timer {
   void listenForInput();
   void handleCases(const std::string& answer);
 
+  // Option methods
+  void handleDeleteAll();
+  void handleResetAllTimers();
+
   protected:
   private:
 };

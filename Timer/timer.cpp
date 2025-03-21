@@ -32,7 +32,7 @@ SOFTWARE.
 #include <thread>
 #include <atomic>
 
-std::vector < TimerData > timeData = {};
+std::atomic<std::vector < TimerData >> timeData = {};
 std::atomic<bool> running(true);
 
 // To save TimerData last time use duration_cast <millis> since last epoch
@@ -62,6 +62,7 @@ void Timer::loadTimers() {
 }
 
 void Timer::printTimers() {
+  // Clear the section below the Timer options already printed
   Write::clearSection(1, 8, Write::myTerminalSize.width, Write::myTerminalSize.height - 8);
 
   for (TimerData& t: timeData) {
@@ -100,10 +101,35 @@ void Timer::handleCases(const std::string& answer) {
       return;
     }
     break;
+    case "o": {
+      handleResetAllTimers();
+    }
+    break;
+    case "d": {
+      handleDeleteAll();
+    }
+    break;
     default: {
       std::cout << "Please input a valid option" << "\n";
       listenForInput();
     }
     break;
+  }
+}
+
+// Option methods 
+void Timer::handleDeleteAll() {
+  timeData = {};
+  running = false;
+
+  Writer::clearAllConsole();
+
+  listenForInput();
+}
+
+void Timer::handleResetAllTimers() {
+  for (TimerData& t : timeData) {
+    t.reset();
+    t.stop();
   }
 }
