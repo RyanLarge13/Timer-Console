@@ -62,7 +62,7 @@ void Timer::loadTimers() {
 }
 
 void Timer::printTimers() {
-  Write::clearSection();
+  Write::clearSection(1, 8, Write::myTerminalSize.width, Write::myTerminalSize.height);
 
   for (TimerData& t: timeData) {
     if (!t.isOn) {

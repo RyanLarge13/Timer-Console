@@ -31,8 +31,8 @@ class Write {
 public:
 
 struct TerminalSize {
-    int rows;
-    int cols;
+    int height;
+    int width;
 };
 
 enum Colors {
