@@ -64,6 +64,7 @@ void reset() {
 // Functionality Methods - - - - - - - - -
 void handleTimer() {
   Timer timer;
+  reset();
 }
 // Functionality Methods - - - - - - - - -
 
@@ -86,7 +87,6 @@ void branchApp(const int& selection) {
     {
       // Handle timer
       handleTimer();
-       //reset();
     }
     break;
     case AppFunction::QUIT:

@@ -22,28 +22,42 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef TIMER_H
-#define TIMER_H
+#ifndef WRITE_H
+#define WRITE_H
 
 #include <iostream>
-#include <vector>
-#include <chrono>
-#include <atomic>
-#include "./timerData.h"
 
-class Timer {
-  public:
+class Write {
+public:
 
-  Timer();
+struct TerminalSize {
+    int rows;
+    int cols;
+};
 
-  std::vector < TimerData > timeData;
- std::atomic<bool> running;
+enum Colors {
+    YELLOW = 0,
+    RED = 1,
+    BLUE = 2,
+    BLACK = 3,
+    PURPLE = 4;
+    CYAN = 5;
+    WHITE = 6;
+    ENDCOLOR = 7
+};
 
-  void loadTimers();
-  void printTimers();
+static TerminalSize myTerminalSize;
 
-  protected:
-  private:
+static Write();
+
+static std::string c(const Colors& color);
+
+static void clearSection(int x, int y, int width, int height);
+static void printInSection(int x, int y, std::string text);
+static void clearAllConsole();
+
+protected:
+private:
 };
 
 #endif

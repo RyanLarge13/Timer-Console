@@ -25,21 +25,27 @@ SOFTWARE.
 #include "./timer.h"
 #include "./timerData.h"
 #include "../Config/files.h"
+#include "../Console/write.h"
 #include <iostream>
 #include <vector>
 #include <chrono>
 #include <thread>
+#include <atomic>
 
 std::vector < TimerData > timeData = {};
-bool looping = false;
+std::atomic<bool> running(true);
 
 // To save TimerData last time use duration_cast <millis> since last epoch
 
 Timer::Timer() {
   system("clear");
-  loadTimers();
-  std::cout << "constructor call" << "\n";
-  // Display all timers to the console
+
+  // Display all timers options and listen for input in the console
+  std::thread listen(listenForInput);
+  std::thread timerLoader(loadTimers);
+
+  timerLoader.join();
+  listen.join();
 }
 
 void Timer::loadTimers() {
@@ -47,27 +53,17 @@ void Timer::loadTimers() {
 
   timeData = timerFileHandler.getTimers();
 
-  std::cout << "In load timer function. Created Files instance and fetched timers" << "\n";
+  std::thread listen(listenForInput);
 
-  if (timeData.size() < 1) {
-    std::cout << "No timers returned from file, printing timer option" << "\n";
-    printTimerOptions();
-    return;
-  }
-
-  looping = true;
-
-  std::cout << "About to start looping to print timers and options" << "\n";
-
-  while(looping) {
+  while(running) {
     printTimers();
-    printTimerOptions();
     std::this_thread::sleep_for(std::chrono::milliseconds(1));
-    std::cout << "\033[2J\033[1;1H";
   }
 }
 
 void Timer::printTimers() {
+  Write::clearSection();
+
   for (TimerData& t: timeData) {
     if (!t.isOn) {
       t.print();
@@ -77,10 +73,38 @@ void Timer::printTimers() {
   }
 }
 
-void Timer::printTimerOptions() {
-  std::cout << "'a': Add Timer" << "\n";
-  std::cout << "'rm': Remove Timer" << "\n";
-  std::cout << "'d': Delete All Timers" << "\n";
-  std::cout << "'o': Reset All Timers" << "\n";
-  std::cout << "'q': Exit Timer" << "\n";
+void Timer::listenForInput() {
+
+  std::string optionTxt = 
+    "'a': Add Timer\n" + 
+    "'r': Remove Timer\n" + 
+    "'d': Delete All Timers\n" + 
+    "'o': Reset All Timers\n" + 
+    "'q': Exit Timer\n" +
+    "\n Option: ";
+
+  Write::clearSection(1, 1, Write::myTerminalSize.width, 6);
+  Write::printInSection(1, 1, optionTxt);
+
+  std::string answer;
+
+  std::cin >> answer;
+  std::cout << answer << "\n";
+
+  handleCases(answer);
+}
+
+void Timer::handleCases(const std::string& answer) {
+  switch (answer) {
+    case "q": {
+      running = false;
+      return;
+    }
+    break;
+    default: {
+      std::cout << "Please input a valid option" << "\n";
+      listenForInput();
+    }
+    break;
+  }
 }
