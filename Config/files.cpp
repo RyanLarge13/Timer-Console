@@ -81,7 +81,7 @@ std::vector < TimerData > Files::getTimers() {
       timer["seconds"].get < int > (),
       timer["milliseconds"].get < int > (),
       timer["isOn"].get < bool > (),
-      std::chrono::milliseconds(timer["lastTime"].get < int> ())
+      std::chrono::milliseconds(timer["lastTime"].get < int > ())
     );
 
     times.push_back(data);
@@ -92,7 +92,7 @@ std::vector < TimerData > Files::getTimers() {
   return times;
 };
 
-json deserializeJson(const std::ifstream& inFile) {
+json Files::deserializeJson(std::ifstream& inFile) {
   json j;
 
   if (!inFile.is_open()) {
@@ -106,10 +106,14 @@ json deserializeJson(const std::ifstream& inFile) {
     return j;
   } catch (const json::parse_error& e) {
     std::cerr << "Parse error: " << e.what() << std::endl;
+    return j;
   } catch (const json::type_error& e) {
     std::cerr << "Type error: " << e.what() << std::endl;
+    return j;
   } catch (const json::out_of_range& e) {
     std::cerr << "Out of range error: " << e.what() << std::endl;
+    return j;
   }
 
+  return j;
 };

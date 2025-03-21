@@ -61,12 +61,12 @@ void TimerData::printUpdate() {
 
   steady_clock::time_point now = steady_clock::now();
 
-  duration timeElapsed = this->totalTimeInMs - now;
+  steady_clock::duration timeElapsed = steady_clock::time_point(this->totalTimeInMs) - now;
 
-  auto h = duration_cast < hours > (timeElapsed);
-  auto m = duration_cast < minutes > (timeElapsed - hours);
-  auto s = duration_cast < seconds > (timeElapsed - hours - minutes);
-  auto mill = duration_cast < milliseconds > (timeElapsed - hours - minutes - seconds);
+  auto h = duration_cast < std::chrono::hours > (timeElapsed);
+  auto m = duration_cast < std::chrono::minutes > (timeElapsed - h);
+  auto s = duration_cast < std::chrono::seconds > (timeElapsed - h - m);
+  auto mill = duration_cast < std::chrono::milliseconds > (timeElapsed - h - m - s);
 
   std::cout << this->index << ". " << h.count() << ":" << m.count() << ":" << s.count() << ":" << mill.count() << "\n";
 }

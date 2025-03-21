@@ -86,7 +86,7 @@ void branchApp(const int& selection) {
     {
       // Handle timer
       handleTimer();
-       reset();
+       //reset();
     }
     break;
     case AppFunction::QUIT:

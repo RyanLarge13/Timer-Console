@@ -38,6 +38,7 @@ bool looping = false;
 Timer::Timer() {
   system("clear");
   loadTimers();
+  std::cout << "constructor call" << "\n";
   // Display all timers to the console
 }
 
@@ -46,12 +47,17 @@ void Timer::loadTimers() {
 
   timeData = timerFileHandler.getTimers();
 
+  std::cout << "In load timer function. Created Files instance and fetched timers" << "\n";
+
   if (timeData.size() < 1) {
+    std::cout << "No timers returned from file, printing timer option" << "\n";
     printTimerOptions();
     return;
   }
 
   looping = true;
+
+  std::cout << "About to start looping to print timers and options" << "\n";
 
   while(looping) {
     printTimers();

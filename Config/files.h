@@ -61,7 +61,7 @@ class Files {
     return "";
   }
 
-  nlohmann::json deserializeJson(const std::ifstream& inFile);
+  nlohmann::json deserializeJson(std::ifstream& inFile);
 
   private:
 };
