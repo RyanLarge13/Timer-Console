@@ -44,8 +44,8 @@ class TimerData {
   TimerData(const int& i, const int& h, const int& m, const int& s, const int&
     mill, const bool& isOn, const std::chrono::milliseconds& lt);
 
-  void print();
-  void printUpdate();
+  void print(const int& yStart);
+  void printUpdate(const int& yStart);
 
   protected:
   private:
