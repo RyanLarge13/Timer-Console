@@ -24,9 +24,36 @@ SOFTWARE.
 
 #include <iostream>
 #include <chrono>
+#include "./timerData.h"
+
+TimerData::TimerData(const int& i, const int& h, const int& m, const int& s, const int&
+  mill, const bool& isOn, const std::chrono::milliseconds& lt):
+index(i),
+hours(h),
+minutes(m),
+seconds(s),
+milliseconds(mill),
+isOn(isOn),
+lastTime(lt) {
+  using namespace std;
+
+  chrono::milliseconds tpOfLastTime = chrono::duration_cast < chrono::milliseconds > (chrono::milliseconds(lastTime));
+
+  lastTime = tpOfLastTime;
+
+  totalStoredTime = chrono::duration_cast < chrono::milliseconds > (
+    chrono::hours(hours) +
+    chrono::minutes(minutes) +
+    chrono::seconds(seconds) +
+    chrono::milliseconds(milliseconds)
+  );
+
+  totalTimeInMs = this->totalStoredTime + this->lastTime;
+}
 
 void TimerData::print() {
-    std::cout << this.index << ". " << this.hours << ":" << this.minutes << ":" << this.seconds << ":" << this.milliseconds << "\n";
+  std::cout << this->index << ". " << this->hours << ":" << this->minutes << ":"
+  << this->seconds << ":" << this->milliseconds << "\n";
 }
 
 void TimerData::printUpdate() {
@@ -34,12 +61,12 @@ void TimerData::printUpdate() {
 
   steady_clock::time_point now = steady_clock::now();
 
-  duration timeElapsed = this.totalTimeInMs - now;
+  duration timeElapsed = this->totalTimeInMs - now;
 
-  auto h = duration_cast<hours>(timeElapsed);
-  auto m = duration_cast<minutes>(timeElapsed - hours);
-  auto s = duration_cast<seconds>(timeElapsed - hours - minutes);
-  auto mill = duration_cast<milliseconds>(timeElapsed - hours - minutes - seconds);
+  auto h = duration_cast < hours > (timeElapsed);
+  auto m = duration_cast < minutes > (timeElapsed - hours);
+  auto s = duration_cast < seconds > (timeElapsed - hours - minutes);
+  auto mill = duration_cast < milliseconds > (timeElapsed - hours - minutes - seconds);
 
-  std::cout << this.index << ". " << h.count() << ":" << m.count() << ":" << s.count() << ":" << mill.count() << "\n";
+  std::cout << this->index << ". " << h.count() << ":" << m.count() << ":" << s.count() << ":" << mill.count() << "\n";
 }

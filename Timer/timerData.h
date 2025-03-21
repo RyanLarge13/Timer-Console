@@ -22,39 +22,33 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include <iotream>
+#ifndef TIMER_DATA_H
+#define TIMER_DATA_H
+
+#include <iostream>
 #include <chrono>
 
 class TimerData {
-    int index;
-    int hours;
-    int minutes;
-    int seconds;
-    int milliseconds;
-    bool isOn;
+  public:
+  int index;
+  int hours;
+  int minutes;
+  int seconds;
+  int milliseconds;
+  bool isOn;
 
-    std::chrono::milliseconds lastTime;
-    std::chrono::milliseconds totalStoredTime;
-    std::chrono::milliseconds totalTimeInMs;
+  std::chrono::milliseconds lastTime;
+  std::chrono::milliseconds totalStoredTime;
+  std::chrono::milliseconds totalTimeInMs;
 
-    TimerData(const int& i, const int& h, const int& m, const int& s, const int& mill, const bool& isOn const std:string& lt): index(i) hours(h), minutes(m), seconds(s), milliseconds(mill),
-    isOn(isOn), lastTime(lt) {
-        using namespace std::chrono;
+  TimerData(const int& i, const int& h, const int& m, const int& s, const int&
+    mill, const bool& isOn, const std::chrono::milliseconds& lt);
 
-        steady_clock::time_point tpOfLastTime = steady_clock::time_point(std::chrono::milliseconds(lastTime));
+  void print();
+  void printUpdate();
 
-        lastTime = tpOfLastTime;
+  protected:
+  private:
+};
 
-        totalStoredTime = duration_cast<milliseconds>(
-            hours(hours) + 
-            steady_clock::minutes(minutes) + 
-            steady_clock::seconds(seconds) + 
-            steady_clock::milliseconds(milliseconds)
-        );
-
-        totalTimeInMs = this.totalStoredTime + this.lastTime;
-    }
-
-    void print();
-    void printUpdate();
-  };
+#endif

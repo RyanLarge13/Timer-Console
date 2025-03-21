@@ -28,6 +28,7 @@ SOFTWARE.
 #include <iostream>
 #include <vector>
 #include <chrono>
+#include "./timerData.h"
 
 class Timer {
   public:
@@ -39,6 +40,7 @@ class Timer {
 
   void loadTimers();
   void printTimers();
+  void printTimerOptions();
 
   protected:
   private:

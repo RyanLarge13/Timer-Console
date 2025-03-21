@@ -28,6 +28,7 @@ SOFTWARE.
 #include <iostream>
 #include <vector>
 #include <chrono>
+#include <thread>
 
 std::vector < TimerData > timeData = {};
 bool looping = false;
@@ -61,8 +62,8 @@ void Timer::loadTimers() {
 }
 
 void Timer::printTimers() {
-  for (const TimerData& t: timeData) {
-    if (!t.on) {
+  for (TimerData& t: timeData) {
+    if (!t.isOn) {
       t.print();
     } else {
       t.printUpdate();

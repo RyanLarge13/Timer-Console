@@ -22,8 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "../includes/json.hpp"
+#include "../includes/nlohmann/json.hpp"
 #include "../Timer/timer.h"
+#include "../Timer/timerData.h"
 #include "./files.h"
 #include <fstream>
 
@@ -31,9 +32,9 @@ using json = nlohmann::json;
 
 Files::Files() {}
 
-std::vector < Timer::TimerData > Files::getTimers() {
+std::vector < TimerData > Files::getTimers() {
 
-/*
+  /*
   Timer JSON type
   {
     "error": boolean,
@@ -58,21 +59,30 @@ std::vector < Timer::TimerData > Files::getTimers() {
 
   json timerFileData = deserializeJson(timerFile);
 
-  std::vector < Timer::TimerData > times = {};
+  std::vector < TimerData > times = {};
 
   if (timerFileData["error"] == true) {
-    return times;
+    return {};
   }
 
   if (!timerFileData.contains("timers")) {
-    return times;
+    return {};
   }
 
-int index = 0;
+  int index = 0;
 
-  for (const std::string& timer: timerFileData["timers"]) {
+  for (const json& timer: timerFileData["timers"]) {
 
-    Timer::TimerData data = Timer::TimerData(index, timer.hours, timer.minutes, timer.seconds, timer.milliseconds, timer.on);
+    TimerData data =
+    TimerData(
+      index,
+      timer["hours"].get < int > (),
+      timer["minutes"].get < int > (),
+      timer["seconds"].get < int > (),
+      timer["milliseconds"].get < int > (),
+      timer["isOn"].get < bool > (),
+      std::chrono::milliseconds(timer["lastTime"].get < int> ())
+    );
 
     times.push_back(data);
 
@@ -81,13 +91,6 @@ int index = 0;
 
   return times;
 };
-
-void Files::getAlarms() {};
-void Files::getStopwatch() {};
-
-void Files::setTimers() {};
-void Files::setAlarms() {};
-void Files::setStopwatch() {};
 
 json deserializeJson(const std::ifstream& inFile) {
   json j;

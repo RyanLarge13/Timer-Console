@@ -29,8 +29,8 @@ SOFTWARE.
 #include <fstream>
 #include <filesystem>
 #include "../Timer/timer.h"
-#include "../includes/adl_serializer.hpp" 
-#include "../includes/json.hpp"
+#include "../Timer/timerData.h"
+#include "../includes/nlohmann/json.hpp"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -42,13 +42,7 @@ class Files {
   public:
   Files();
 
-  std::vector < Timer::TimerData > getTimers();
-  void getAlarms();
-  void getStopwatch();
-
-  void setTimers();
-  void setAlarms();
-  void setStopwatch();
+  std::vector < TimerData > getTimers();
 
   protected:
   std::string getAppDataPath() {
