@@ -60,8 +60,12 @@ void TimerData::print(const int& yStart) {
   // Sorry Not sure if I should even be reprinting this yet given the times are currently static and not
   // running there is no need to call an update on the displayed text so commenting out above section for now
 
-  std::string timeString = this->index + ". " + this->hours + ":" + this->minutes + ":"
-  + this->seconds + ":" + this->milliseconds + "\n";
+  std::string timeString = 
+  std::to_string(this->index) + ". " + 
+  std::to_string(this->hours) + ":" + 
+  std::to_string(this->minutes) + ":" + 
+  std::to_string(this->seconds) + ":" + 
+  std::to_string(this->milliseconds) + "\n";
 
   std::cout << timeString;
 }
@@ -81,7 +85,12 @@ void TimerData::printUpdate(const int& yStart) {
   auto s = duration_cast < std::chrono::seconds > (timeElapsed - h - m);
   auto mill = duration_cast < std::chrono::milliseconds > (timeElapsed - h - m - s);
 
-  std::string timeString = this->index + ". " + h.count() + ":" + m.count() + ":" + s.count() + ":" + mill.count() + "\n";
+  std::string timeString = 
+  std::to_string(this->index) + ". " + 
+  std::to_string(h.count()) + ":" + 
+  std::to_string(m.count()) + ":" + 
+  std::to_string(s.count()) + ":" + 
+  std::to_string(mill.count()) + "\n";
 
   // Reprint new updated time in the same place
   Write::printInSection(1, this->index + yStart, timeString);

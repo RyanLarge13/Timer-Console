@@ -37,10 +37,12 @@ class Timer {
   Timer();
 
   std::vector < TimerData > timeData;
- std::atomic<bool> running;
+  std::atomic<bool> running;
 
   void loadTimers();
   void printTimers();
+  void listenForInput();
+  void handleCases(const std::string& answer);
 
   protected:
   private:

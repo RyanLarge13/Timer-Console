@@ -44,8 +44,8 @@ Timer::Timer() {
   std::thread listen(listenForInput);
   std::thread timerLoader(loadTimers);
 
-  timerLoader.join();
   listen.join();
+  timerLoader.join();
 }
 
 void Timer::loadTimers() {
@@ -62,19 +62,18 @@ void Timer::loadTimers() {
 }
 
 void Timer::printTimers() {
-  Write::clearSection(1, 8, Write::myTerminalSize.width, Write::myTerminalSize.height);
+  Write::clearSection(1, 8, Write::myTerminalSize.width, Write::myTerminalSize.height - 8);
 
   for (TimerData& t: timeData) {
     if (!t.isOn) {
-      t.print();
+      t.print(8);
     } else {
-      t.printUpdate();
+      t.printUpdate(8);
     }
   }
 }
 
 void Timer::listenForInput() {
-
   std::string optionTxt = 
     "'a': Add Timer\n" + 
     "'r': Remove Timer\n" + 
