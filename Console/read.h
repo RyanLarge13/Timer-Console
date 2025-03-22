@@ -22,45 +22,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef TIMER_DATA_H
-#define TIMER_DATA_H
+#ifndef READ_H
+#define READ_H
 
-#include <chrono>
-#include <iostream>
-
-class TimerData {
+class Read {
  public:
-  int index;
-  int hours;
-  int minutes;
-  int seconds;
-  int milliseconds;
-  bool isOn;
+  Read();
 
-  std::chrono::milliseconds lastTime;
-  std::chrono::milliseconds totalStoredTime;
-  std::chrono::milliseconds totalTimeInMs;
-
-  TimerData(
-      const int& i,
-      const int& h,
-      const int& m,
-      const int& s,
-      const int& mill,
-      const bool& isOn,
-      const std::chrono::milliseconds& lt
-  );
-
-  void resetTimerData();
-
-  void print(const int& yStart);
-  void printUpdate(const int& yStart);
-
-  void reset();
-  void stop();
+  static void setCanonicalMode(const bool& on);
 
  protected:
  private:
 };
 
-#endif
+#endif  // !READ_H

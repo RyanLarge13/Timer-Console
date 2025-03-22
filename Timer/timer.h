@@ -25,19 +25,19 @@ SOFTWARE.
 #ifndef TIMER_H
 #define TIMER_H
 
+#include <atomic>
+#include <chrono>
 #include <iostream>
 #include <vector>
-#include <chrono>
-#include <atomic>
+
 #include "./timerData.h"
 
 class Timer {
-  public:
-
+ public:
   Timer();
 
-  std::vector < TimerData > timeData;
-  std::atomic < bool > running;
+  std::vector<TimerData> timeData;
+  std::atomic<bool> running;
 
   void loadTimers();
   void printTimers();
@@ -45,11 +45,14 @@ class Timer {
   void handleCases(const char& answer);
 
   // Option methods
+  void handleQuit();
   void handleDeleteAll();
   void handleResetAllTimers();
+  void handleAddtimer();
+  void handleRemoveTimer();
 
-  protected:
-  private:
+ protected:
+ private:
 };
 
 #endif

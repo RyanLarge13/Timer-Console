@@ -22,45 +22,24 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef TIMER_DATA_H
-#define TIMER_DATA_H
+#include "./read.h"
 
-#include <chrono>
-#include <iostream>
+#include <termios.h>
+#include <unistd.h>
 
-class TimerData {
- public:
-  int index;
-  int hours;
-  int minutes;
-  int seconds;
-  int milliseconds;
-  bool isOn;
+Read::Read() {}
 
-  std::chrono::milliseconds lastTime;
-  std::chrono::milliseconds totalStoredTime;
-  std::chrono::milliseconds totalTimeInMs;
+void Read::setCanonicalMode(const bool& on) {
+  struct termios settings;
 
-  TimerData(
-      const int& i,
-      const int& h,
-      const int& m,
-      const int& s,
-      const int& mill,
-      const bool& isOn,
-      const std::chrono::milliseconds& lt
-  );
+  // Get current terminal attributes
+  tcgetattr(STDIN_FILENO, &settings);
 
-  void resetTimerData();
+  if (on) {
+    settings.c_lflag &= ~(ICANON | ECHO);
+  } else {
+    settings.c_lflag |= (ICANON | ECHO);
+  }
 
-  void print(const int& yStart);
-  void printUpdate(const int& yStart);
-
-  void reset();
-  void stop();
-
- protected:
- private:
-};
-
-#endif
+  tcsetattr(STDIN_FILENO, TCSANOW, &settings);
+}
