@@ -65,6 +65,7 @@ void reset() {
 void handleTimer() {
   Timer timer;
   reset();
+  takeInput();
 }
 // Functionality Methods - - - - - - - - -
 
@@ -85,7 +86,6 @@ void branchApp(const int& selection) {
     break;
     case AppFunction::TIMER:
     {
-      // Handle timer
       handleTimer();
     }
     break;
@@ -110,6 +110,6 @@ int main() {
 
   // Take selection and branch off to handle each functionality
   branchApp(selection);
-  
+
   return 0;
 }

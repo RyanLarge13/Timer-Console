@@ -32,8 +32,8 @@ SOFTWARE.
 #include <thread>
 #include <atomic>
 
-std::atomic<std::vector < TimerData >> timeData = {};
-std::atomic<bool> running(true);
+std::vector < TimerData > timeData = {};
+std::atomic < bool > running(true);
 
 // To save TimerData last time use duration_cast <millis> since last epoch
 
@@ -41,8 +41,8 @@ Timer::Timer() {
   system("clear");
 
   // Display all timers options and listen for input in the console
-  std::thread listen(listenForInput);
-  std::thread timerLoader(loadTimers);
+  std::thread listen(&Timer::listenForInput, this);
+  std::thread timerLoader(&Timer::loadTimers, this);
 
   listen.join();
   timerLoader.join();
@@ -52,8 +52,6 @@ void Timer::loadTimers() {
   Files timerFileHandler;
 
   timeData = timerFileHandler.getTimers();
-
-  std::thread listen(listenForInput);
 
   while(running) {
     printTimers();
@@ -75,13 +73,13 @@ void Timer::printTimers() {
 }
 
 void Timer::listenForInput() {
-  std::string optionTxt = 
-    "'a': Add Timer\n" + 
-    "'r': Remove Timer\n" + 
-    "'d': Delete All Timers\n" + 
-    "'o': Reset All Timers\n" + 
-    "'q': Exit Timer\n" +
-    "\n Option: ";
+  std::string optionTxt =
+  "'a': Add Timer\n"
+  "'r': Remove Timer\n"
+  "'d': Delete All Timers\n"
+  "'o': Reset All Timers\n"
+  "'q': Exit Timer\n"
+  "\n Option: ";
 
   Write::clearSection(1, 1, Write::myTerminalSize.width, 6);
   Write::printInSection(1, 1, optionTxt);
@@ -91,21 +89,26 @@ void Timer::listenForInput() {
   std::cin >> answer;
   std::cout << answer << "\n";
 
-  handleCases(answer);
+  if (answer.length() == 1) {
+    handleCases(answer[0]);
+  } else {
+    std::cout << "Please input a valid option" << "\n";
+    listenForInput();
+  }
 }
 
-void Timer::handleCases(const std::string& answer) {
+void Timer::handleCases(const char& answer) {
   switch (answer) {
-    case "q": {
+    case 'q': {
       running = false;
       return;
     }
     break;
-    case "o": {
+    case 'o': {
       handleResetAllTimers();
     }
     break;
-    case "d": {
+    case 'd': {
       handleDeleteAll();
     }
     break;
@@ -117,18 +120,18 @@ void Timer::handleCases(const std::string& answer) {
   }
 }
 
-// Option methods 
+// Option methods
 void Timer::handleDeleteAll() {
   timeData = {};
   running = false;
 
-  Writer::clearAllConsole();
+  Write::clearAllConsole();
 
   listenForInput();
 }
 
 void Timer::handleResetAllTimers() {
-  for (TimerData& t : timeData) {
+  for (TimerData& t: timeData) {
     t.reset();
     t.stop();
   }

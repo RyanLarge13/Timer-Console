@@ -18,7 +18,7 @@ First make sure clang is installed. If you are on Mac it comes pre installed
 ### Compile 
 
 ```
-~$ clang++ -o timerOut main.cpp Config/files.cpp Timer/timer.cpp Timer/timerData.cpp -Iincludes/nlohman -IConfig -ITimer
+~$ clang++ -o timerOut main.cpp Config/files.cpp Timer/timer.cpp Timer/timerData.cpp Console/write.cpp  -Iincludes/nlohman -IConfig -ITimer -IConsole
 ```
 
 ## Compile with GCC

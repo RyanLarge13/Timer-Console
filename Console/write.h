@@ -36,14 +36,14 @@ struct TerminalSize {
 };
 
 enum Colors {
-    YELLOW = 0;
-    RED = 1;
-    BLUE = 2;
-    BLACK = 3;
-    PURPLE = 4;
-    CYAN = 5;
-    WHITE = 6;
-    ENDCOLOR = 7;
+    YELLOW = 0, 
+    RED = 1, 
+    BLUE =2,
+    BLACK = 3, 
+    PURPLE =4,
+    CYAN = 5, 
+    WHITE = 6, 
+    ENDCOLOR = 7
 };
 
 static TerminalSize myTerminalSize;
