@@ -26,6 +26,7 @@ SOFTWARE.
 
 #include <termios.h>
 #include <unistd.h>
+#include <iostream>
 
 Read::Read() {}
 

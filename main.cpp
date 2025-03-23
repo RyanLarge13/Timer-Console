@@ -25,6 +25,8 @@ SOFTWARE.
 #include <iostream>
 #include "./Timer/timer.h"
 
+void branchApp(const int& selection);
+
 enum AppFunction {
   ALARM = 1,
   STOPWATCH = 2,
@@ -64,8 +66,10 @@ void reset() {
 // Functionality Methods - - - - - - - - -
 void handleTimer() {
   Timer timer;
-  reset();
-  takeInput();
+  //reset();
+  //int selection = takeInput();
+
+ // branchApp(selection);
 }
 // Functionality Methods - - - - - - - - -
 
