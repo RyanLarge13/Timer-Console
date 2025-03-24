@@ -23,3 +23,12 @@ SOFTWARE.
 */
 
 #include "./alarm.h"
+#include "../Config/files.h"
+
+Alarm::Alarm() {
+  loadAlarms();
+}
+
+void Alarm::loadAlarms() {
+ std::vector<Alarm::AlarmData> storedAlarms = Files::getAlarms();
+}

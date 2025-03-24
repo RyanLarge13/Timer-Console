@@ -25,13 +25,36 @@ SOFTWARE.
 #ifndef ALARM
 #define ALARM
 
+#include <vector>
+#include <string>
+
 class Alarm {
   public:
+
+  enum DaysOfWeek = {
+    MONDAY = 0,
+    TUEADAY = 1,
+    WEDNESDAY = 2,
+    THURSDAY = 3,
+    FRIDAY = 4,
+    SATURDAY = 5,
+    SUNDAY = 6
+  };
+
+  struct AlarmData {
+    std::vector < DaysOfWeek > daysOfWeek;
+    std::string timeOfDay;
+    std::string meridiem;
+  };
+
+  std::vector < AlarmData > alarms;
+
   Alarm();
 
-  void set();
-  void clear();
+  std::vector < AlarmData > loadAlarms();
   
+  void createAlarm();
+
   protected:
   private:
 }

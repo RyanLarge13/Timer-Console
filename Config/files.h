@@ -28,6 +28,7 @@ SOFTWARE.
 #include <iostream>
 #include <fstream>
 #include <filesystem>
+#include "../Alarm/alarm.h"
 #include "../Timer/timer.h"
 #include "../Timer/timerData.h"
 #include "../includes/nlohmann/json.hpp"
@@ -43,6 +44,7 @@ class Files {
   Files();
 
   std::vector < TimerData > getTimers();
+  stsd::vector < AlarmData > getAlarms();
 
   protected:
   std::string getAppDataPath() {

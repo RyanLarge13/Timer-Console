@@ -26,6 +26,7 @@ SOFTWARE.
 
 #include <fstream>
 
+#include "../Alarm/alarm.h"
 #include "../Timer/timer.h"
 #include "../Timer/timerData.h"
 #include "../includes/nlohmann/json.hpp"
@@ -34,7 +35,34 @@ using json = nlohmann::json;
 
 Files::Files() {}
 
-std::vector<TimerData> Files::getTimers() {
+std::vector < AlarmData > Files::getAlarms() {
+  std::string basePath = Files::getAppDataPath();
+  std::filesystem::create_directories(basePath);
+
+  std::ifstream alarmFile(basePath + "alarm.json");
+
+  json alarmFileData = deserializeJson(alarmFile);
+
+  if (alarmFileData["error"] == true) {
+    return {};
+  }
+
+  if (!alarmFileData.contains("alarms")) {
+    return {};
+  }
+
+  int index = 0;
+
+  for (Alarm::AlarmData alarm: alarmFileData["alarms"]) {
+    Alarm::AlarmData existingAlarm = Alarm::AlarmData();
+    
+    alarms.push_back(existingAlarm);
+    
+    index++;
+  }
+}
+
+std::vector < TimerData > Files::getTimers() {
   /*
   Timer JSON type
   {
@@ -61,9 +89,9 @@ std::vector<TimerData> Files::getTimers() {
 
   json timerFileData = deserializeJson(timerFile);
 
-  std::vector<TimerData> times = {};
+  std::vector < TimerData > times = {};
 
-  if (timerFileData[ "error" ] == true) {
+  if (timerFileData["error"] == true) {
     return {};
   }
 
@@ -73,15 +101,15 @@ std::vector<TimerData> Files::getTimers() {
 
   int index = 0;
 
-  for (const json& timer : timerFileData[ "timers" ]) {
+  for (const json& timer: timerFileData["timers"]) {
     TimerData data = TimerData(
-        index,
-        timer[ "hours" ].get<int>(),
-        timer[ "minutes" ].get<int>(),
-        timer[ "seconds" ].get<int>(),
-        timer[ "milliseconds" ].get<int>(),
-        timer[ "isOn" ].get<bool>(),
-        std::chrono::milliseconds(timer[ "lastTime" ].get<int>())
+      index,
+      timer["hours"].get < int > (),
+      timer["minutes"].get < int > (),
+      timer["seconds"].get < int > (),
+      timer["milliseconds"].get < int > (),
+      timer["isOn"].get < bool > (),
+      std::chrono::milliseconds(timer["lastTime"].get < int > ())
     );
 
     times.push_back(data);
@@ -96,13 +124,13 @@ json Files::deserializeJson(std::ifstream& inFile) {
   json j;
 
   if (!inFile.is_open()) {
-    j[ "error" ] = true;
+    j["error"] = true;
     return j;
   }
 
   try {
     inFile >> j;
-    j[ "error" ] = false;
+    j["error"] = false;
     return j;
   } catch (const json::parse_error& e) {
     std::cerr << "Parse error: " << e.what() << std::endl;
