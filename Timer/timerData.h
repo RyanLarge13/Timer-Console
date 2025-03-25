@@ -31,27 +31,14 @@ SOFTWARE.
 class TimerData {
  public:
   int index;
-  int hours;
-  int minutes;
-  int seconds;
-  int milliseconds;
   bool isOn;
-
-  std::chrono::milliseconds lastTime;
-  std::chrono::milliseconds totalStoredTime;
-  std::chrono::milliseconds totalTimeInMs;
+  std::chrono::steady_clock::time_point time;
 
   TimerData(
-      const int& i,
-      const int& h,
-      const int& m,
-      const int& s,
-      const int& mill,
-      const bool& isOn,
-      const std::chrono::milliseconds& lt
+    const int& i,
+    const bool& isOn
+    const std::chrono::steady_clock::time_point& time,
   );
-
-  void resetTimerData();
 
   void print(const int& yStart);
   void printUpdate(const int& yStart);

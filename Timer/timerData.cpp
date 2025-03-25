@@ -31,31 +31,10 @@ SOFTWARE.
 
 TimerData::TimerData(
     const int& i,
-    const int& h,
-    const int& m,
-    const int& s,
-    const int& mill,
     const bool& isOn,
-    const std::chrono::milliseconds& lt
-)
-    : index(i), hours(h), minutes(m), seconds(s), milliseconds(mill), isOn(isOn), lastTime(lt) {
-  resetTimerData();
-}
-
-void TimerData::resetTimerData() {
-  using namespace std;
-
-  chrono::milliseconds tpOfLastTime =
-      chrono::duration_cast<chrono::milliseconds>(chrono::milliseconds(lastTime));
-
-  lastTime = tpOfLastTime;
-
-  totalStoredTime = chrono::duration_cast<chrono::milliseconds>(
-      chrono::hours(hours) + chrono::minutes(minutes) + chrono::seconds(seconds) +
-      chrono::milliseconds(milliseconds)
-  );
-
-  totalTimeInMs = this->totalStoredTime + this->lastTime;
+    const std::chrono::steady_clock::time_point& time
+    )
+    : index(i), isOn(isOn), time(time) {
 }
 
 void TimerData::print(const int& yStart) {
@@ -67,11 +46,11 @@ void TimerData::print(const int& yStart) {
   // not running there is no need to call an update on the displayed text so commenting out above
   // section for now
 
-  std::string timeString = std::to_string(this->index) + ". " + std::to_string(this->hours) + ":" +
-                           std::to_string(this->minutes) + ":" + std::to_string(this->seconds) +
-                           ":" + std::to_string(this->milliseconds) + "\n";
+  // std::string timeString = std::to_string(this->index) + ". " + std::to_string(this->hours) + ":" +
+  //                          std::to_string(this->minutes) + ":" + std::to_string(this->seconds) +
+  //                          ":" + std::to_string(this->milliseconds) + "\n";
 
-  std::cout << timeString;
+  // std::cout << timeString;
 }
 
 void TimerData::printUpdate(const int& yStart) {
@@ -82,12 +61,12 @@ void TimerData::printUpdate(const int& yStart) {
 
   steady_clock::time_point now = steady_clock::now();
 
-  steady_clock::duration timeElapsed = steady_clock::time_point(this->totalTimeInMs) - now;
+  steady_clock::duration timeLeft = this->time - now;
 
-  auto h = duration_cast<std::chrono::hours>(timeElapsed);
-  auto m = duration_cast<std::chrono::minutes>(timeElapsed - h);
-  auto s = duration_cast<std::chrono::seconds>(timeElapsed - h - m);
-  auto mill = duration_cast<std::chrono::milliseconds>(timeElapsed - h - m - s);
+  auto h = duration_cast<std::chrono::hours>(timeLeft);
+  auto m = duration_cast<std::chrono::minutes>(timeLeft - h);
+  auto s = duration_cast<std::chrono::seconds>(timeLeft - h - m);
+  auto mill = duration_cast<std::chrono::milliseconds>(timeLeft - h - m - s);
 
   std::string timeString = std::to_string(this->index) + ". " + std::to_string(h.count()) + ":" +
                            std::to_string(m.count()) + ":" + std::to_string(s.count()) + ":" +
@@ -99,38 +78,11 @@ void TimerData::printUpdate(const int& yStart) {
 
 void TimerData::reset() {
   // Reset every value to 0 and turn off the timer
-  this->hours = 0;
-  this->minutes = 0;
-  this->seconds = 0;
-  this->milliseconds = 0;
-  this->isOn = false;
-  this->lastTime = std::chrono::milliseconds(0);
+  time = std::chrono::steady_clock::now();
+isOn =false;
 }
 
 void TimerData::stop() {
-  // Set a new last time and turn off the timer
   this->lastTime = std::chrono::milliseconds(0);
   this->isOn = false;
-
-  // Update all of the minutes and hours associated with the timer data
-  std::chrono::steady_clock::duration timeElapsed = this->totalTimeInMs - this->lastTime;
-
-  // clang-format off
-  this->hours = std::chrono::duration_cast<std::chrono::hours>(
-    timeElapsed
-  ).count();
-  this->minutes = std::chrono::duration_cast<std::chrono::minutes>(
-    timeElapsed - std::chrono::hours(this->hours)
-  ).count();
-  this->seconds = std::chrono::duration_cast<std::chrono::seconds>(
-    timeElapsed - std::chrono::hours(this->hours) - std::chrono::minutes(this->minutes)
-  ).count();
-  this->milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(
-    timeElapsed - std::chrono::hours(this->hours) - std::chrono::minutes(this->minutes) - std::chrono::seconds(this->seconds)
-  ).count();
-  // clang-format on
-
-  // Recall the constructor to make sure that total time and other
-  // values are fully up to data
-  resetTimerData();
 }
