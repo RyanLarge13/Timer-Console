@@ -26,28 +26,30 @@ SOFTWARE.
 #define TIMER_DATA_H
 
 #include <chrono>
-#include <iostream>
 
 class TimerData {
  public:
-  int index;
-  bool isOn;
-  std::chrono::steady_clock::time_point time;
+  bool index;
 
-  TimerData(
-    const int& i,
-    const bool& isOn
-    const std::chrono::steady_clock::time_point& time,
-  );
+  TimerData(const int& i);
 
-  void print(const int& yStart);
-  void printUpdate(const int& yStart);
-
+  void setTime(const int& hours, const int& minutes, const int& seconds);
+  void start();
+  void pause();
   void reset();
-  void stop();
+  bool isComplete();
+  std::chrono::milliseconds getTimeRemaining();
+  void printRemainingTime();
+  void setIndex(const int& newIndex);
 
  protected:
+
  private:
+ std::chrono::milliseconds duration;
+ std::chrono::steady_clock::time_point startTime;
+ std::chrono::steady_clock::duration elapsedTime;
+ bool running;
+ bool paused;
 };
 
 #endif

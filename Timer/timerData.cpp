@@ -25,64 +25,92 @@ SOFTWARE.
 #include "./timerData.h"
 
 #include <chrono>
+#include <thread>
 #include <iostream>
 
 #include "../Console/write.h"
 
-TimerData::TimerData(
-    const int& i,
-    const bool& isOn,
-    const std::chrono::steady_clock::time_point& time
-    )
-    : index(i), isOn(isOn), time(time) {
+TimerData::TimerData(const int& i)
+    : index(i), running(false), paused(false), elapsedTime(0) {}
+
+void TimerData::setTime(const int& hours, const int& minutes, const int& seconds) {
+  duration = std::chrono::milliseconds(hours * 3600 + minutes * 60 + seconds);
+  reset();
 }
 
-void TimerData::print(const int& yStart) {
-  // First clear the section of the screen for new time update
-  // A single timer should be on a single line
-  // Write::clearSection(1, this->index + yStart, Write::myTerminalSize.width, yStart + 1);
+void TimerData::start() {
+  // Set the star time to be the difference between now and the amount of elapsed time that has passed
+  if (!running) {
+    using namespace std::chrono;
 
-  // Sorry Not sure if I should even be reprinting this yet given the times are currently static and
-  // not running there is no need to call an update on the displayed text so commenting out above
-  // section for now
+    running = true;
+    paused = false;
 
-  // std::string timeString = std::to_string(this->index) + ". " + std::to_string(this->hours) + ":" +
-  //                          std::to_string(this->minutes) + ":" + std::to_string(this->seconds) +
-  //                          ":" + std::to_string(this->milliseconds) + "\n";
-
-  // std::cout << timeString;
+    // Start time equals the difference between now and the time elapsed
+    startTime = steady_clock::now() - elapsedTime;
+  }
 }
 
-void TimerData::printUpdate(const int& yStart) {
-  using namespace std::chrono;
+void TimerData::pause() {
+  if (running && !paused) {
+    using namespace std::chrono;
 
-  // First clear section where previous time was
-  Write::clearSection(1, this->index + yStart, Write::myTerminalSize.width, yStart + 1);
+    paused = true;
 
-  steady_clock::time_point now = steady_clock::now();
-
-  steady_clock::duration timeLeft = this->time - now;
-
-  auto h = duration_cast<std::chrono::hours>(timeLeft);
-  auto m = duration_cast<std::chrono::minutes>(timeLeft - h);
-  auto s = duration_cast<std::chrono::seconds>(timeLeft - h - m);
-  auto mill = duration_cast<std::chrono::milliseconds>(timeLeft - h - m - s);
-
-  std::string timeString = std::to_string(this->index) + ". " + std::to_string(h.count()) + ":" +
-                           std::to_string(m.count()) + ":" + std::to_string(s.count()) + ":" +
-                           std::to_string(mill.count()) + "\n";
-
-  // Reprint new updated time in the same place
-  Write::printInSection(1, this->index + yStart, timeString);
+    // Set the elapsed time to the current difference
+    elapsedTime = steady_clock::now() - startTime;
+  }
 }
 
 void TimerData::reset() {
-  // Reset every value to 0 and turn off the timer
-  time = std::chrono::steady_clock::now();
-isOn =false;
+  running = false;
+  paused = false;
+
+  // Set elapsed time to 0 to reset the timer
+  elapsedTime = milliseconds(0);
 }
 
-void TimerData::stop() {
-  this->lastTime = std::chrono::milliseconds(0);
-  this->isOn = false;
+bool TimerData::isComplete() {
+  if (!running) return false;
+  return getTimeRemaining() <= milliseconds(0);
+}
+
+std::chrono::milliseconds TimerData::getTimeRemaining() {
+    if (!running) {
+    return duration - elapsedTime;
+  } else if (paused) {
+    return duration - elapsedTime;
+  } else {
+    using namespace std::chrono;
+
+    // What the fuck is going on here?
+    steady_clock::time_point now = steady_clock::now();
+    duration currentElapsedTime = now - startTime;
+    return duration - duration_cast<milliseconds>(currentElapsedTime);
+  }
+}
+
+void TimerData::printRemainingTime() {
+  using namespace std::chrono;
+
+  milliseconds remainingTime = getTimeRemaining().count();
+
+  int hoursLeft = remainingTime / 3600;
+  int minutesLeft = (remainingTime % 3600) / 60;
+  int secondsLeft = remainingTime % 60;
+  int millisecondsLeft = remainingTime - hoursLeft - minutesLeft - secondsLeft;
+
+  std::string timeTxt = 
+    (hoursLeft < 10 ? "0" : "") + std::to_string(hoursLeft) + ":"
+    (minutesLeft < 10 ? "0" : "") + std::to_string(minutesLeft) + ":"
+    (secondsLeft < 10 ? "0" : "") + std::to_string(secondsLeft) + ":"
+    (millisecondsLeft < 100 ? "0" : millisecondsLeft < 10 : "00" : "") + std::to_string(millisecondsLeft) + "\n";
+
+  std::this_thread::sleep_for(milliseconds(100));
+  Write::clearSection(1, this->index, Write::TerminalSize::myTerminalSize.width, 1);
+  Write::printInSection(1, this->index, timeTxt);
+}
+
+void TimerData::setIndex(const int& newIndex) {
+  index = newIndex;
 }

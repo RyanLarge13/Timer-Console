@@ -44,7 +44,7 @@ std::atomic < bool > running(true);
 // To save TimerData last time use duration_cast <millis> since last epoch
 
 Timer::Timer() {
-  system("clear");
+  Write::clearAllConsole();
 
   // Display all timers options and listen for input in the console
   std::thread listen(&Timer::listenForInput, this);
@@ -94,8 +94,8 @@ void Timer::listenForInput() {
 
   char answer;
   
-  // Errors found in termux. Code not working properly with atomic variable. 
-  // termux printing 0 instead of 1/true when printing running.load()
+  // Errors found in Termux. Code not working properly with atomic variable. 
+  // Termux printing 0 instead of 1/true when printing running.load()
 
   while (running.load()) {
     // Build a separate loop to keep the input thread alive attached to this
@@ -142,10 +142,11 @@ void Timer::handleCases(const char& answer) {
 
 // Option methods
 void Timer::handleQuit() {
-  // Stop All timers, change nothing else
+  // Stop All timers, change nothing else and save to file
   for (TimerData& t: timeData) {
-    t.stop();
+    t.pause();
   }
+  // Save to file here
 
   // This ends timer session completely
   running = false;
@@ -153,21 +154,25 @@ void Timer::handleQuit() {
 
 void Timer::handleDeleteAll() {
   timeData = {};
+  // Delete all timers from files
 
   Write::clearAllConsole();
 }
 
 void Timer::handleResetAllTimers() {
   for (TimerData& t: timeData) {
+    t.pause();
     t.reset();
-    t.stop();
   }
 }
 
 void Timer::handleAddtimer() {
   int newIndex = timeData.size() | 1;
 
-  TimerData newTimer(newIndex, 0, 0, 0, 0, true, std::chrono::milliseconds(0));
+  TimerData newTimer(newIndex);
+
+  // Query for time first
+  newTimer.settime(1, 10, 45);
 
   timeData.push_back(newTimer);
 }
