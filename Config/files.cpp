@@ -62,26 +62,8 @@ std::vector < AlarmData > Files::getAlarms() {
   }
 }
 
+// Timer methods ----------------------------------------------------------------------------------
 std::vector < TimerData > Files::getTimers() {
-  /*
-  Timer JSON type
-  {
-    "error": boolean,
-    timers: [
-      {
-        "on": boolean,
-        "start": std::time_t,
-        "hours": int,
-        "minutes" int,
-        "seconds": int,
-        "milliseconds": int,
-        "lastTime": int??
-      },
-      ...
-    ]
-  }
-*/
-
   std::string basePath = Files::getAppDataPath();
   std::filesystem::create_directories(basePath);
 
@@ -104,9 +86,9 @@ std::vector < TimerData > Files::getTimers() {
   for (const json& timer: timerFileData["timers"]) {
     TimerData newtimer = TimerData(
       index,
-      timer["hours"].get < int > (),
-      timer["minutes"].get < int > (),
-      timer["seconds"].get < int > (),
+      timer["hours"].get < int > () || 0,
+      timer["minutes"].get < int > () || 0,
+      timer["seconds"].get < int > () || 0,
     );
     
     bool isRunning = timer["running"].get < bool > () || false;
@@ -124,6 +106,35 @@ std::vector < TimerData > Files::getTimers() {
   return times;
 };
 
+void Files::saveTimers(const std::vector<TimerData>& timers) {
+    // Loop over timers to save correct data
+    json timerConfig;
+
+    timerConfig["error"] = false;
+    std::vector<json> timersToSave = {};
+
+    for (TimerData timer : timers) {
+      json time;
+
+      TimerData::Times timerTimes = timer.getTimes();
+      time["running"] =  timer.getIsRunning();
+      time["paused"] = timer.getIsPaused();
+      time["hours"] = timerTimes.hours;
+      time["minutes"] = timerTimes.minutes;
+      time["seconds"] = timerTimes.seconds;
+
+      // Push the new timer to the timers json vector
+      timersToSave.push_back(time);
+    } 
+
+    // Save the vector as the json timers in config
+    timerConfig["timers"] = timersToSave;
+
+    saveJsonToFile("timer.json", timerConfig);
+}
+// Timer methods ----------------------------------------------------------------------------------
+
+
 json Files::deserializeJson(std::ifstream& inFile) {
   json j;
 
@@ -134,6 +145,7 @@ json Files::deserializeJson(std::ifstream& inFile) {
 
   try {
     inFile >> j;
+    inFile.close();
     j["error"] = false;
     return j;
   } catch (const json::parse_error& e) {
@@ -149,3 +161,18 @@ json Files::deserializeJson(std::ifstream& inFile) {
 
   return j;
 };
+
+void Files::saveJsonToFile(const std::string& fileName, json j) {
+    std::string basePath = Files::getAppDataPath();
+    std::filesystem::create_directories(basePath);
+
+    std::ofstream file(basePath + fileName);
+
+    if (!file.is_open()) {
+      return;
+    }
+
+    file << j;
+
+    file.close();
+}

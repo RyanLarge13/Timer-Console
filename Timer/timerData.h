@@ -31,6 +31,15 @@ class TimerData {
  public:
   bool index;
 
+  struct Times {
+    int hours;
+    int minutes;
+    int seconds;
+    int milliseconds;
+
+    Times(const int&  h, const int& m, const int& s, const int& mill) : hours(h), minutes(m), seconds(s), milliseconds(mill) {};
+  };
+
   TimerData(const int& i);
 
   void setTime(const int& hours, const int& minutes, const int& seconds);
@@ -41,6 +50,9 @@ class TimerData {
   std::chrono::milliseconds getTimeRemaining();
   void printRemainingTime();
   void setIndex(const int& newIndex);
+  bool getIsPaused();
+  bool getIsRunning();
+  std::vector<Times> getTimes();
 
  protected:
 

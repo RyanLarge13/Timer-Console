@@ -113,3 +113,23 @@ void TimerData::printRemainingTime() {
 void TimerData::setIndex(const int& newIndex) {
   index = newIndex;
 }
+
+bool TimerData::getIsRunning() {
+  return running;
+}
+
+bool TimerData::getIsPaused() {
+  return paused;
+}
+
+std::vector<TimerData::Times> TimerData::getTimes() {
+
+  int hoursLeft = remainingTime / 3600;
+  int minutesLeft = (remainingTime % 3600) / 60;
+  int secondsLeft = remainingTime % 60;
+  int millisecondsLeft = remainingTime - hoursLeft - minutesLeft - secondsLeft;
+
+  TimerData::Times newTimes = TimerData::Times(hoursLeft, minutesLeft, secondsLeft, millisecondsLeft);
+
+  return newTimes;
+}

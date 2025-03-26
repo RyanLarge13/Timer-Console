@@ -43,8 +43,12 @@ class Files {
   public:
   Files();
 
+  // Timer Methods
   std::vector < TimerData > getTimers();
-  stsd::vector < AlarmData > getAlarms();
+  void saveTimers(const std::vector<TimerData>& times);
+
+  // Alarm Methods
+  std::vector < AlarmData > getAlarms();
 
   protected:
   std::string getAppDataPath() {
@@ -64,6 +68,8 @@ class Files {
   }
 
   nlohmann::json deserializeJson(std::ifstream& inFile);
+
+  void saveJsonToFile(const std::string& fileName, json j);
 
   private:
 };

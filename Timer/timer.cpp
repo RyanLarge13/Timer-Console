@@ -138,11 +138,8 @@ void Timer::handleCases(const char& answer) {
 
 // Option methods
 void Timer::handleQuit() {
-  // Stop All timers, change nothing else and save to file
-  for (TimerData& t: timeData) {
-    t.pause();
-  }
-  // Save to file here
+  // Save to file and quit
+  Files::saveTimers(timeData);
 
   // This ends timer session completely
   running = false;
