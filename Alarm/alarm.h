@@ -58,7 +58,7 @@ class Alarm {
     std::string meridiem;
   };
 
-  std::map<std::string key, std::vector < AlarmData >> alarms;
+  std::map<std::string key, std::vector < AlarmData* >> alarms;
 
   Alarm();
 

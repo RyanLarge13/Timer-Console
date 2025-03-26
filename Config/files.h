@@ -49,7 +49,7 @@ class Files {
   void saveTimers(const std::vector<TimerData>& times);
 
   // Alarm Methods
-  std::map<std::string key, std::vector<AlarmData>> getAlarms();
+  std::map<std::string key, std::vector<AlarmData*>> getAlarms();
 
   protected:
   std::string getAppDataPath() {
