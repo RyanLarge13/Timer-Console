@@ -50,8 +50,10 @@ void AlarmData::print() {
   // Print alarm with colors
   if (this->on) {
     std::cout << c(Colors::BLUE) << this->alarmTime c(Colors::ENDCOLOR) << " " << this->meridiem << "\n";
+    // Print days of week
   } else {
     std::cout << c(Colors::RED) << this->alarmTime c(Colors::ENDCOLOR) << " " << this->meridiem << "\n";
+    // Print days of week
   }
 
 }

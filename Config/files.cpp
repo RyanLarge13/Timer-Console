@@ -35,7 +35,7 @@ using json = nlohmann::json;
 
 Files::Files() {}
 
-std::map<std::string key, std::vector<AlarmData*>> Files::getAlarms() {
+std::vector<AlarmData> Files::getAlarms() {
   std::string basePath = Files::getAppDataPath();
   std::filesystem::create_directories(basePath);
 
@@ -53,7 +53,7 @@ std::map<std::string key, std::vector<AlarmData*>> Files::getAlarms() {
 
   int index = 0;
 
-  std::map<std::string key, std::vector<AlarmData*>> alarms;
+  std::vector<AlarmData> alarms;
 
   for (AlarmData alarm: alarmFileData["alarms"]) {
     
@@ -67,20 +67,10 @@ std::map<std::string key, std::vector<AlarmData*>> Files::getAlarms() {
 
     AlarmData::Vibrate vibrate(vibrateOn, intensity);
 
-    AlarmData* existingAlarm = new AlarmData(daysOfWeek, alarmTime, on, meridiem, vibrate);
+    AlarmData existingAlarm = AlarmData(daysOfWeek, alarmTime, on, meridiem, vibrate);
 
     // Loop through days of week to make sure that map contains the alarm and week day
-
-    for (const int& dow : daysOfWeek) {
-      if (!alarms.contains(dow)) {
-        std::vector<AlarmData> alarmDataPtrVec = {existingAlarm};
-        alarms[dow] = alarmDataPtrVec;
-      } else {
-        std::vector<AlarmData> alarmDataPtrVec = alarms[dow];
-        alarmDataPtrVec.push_back(existingAlarm);
-        alarms[dow] = alarmDataPtrVec;
-      }
-    }
+    alarms.push_back(existingAlarm);
     
     index++;
   }

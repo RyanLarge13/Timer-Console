@@ -39,12 +39,7 @@ void Alarm::loadAlarms() {
 void Alarm::printAlarms() {
   Write::clearAllConsole();
 
-  for (int i = 0; i < Alarm::daysOfTheWeek; i++) {
-    // Print day of the week and all of the alarms associated
-    std::cout << daysOfTheWeek[i] << "\n";
-
-    for (AlarmData* alarm : alarms[i]) {
-      alarm->print();
-    }
+  for (AlarmData alarm : alarms) {
+    alarm.print();
   }
 }
