@@ -102,17 +102,21 @@ std::vector < TimerData > Files::getTimers() {
   int index = 0;
 
   for (const json& timer: timerFileData["timers"]) {
-    TimerData data = TimerData(
+    TimerData newtimer = TimerData(
       index,
       timer["hours"].get < int > (),
       timer["minutes"].get < int > (),
       timer["seconds"].get < int > (),
-      timer["milliseconds"].get < int > (),
-      timer["isOn"].get < bool > (),
-      std::chrono::milliseconds(timer["lastTime"].get < int > ())
     );
+    
+    bool isRunning = timer["running"].get < bool > () || false;
+    bool isPaused = timer["paused"].get < bool > () || true;
 
-    times.push_back(data);
+    if (isRunning && !isPaused) {
+      newTimer.start();
+    }
+
+    times.push_back(newtimer);
 
     index++;
   }
