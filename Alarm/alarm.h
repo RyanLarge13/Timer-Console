@@ -27,6 +27,7 @@ SOFTWARE.
 
 #include <vector>
 #include <string>
+#include <map>
 
 class Alarm {
   public:
@@ -41,13 +42,23 @@ class Alarm {
     SUNDAY = 6
   };
 
+  std::map<int code, std::string day> daysOfTheWeek = {
+    0: "Mo",
+    1: "Tu",
+    2: "We",
+    3: "Th",
+    4: "Fr",
+    5: "Sa",
+    6: "Su"
+  };
+
   struct AlarmData {
     std::vector < DaysOfWeek > daysOfWeek;
     std::string timeOfDay;
     std::string meridiem;
   };
 
-  std::vector < AlarmData > alarms;
+  std::map<std::string key, std::vector < AlarmData >> alarms;
 
   Alarm();
 

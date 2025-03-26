@@ -28,6 +28,7 @@ SOFTWARE.
 #include <iostream>
 #include <fstream>
 #include <filesystem>
+#include <map>
 #include "../Alarm/alarm.h"
 #include "../Timer/timer.h"
 #include "../Timer/timerData.h"
@@ -48,7 +49,7 @@ class Files {
   void saveTimers(const std::vector<TimerData>& times);
 
   // Alarm Methods
-  std::vector < AlarmData > getAlarms();
+  std::map<std::string key, std::vector<AlarmData>> getAlarms();
 
   protected:
   std::string getAppDataPath() {

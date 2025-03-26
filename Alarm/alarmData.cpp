@@ -23,7 +23,9 @@ SOFTWARE.
 */
 
 #include "./alarmData.h"
+#include "../Console/write.h"
 #include <vector>
+#include <iostream>
 
 AlarmData::AlarmData(
   const std::vector < Alarm::DaysOfWeek>& daysOfWeek,
@@ -41,3 +43,15 @@ vibrate(vibrate) {}
 void AlarmData::changeTime(const std::string& newTime) {}
 void AlarmData::toggleOnOff() {}
 void AlarmData::toggleMeridiem() {}
+
+void AlarmData::print() {
+  using namespace Write;
+
+  // Print alarm with colors
+  if (this->on) {
+    std::cout << c(Colors::BLUE) << this->alarmTime c(Colors::ENDCOLOR) << " " << this->meridiem << "\n";
+  } else {
+    std::cout << c(Colors::RED) << this->alarmTime c(Colors::ENDCOLOR) << " " << this->meridiem << "\n";
+  }
+
+}

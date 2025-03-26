@@ -24,6 +24,7 @@ SOFTWARE.
 
 #include <iostream>
 #include "./Timer/timer.h"
+#include "./Alarm/alarm.h"
 
 void branchApp(const int& selection);
 
@@ -64,6 +65,10 @@ void reset() {
 }
 
 // Functionality Methods - - - - - - - - -
+void handleAlarm() {
+  Alarm alarm;
+}
+
 void handleTimer() {
   Timer timer;
   //reset();
@@ -78,8 +83,7 @@ void branchApp(const int& selection) {
   switch (selection) {
     case AppFunction::ALARM:
     {
-      // Handle alarm
-      reset();
+      handleAlarm();
     }
     break;
     case AppFunction::STOPWATCH:

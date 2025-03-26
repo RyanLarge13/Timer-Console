@@ -27,27 +27,29 @@ SOFTWARE.
 
 #include "./alarm.h"
 #include <vector>
+#include <map>
 
 class AlarmData {
   public:
 
-  struct Vibrate {
-    bool on;
-    double intensity;
+    struct Vibrate {
+      bool on;
+      double intensity;
 
-    Vibrate(const bool& on, const double& intensity): on(on), intensity(intensity) {}
-  };
+      Vibrate(const bool& on, const double& intensity): on(on), intensity(intensity) {}
+    };
 
-  AlarmData(
-    const std::vector < Alarm::DaysOfWeek>& daysOfWeek, 
-    const std::string& alarmTime, 
-    const bool& on, 
-    const std::string meridiem, const bool& vibrate
-  );
+    AlarmData(
+      const std::vector < Alarm::DaysOfWeek>& daysOfWeek, 
+      const std::string& alarmTime, 
+      const bool& on, 
+      const std::string meridiem, const bool& vibrate
+    );
 
-void AlarmData::changeTime(const std::string& newTime);
-void AlarmData::toggleOnOff();
-void AlarmData::toggleMeridiem();
+    void changeTime(const std::string& newTime);
+    void toggleOnOff();
+    void toggleMeridiem();
+    void print();
 
   protected:
   private:
