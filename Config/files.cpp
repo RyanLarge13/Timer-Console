@@ -53,8 +53,19 @@ std::vector < AlarmData > Files::getAlarms() {
 
   int index = 0;
 
-  for (Alarm::AlarmData alarm: alarmFileData["alarms"]) {
-    Alarm::AlarmData existingAlarm = Alarm::AlarmData();
+  for (AlarmData alarm: alarmFileData["alarms"]) {
+    
+    std::vector<Alarm::DaysOfWeek> daysOfWeek = alarm["dow"];
+    std::string alarmTime = alarm["time"];
+    bool on = alarm["on"];
+    std::string meridiem = alarm["meridiem"];
+    
+    bool vibrateOn = alarm["vibrate"]["on"];
+    double intensity = alarm["vibrate"]["intensity"];
+
+    AlarmData::Vibrate vibrate(vibrateOn, intensity);
+
+    AlarmData existingAlarm = AlarmData(daysOfWeek, alarmTime, on, meridiem, vibrate);
     
     alarms.push_back(existingAlarm);
     

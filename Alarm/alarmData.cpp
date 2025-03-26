@@ -25,10 +25,18 @@ SOFTWARE.
 #include "./alarmData.h"
 #include <vector>
 
-AlarmData::AlarmData(const std::vector < Alarm::DaysOfWeek>& const
-daysOfWeek,const std::string& alarmTime, const bool&
-  on, const std::string meridiem, const bool& vibrate): daysOfWeek(daysOfWeek), alarmTime(alarmTime),
-on(on), meridiem(meridiem), vibrate(vibrate) {}
+AlarmData::AlarmData(
+  const std::vector < Alarm::DaysOfWeek>& daysOfWeek,
+  const std::string& alarmTime, 
+  const bool& on, 
+  const std::string meridiem, 
+  const bool& vibrate
+): 
+daysOfWeek(daysOfWeek), 
+alarmTime(alarmTime),
+on(on),
+meridiem(meridiem), 
+vibrate(vibrate) {}
 
 void AlarmData::changeTime(const std::string& newTime) {}
 void AlarmData::toggleOnOff() {}

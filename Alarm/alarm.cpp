@@ -30,5 +30,5 @@ Alarm::Alarm() {
 }
 
 void Alarm::loadAlarms() {
- std::vector<Alarm::AlarmData> storedAlarms = Files::getAlarms();
+  alarms = Files::getAlarms();
 }

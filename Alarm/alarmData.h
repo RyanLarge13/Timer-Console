@@ -31,9 +31,19 @@ SOFTWARE.
 class AlarmData {
   public:
 
-  AlarmData(const std::vector < Alarm::DaysOfWeek>& const
-  daysOfWeek, const std::string& alarmTime, const bool&
-  on, const std::string meridiem, const bool& vibrate);
+  struct Vibrate {
+    bool on;
+    double intensity;
+
+    Vibrate(const bool& on, const double& intensity): on(on), intensity(intensity) {}
+  };
+
+  AlarmData(
+    const std::vector < Alarm::DaysOfWeek>& daysOfWeek, 
+    const std::string& alarmTime, 
+    const bool& on, 
+    const std::string meridiem, const bool& vibrate
+  );
 
 void AlarmData::changeTime(const std::string& newTime);
 void AlarmData::toggleOnOff();
