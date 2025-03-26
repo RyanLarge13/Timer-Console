@@ -70,11 +70,7 @@ void Timer::printTimers() {
   Write::clearSection(1, 8, Write::myTerminalSize.width, Write::myTerminalSize.height - 8);
 
   for (TimerData& t: timeData) {
-    if (!t.isOn) {
-      t.print(8);
-    } else {
-      t.printUpdate(8);
-    }
+    t.printRemainingTime();
   }
 }
 
@@ -94,7 +90,7 @@ void Timer::listenForInput() {
 
   char answer;
   
-  // Errors found in Termux. Code not working properly with atomic variable. 
+  // Errors found in Termux. Code not working properly with atomic variable. --------------------------------
   // Termux printing 0 instead of 1/true when printing running.load()
 
   while (running.load()) {

@@ -106,8 +106,7 @@ void TimerData::printRemainingTime() {
     (secondsLeft < 10 ? "0" : "") + std::to_string(secondsLeft) + ":"
     (millisecondsLeft < 100 ? "0" : millisecondsLeft < 10 : "00" : "") + std::to_string(millisecondsLeft) + "\n";
 
-  std::this_thread::sleep_for(milliseconds(100));
-  Write::clearSection(1, this->index, Write::TerminalSize::myTerminalSize.width, 1);
+  //You do not need to clear any area in console before printing, as Timer handles clearing the entire timer area before reprinting
   Write::printInSection(1, this->index, timeTxt);
 }
 
