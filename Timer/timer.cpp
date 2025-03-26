@@ -160,16 +160,80 @@ void Timer::handleResetAllTimers() {
 }
 
 void Timer::handleAddtimer() {
+  Writer::clearAllConsole(); 
+
+  if (timeData.size() > 8) {
+    // Return early. Only allow the user to have 9 timers at once
+    std::cout << Write::c(Write::Colors::RED) << "You can only have 9 timers" << Write::c(Write::Colors::ENDCOLOR) << "\n";
+    return;
+  }
+
   int newIndex = timeData.size() | 1;
 
-  TimerData newTimer(newIndex);
+  TimerData::Times newTimerTimes = getUserTimer();
 
-  // Query for time first
-  newTimer.settime(1, 10, 45);
+  TimerData newTimer(newIndex);
+  newTimer.setTime(newTimerTimes.hours, newTimerTimes.minutes, newtimerTimes.seconds);
 
   timeData.push_back(newTimer);
 }
 
 void Timer::handleRemoveTimer() {
   // Query for input by index to remove specific timer
+  Write::clearAllConsole();
+
+  for (TimerData& time : timeData) {
+    std::cout << time.index << ". " << time.printRemainingTime() << "\n";
+  } 
+
+  std::cout << "Which timer do you want to remove? ";
+
+  Read::setCanonicalMode(true);
+
+  int timerIndex;
+  read(STDIN_FILENO, &timerIndex, 1);
+
+  Read::setCanonicalMode(false);
+
+  timeData.erase(timeData.begin() + timerIndex);
+}
+
+TimerData::Times Timer::getUserTimer() {
+  int hours = -1;
+  int minutes = -1;
+  int seconds = -1;
+
+  bool isQuerying = true;
+
+  std::cout << 
+    hours == -1 ? "00" : hours < 10 ? "0" : "" << hours << ":" << 
+    minutes == -1 ? "00" : minutes < 10 ? "0" : "" << minutes << ":" <<
+    seconds == -1 ? "00" : seconds < 10 ? "0" : "" << seconds << ":000" << "\n";
+
+  while (isQuerying) {
+    if (hours == -1) {
+      std::cout << "Hours: ";
+      std::cin >> hours;
+    }
+
+    if (minutes == -1) {
+      std::cout << "Minutes: ";
+      std::cin >> minutes;
+    }
+
+    if (seconds == -1) {
+      std::cout << "Seconds: ";
+      std::cin >> seconds;
+    }
+  }
+
+  TimerData::Times returnTimes = TimerData::Times(
+    hours == -1 ? 0 : hours, 
+    minutes == -1 ? 0 : minutes, 
+    seconds == -1 ? 0 : seconds
+  );
+
+  Write::clearAllConsole();
+
+  return returnTimes;
 }

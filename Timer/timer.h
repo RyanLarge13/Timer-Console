@@ -43,6 +43,7 @@ class Timer {
   void printTimers();
   void listenForInput();
   void handleCases(const char& answer);
+  TimerData::Times getUserTimer();
 
   // Option methods
   void handleQuit();
