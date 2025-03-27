@@ -29,15 +29,15 @@ SOFTWARE.
 
 AlarmData::AlarmData(
   const std::vector < Alarm::DaysOfWeek>& daysOfWeek,
-  const std::string& alarmTime, 
-  const bool& on, 
-  const std::string meridiem, 
+  const std::string& alarmTime,
+  const bool& on,
+  const std::string meridiem,
   const bool& vibrate
-): 
-daysOfWeek(daysOfWeek), 
+):
+daysOfWeek(daysOfWeek),
 alarmTime(alarmTime),
 on(on),
-meridiem(meridiem), 
+meridiem(meridiem),
 vibrate(vibrate) {}
 
 void AlarmData::changeTime(const std::string& newTime) {}
@@ -56,4 +56,19 @@ void AlarmData::print() {
     // Print days of week
   }
 
+  for ([int& key, std::string& day]: Alarm::daysOfWeek) {
+    bool isOnToday = false;
+
+    for (int& weekday: this->daysOfWeek) {
+      if (weekday == key) {
+        isOnToday = true;
+      }
+    }
+
+    std::cout << isOnToday ? c(Colors::BLUE): c(Colors::RED) << day <<
+    c(Colors::ENDCOLOR) << " ";
+  }
+
+  // Flush
+  std::cout << "\n";
 }
