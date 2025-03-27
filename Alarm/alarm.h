@@ -76,6 +76,15 @@ class Alarm {
 
   protected:
   private:
+
+  std::vector<int> daysSelected;
+  bool gettingTime = true;
+  bool gettingMeridiem = false;
+  bool gettingDays = false;
+
+  int hour = -1;
+  int minute = -1;
+  bool newMeridiem = -1;
 }
 
 #endif

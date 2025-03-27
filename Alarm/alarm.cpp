@@ -72,6 +72,7 @@ void Alarm::printOptions() {
 void Alarm::handleOption(const int& answer) {
   switch (answer) {
     case 1: {
+      Write::clearAllConsole();
       handleAddAlarm();
     }
     break;
@@ -111,27 +112,37 @@ void Alarm::handleOption(const int& answer) {
 }
 
 void Timer::handleAddAlarm() {
-  Write::clearAllConsole();
-
-  bool gettingTime = true;
-  bool gettingMeridiem = false;
-  bool gettingDays = false;
-
-  int hour = -1;
-  int minute = -1;
-  bool newMeridiem = -1;
-
-  std::vector<int> daysSelected;
-
   while (gettingTime) {
+    std::cout << "Hour: ";
+    std::cin >> hour;
 
+    if (hour == -1) {
+      handleAddAlarm();
+    }
+
+    std::cout << "\n" << "Minutes: ";
+    std::cin >> minutes;
+
+    if (minutes == -1) {
+      handleAddAlarm();
+    }
+
+    gettingTime = false;
   }
 
   while (gettingMeridiem) {
+    std::cout << "AM or PM? ";
+    std::cin >> meridiem;
 
+    if (meridiem != "AM" || meridiem != "PM") {
+      handleAddAlarm();
+    }
   }
 
   while (gettingDays) {
-    
+    std::cout << 
+      "1. Mo, 2. Tu, 3. We" << "\n" << 
+      "4. Th, 5. Fr, 6. Sa" << "\n" << 
+      "7. Su" << "\n";
   }
 }
