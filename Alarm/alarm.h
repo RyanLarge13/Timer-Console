@@ -64,6 +64,15 @@ class Alarm {
 
   void loadAlarms();
   void createAlarm();
+  void printOptions();
+  void handleOption(const int& answer);
+  void handleAddAlarm();
+  void handleRemoveAlarm();
+  void handleUpdateAlarmDay();
+  void handleUpdateAlarmTime();
+  void handleToggleOnOffAlarm();
+  void handleRemoveAllAlarms();
+  void handleQuit();
 
   protected:
   private:
