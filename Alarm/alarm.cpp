@@ -27,9 +27,12 @@ SOFTWARE.
 #include <iostream>
 #include <thread>
 #include <chrono>
+#include <atomic>
 #include "../Config/files.h"
 #include "../Consle/write.h"
 #include "../Consle/read.h"
+
+std::atomic<bool> running(true);
 
 Alarm::Alarm() {
   loadAlarms();
@@ -38,12 +41,17 @@ Alarm::Alarm() {
 void Alarm::loadAlarms() {
   alarms = Files::getAlarms();
 
-  printOptions();
-  printAlarms();
+  // Allow input and printing at the same time
+  std::thread printOptionsThread(&printOptions);
+  std::thread printAlarmThread(&printAlarms);
+
+  printOptionsThread.join();
+  printAlarmThread.join();
 }
 
 void Alarm::printAlarms() {
-  for (AlarmData alarm : alarms) {
+  //Print at appropriate space with Write::
+  for (AlarmData alarm: alarms) {
     alarm.print();
   }
 }
@@ -53,20 +61,20 @@ void Alarm::printOptions() {
 
   int answer;
 
-  std::cout << 
-    "1. Add Alarm" << "\n" <<
-    "2. Remove Alarm" << "\n" <<
-    "3. Update Alarm Time" << "\n" <<
-    "4. Update Alarm Days"<< "\n" <<
-    "5. Toggle on/off" << "\n" << 
-    "6. Remove All Alarms" << "\n" <<
-    "7. Main Menu" << "\n" << "\n";
+  std::cout <<
+  "1. Add Alarm" << "\n" <<
+  "2. Remove Alarm" << "\n" <<
+  "3. Update Alarm Time" << "\n" <<
+  "4. Update Alarm Days"<< "\n" <<
+  "5. Toggle on/off" << "\n" <<
+  "6. Remove All Alarms" << "\n" <<
+  "7. Main Menu" << "\n" << "\n";
 
-    Read::setCanonicalMode(true);
-    read(STDIN_FILENO, &answer, 1);
-    Read::setCanonicalMode(false);
+  Read::setCanonicalMode(true);
+  read(STDIN_FILENO, &answer, 1);
+  Read::setCanonicalMode(false);
 
-    handleOption(answer);
+  handleOption(answer);
 }
 
 void Alarm::handleOption(const int& answer) {
@@ -140,9 +148,42 @@ void Timer::handleAddAlarm() {
   }
 
   while (gettingDays) {
-    std::cout << 
-      "1. Mo, 2. Tu, 3. We" << "\n" << 
-      "4. Th, 5. Fr, 6. Sa" << "\n" << 
-      "7. Su" << "\n";
+    std::vector < int > daysSelected = {};
+    int index = 1;
+
+    for ([int& code, std::string& day]: Alarm::daysOfWeek) {
+      // TODO
+      // Build includes method bool || int
+      if (Alarm::includes(code, daysSelected)) {
+        std::cout << index << Write::c(Write::Colors::YELLOW) << day <<
+        Write::c(Write::Colors::ENDCOLOR) << " ";
+      } else {
+        std::cout << index << day << " ";
+      }
+      index++;
+    }
+    std::cout << "\n" << "\n";
+    std::cout << "0 to finish, 9 to quit" << "\n";
+    std::cout << "Select days by number:";
+
+    int answer;
+    Read::setCanonicalMode(true);
+    read(STDIN_FILENO, &answer, 1);
+    Read::setCanonicalMode(false);
+
+    // Update vector of selected days
+    //re-trigger method to keep toggling and prompting for days
+    // 0 to finish. 9 to quit
+
+    if (answer == 9) {
+      // Reset this bad boy
+      gettingDays = false;
+      getting Meridiem = false;
+      gettingTime = true;
+
+      hours = -1;
+      minutes = -1;
+      return;
+    }
   }
 }
