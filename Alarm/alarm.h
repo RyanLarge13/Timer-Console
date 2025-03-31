@@ -28,34 +28,29 @@ SOFTWARE.
 #include <vector>
 #include <string>
 #include <map>
+#include "./alarmData.h"
 
 class Alarm {
   public:
 
   enum DaysOfWeek = {
-    MONDAY = 0,
-    TUESDAY = 1,
-    WEDNESDAY = 2,
-    THURSDAY = 3,
-    FRIDAY = 4,
-    SATURDAY = 5,
-    SUNDAY = 6
+    MONDAY = 1,
+    TUESDAY = 2,
+    WEDNESDAY = 3,
+    THURSDAY = 4,
+    FRIDAY = 5,
+    SATURDAY = 6,
+    SUNDAY = 7
   };
 
   std::map<int code, std::string day> daysOfTheWeek = {
-    0: "Mo",
-    1: "Tu",
-    2: "We",
-    3: "Th",
-    4: "Fr",
-    5: "Sa",
-    6: "Su"
-  };
-
-  struct AlarmData {
-    std::vector < DaysOfWeek > daysOfWeek;
-    std::string timeOfDay;
-    std::string meridiem;
+    1: "Mo",
+    2: "Tu",
+    3: "We",
+    4: "Th",
+    5: "Fr",
+    6: "Sa",
+    7: "Su"
   };
 
   std::vector<AlarmData> alarms;
@@ -84,7 +79,7 @@ class Alarm {
 
   int hour = -1;
   int minute = -1;
-  bool newMeridiem = -1;
+  std::string newMeridiem = "-1";
 }
 
 #endif

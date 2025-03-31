@@ -31,8 +31,8 @@ AlarmData::AlarmData(
   const std::vector < Alarm::DaysOfWeek>& daysOfWeek,
   const std::string& alarmTime,
   const bool& on,
-  const std::string meridiem,
-  const bool& vibrate
+  const std::string& meridiem,
+  const AlarmData::Vibrate& vibrate
 ):
 daysOfWeek(daysOfWeek),
 alarmTime(alarmTime),

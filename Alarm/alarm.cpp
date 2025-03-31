@@ -23,6 +23,7 @@ SOFTWARE.
 */
 
 #include "./alarm.h"
+#include "./alarmData.h"
 #include <unistd.h>
 #include <iostream>
 #include <thread>
@@ -148,7 +149,6 @@ void Timer::handleAddAlarm() {
   }
 
   while (gettingDays) {
-    std::vector < int > daysSelected = {};
     int index = 1;
 
     for ([int& code, std::string& day]: Alarm::daysOfWeek) {
@@ -174,6 +174,11 @@ void Timer::handleAddAlarm() {
     // Update vector of selected days
     //re-trigger method to keep toggling and prompting for days
     // 0 to finish. 9 to quit
+    
+
+    /* TODO
+        1. Check if input is valid or not
+    */
 
     if (answer == 9) {
       // Reset this bad boy
@@ -185,5 +190,18 @@ void Timer::handleAddAlarm() {
       minutes = -1;
       return;
     }
+
+    if (answer == 0) {
+      gettingDays = false;
+    }
+
+    daysSelected.push_back(answer);
   }
+
+  std::string timeString = std::chrono::to_time_t(std::chrono::hours(hours) + std::chrono::minutes(minutes));
+
+  AlarmData newAlarm = AlarmData(daysSelected, , true, meridiem, AlarmData::Vibrate(true, 1.0));
+
+  daysSelected = {};
+
 }
