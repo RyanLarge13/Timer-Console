@@ -79,9 +79,10 @@ void Alarm::printOptions() {
 }
 
 void Alarm::handleOption(const int& answer) {
+  Write::clearAllConsole();
+
   switch (answer) {
     case 1: {
-      Write::clearAllConsole();
       handleAddAlarm();
     }
     break;
@@ -120,7 +121,14 @@ void Alarm::handleOption(const int& answer) {
   }
 }
 
-void Timer::handleAddAlarm() {
+void Alarm::handleRemoveAlarm() {
+  int alarmIndex;
+
+  std::cout << "Which alarm would you like to remove? ";
+  std::cin >> alarmIndex;
+}
+
+void Alarm::handleAddAlarm() {
   AlarmData::AlarmTime timeToAdd;
 
   while (gettingTime) {
@@ -138,22 +146,23 @@ void Timer::handleAddAlarm() {
       handleAddAlarm();
     }
 
-    timeToAdd = AlarmData::AlarmTime(hour, minutes);
     gettingTime = false;
   }
-
+  
   while (gettingMeridiem) {
     std::cout << "AM or PM? ";
     std::cin >> meridiem;
-
+    
     if (meridiem != "AM" || meridiem != "PM") {
       handleAddAlarm();
     }
-
+    
     if (meridiem == "PM") {
       hours += 12;
     }
   }
+
+  timeToAdd = AlarmData::AlarmTime(hour, minutes);
 
   while (gettingDays) {
     int index = 1;
@@ -205,9 +214,9 @@ void Timer::handleAddAlarm() {
     daysSelected.push_back(answer);
   }
 
-  std::string timeString = std::format("{}")
-
   AlarmData newAlarm = AlarmData(daysSelected, timeToAdd, true, meridiem, AlarmData::Vibrate(true, 1.0));
+
+  alarms.push_back(newAlarm);
 
   daysSelected = {};
 
