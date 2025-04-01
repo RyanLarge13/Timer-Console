@@ -121,6 +121,8 @@ void Alarm::handleOption(const int& answer) {
 }
 
 void Timer::handleAddAlarm() {
+  AlarmData::AlarmTime timeToAdd;
+
   while (gettingTime) {
     std::cout << "Hour: ";
     std::cin >> hour;
@@ -136,6 +138,7 @@ void Timer::handleAddAlarm() {
       handleAddAlarm();
     }
 
+    timeToAdd = AlarmData::AlarmTime(hour, minutes);
     gettingTime = false;
   }
 
@@ -145,6 +148,10 @@ void Timer::handleAddAlarm() {
 
     if (meridiem != "AM" || meridiem != "PM") {
       handleAddAlarm();
+    }
+
+    if (meridiem == "PM") {
+      hours += 12;
     }
   }
 
@@ -198,9 +205,9 @@ void Timer::handleAddAlarm() {
     daysSelected.push_back(answer);
   }
 
-  std::string timeString = std::chrono::to_time_t(std::chrono::hours(hours) + std::chrono::minutes(minutes));
+  std::string timeString = std::format("{}")
 
-  AlarmData newAlarm = AlarmData(daysSelected, , true, meridiem, AlarmData::Vibrate(true, 1.0));
+  AlarmData newAlarm = AlarmData(daysSelected, timeToAdd, true, meridiem, AlarmData::Vibrate(true, 1.0));
 
   daysSelected = {};
 

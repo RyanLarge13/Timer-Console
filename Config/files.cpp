@@ -58,7 +58,10 @@ std::vector<AlarmData> Files::getAlarms() {
   for (AlarmData alarm: alarmFileData["alarms"]) {
     
     std::vector<Alarm::DaysOfWeek> daysOfWeek = alarm["dow"];
-    std::string alarmTime = alarm["time"];
+
+    std::string alarmTimeHours = alarm["time"]["hours"];
+    std::string alarmTimeMinutes = alarm["time"]["minutes"];
+
     bool on = alarm["on"];
     std::string meridiem = alarm["meridiem"];
     
@@ -67,7 +70,7 @@ std::vector<AlarmData> Files::getAlarms() {
 
     AlarmData::Vibrate vibrate(vibrateOn, intensity);
 
-    AlarmData existingAlarm = AlarmData(daysOfWeek, alarmTime, on, meridiem, vibrate);
+    AlarmData existingAlarm = AlarmData(daysOfWeek, AlarmData::AlarmTime(alarmTimeHours, alarmTimeMinutes), on, meridiem, vibrate);
 
     // Loop through days of week to make sure that map contains the alarm and week day
     alarms.push_back(existingAlarm);

@@ -29,7 +29,7 @@ SOFTWARE.
 
 AlarmData::AlarmData(
   const std::vector < Alarm::DaysOfWeek>& daysOfWeek,
-  const std::string& alarmTime,
+  const AlarmData::AlarmTime& alarmTime,
   const bool& on,
   const std::string& meridiem,
   const AlarmData::Vibrate& vibrate
@@ -49,11 +49,13 @@ void AlarmData::print() {
 
   // Print alarm with colors
   if (this->on) {
-    std::cout << c(Colors::BLUE) << this->alarmTime c(Colors::ENDCOLOR) << " " << this->meridiem << "\n";
+    std::cout << c(Colors::BLUE) << this->alarmTime.hour c(Colors::ENDCOLOR) << " " << this->meridiem << "\n";
     // Print days of week where alarm is active
+    // Refactor. alarmTime has now changed structure to hour int minute int
   } else {
-    std::cout << c(Colors::RED) << this->alarmTime c(Colors::ENDCOLOR) << " " << this->meridiem << "\n";
+    std::cout << c(Colors::RED) << this->alarmTime.hour c(Colors::ENDCOLOR) << " " << this->meridiem << "\n";
     // Print days of week where alarm is not active
+    // Refactor. alarmTime has now changed structure to hour int minute int
   }
 
   for ([int& key, std::string& day]: Alarm::daysOfWeek) {

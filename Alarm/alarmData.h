@@ -39,9 +39,16 @@ class AlarmData {
       Vibrate(const bool& on, const double& intensity): on(on), intensity(intensity) {}
     };
 
+    struct AlarmTime {
+      int hour;
+      int minute;
+
+      AlarmTime(const int& h, cont int& m): hour(h), minute(m) {}
+    }
+
     AlarmData(
       const std::vector < Alarm::DaysOfWeek>& daysOfWeek, 
-      const std::string& alarmTime, 
+      const AlarmTime& alarmTime, 
       const bool& on, 
       const std::string& meridiem, 
       const Vibrate& vibrate
