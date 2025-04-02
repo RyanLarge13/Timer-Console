@@ -68,6 +68,9 @@ class Alarm {
   void handleToggleOnOffAlarm();
   void handleRemoveAllAlarms();
   void handleQuit();
+  void setAlarmMeridiem(AlarmData& alarmToUpdate);
+  void setAlarmTime(AlarmData& alarmToUpdate);
+  void setAlarmDays(AlarmData& alarmToUpdate);
 
   protected:
   private:

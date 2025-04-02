@@ -121,52 +121,62 @@ void Alarm::handleOption(const int& answer) {
   }
 }
 
-void Alarm::handleRemoveAlarm() {
-  int alarmIndex;
+void Alarm::setAlarmTime(AlarmData& alarmToUpdate) {
+  std::cout << "What would you like your new time to be? \nHour: ";
 
-  std::cout << "Which alarm would you like to remove? ";
-  std::cin >> alarmIndex;
-}
+  int newHour;
+  int newMinute;
 
-void Alarm::handleAddAlarm() {
-  AlarmData::AlarmTime timeToAdd;
-
-  while (gettingTime) {
-    std::cout << "Hour: ";
-    std::cin >> hour;
-
-    if (hour == -1) {
-      handleAddAlarm();
+  if (alarmToUpdate.alarmTime.hour == -1) {
+    Read::setCanonicalMode(true);
+    read(STDIN_FILENO, &newHour, 1);
+  
+    if (newHour > 12 || newHour < 1) {
+      std::cout << "Please select a valid hour 0 - 12" << "\n";
+      return setAlarmTime(alarmToUpdate);
     }
-
-    std::cout << "\n" << "Minutes: ";
-    std::cin >> minutes;
-
-    if (minutes == -1) {
-      handleAddAlarm();
-    }
-
-    gettingTime = false;
+  
+    alarmToUpdate->alarmTime.hour = newHour;
   }
   
-  while (gettingMeridiem) {
-    std::cout << "AM or PM? ";
-    std::cin >> meridiem;
-    
-    if (meridiem != "AM" || meridiem != "PM") {
-      handleAddAlarm();
-    }
-    
-    if (meridiem == "PM") {
-      hours += 12;
-    }
+  if (alarmToUpdate.alarmTime.minute == -1) {
+    std::cout << "Minute: ";
+    read(STDIN_FILENO, &newMinute, 1);
+  
+    if (newMinute > 59) {
+      std::cout << "Please select a valid time. Minutes 0 - 59" << "\n";
+      return setAlarmTime(alarmToUpdate);
+    } 
+  
+    alarmToUpdate->alarmTime.minute = newMinute;
   }
 
-  timeToAdd = AlarmData::AlarmTime(hour, minutes);
+  Read::setCanonicalMode(false);
+}
 
-  while (gettingDays) {
+void Alarm::setAlarmMeridiem(AlarmData& alarmToUpdate) {
+  Write::clearAllConsole();
+
+    std::string newMeridiem;
+
+    std::cout << "AM or PM? ";
+    std::cin >> newMeridiem;
+
+    if (newMeridiem != "AM" || newMeridiem != "PM") {
+      return setAlarmMeridiem(alarmToUpdate);
+    }
+
+    if (newMeridiem == "PM") {
+      alarmToUpdate.alarmTime.hour += 12;
+    }
+
+    alarmToUpdate.meridiem = newMeridiem;
+}
+
+void Alarm::setAlarmDays(AlarmData& alarmToUpdate) {
+    while (gettingDays) {
     int index = 1;
-
+    
     for ([int& code, std::string& day]: Alarm::daysOfWeek) {
       // TODO
       // Build includes method bool || int
@@ -213,8 +223,67 @@ void Alarm::handleAddAlarm() {
 
     daysSelected.push_back(answer);
   }
+}
 
-  AlarmData newAlarm = AlarmData(daysSelected, timeToAdd, true, meridiem, AlarmData::Vibrate(true, 1.0));
+void Alarm::handleUpdateAlarmTime() {
+  int selectedAlarmIndex;
+
+  std::cout << "which alarm would you like to change the time on?" << "\n";
+
+  Read::setCanonicalMode(true);
+  read(STDIN_FILENO, &selectedAlarmIndex, 1);
+  Read::setCanonicalMode(false);
+
+  if (selectedAlarmIndex > alarms.size() || selectedAlarmIndex < 1) {
+    std::cout << "Please select an alarm that exists" << "\n";
+
+    return handleUpdateAlarmTime();
+  }
+
+  AlarmData selectedAlarm = alarms[selectedAlarmIndex - 1];
+
+  if (!selectedAlarm) {
+    std::cout << "Please select an alarm that exists" << "\n";
+
+    return handleUpdateAlarmTime();
+  }
+  
+  setAlarmTime(selectedAlarm);
+  setAlarmMeridiem(selectedAlarm);
+  
+  /* 
+  TODO
+  1. Implement all these print functions below
+  */
+  std::cout << "Your alarm is now updated to go off at " << selectedAlarm.printHour() << selectedAlarm.printMinute() << selectedAlarm.printMeridiem() << "\n"; 
+}
+
+void Alarm::handleRemoveAlarm() {
+  int alarmIndex;
+  
+  std::cout << "Which alarm would you like to remove? ";
+  
+  Read::setCanonicalMode(true);
+  read(STDIN_FILENO, &alarmIndex, 1);
+  Read::setCanonicalMode(false);
+  
+  if (alarmIndex > alarms.size() || alarmIndex < 1) {
+    std::cout << "That was an invalid option. Please try again" << "\n";
+    return  handleRemoveAlarm();
+  }
+  
+  alarms.erase(alarms.begin() + alarmIndex - 1);
+}
+
+void Alarm::handleAddAlarm() {
+  int daysSelectedDefault = 1;
+  
+  // Build a default alarm that will be updated throughout the user input process
+  AlarmData newAlarm = AlarmData(daysSelectedDefault, AlarmData::AlarmTime(1,0), true, "AM", AlarmData::Vibrate(true, 1.0));
+
+  setAlarmTime(newAlarm);
+  setAlarmMeridiem(newAlarm);
+  setAlarmDays(newAlarm);
 
   alarms.push_back(newAlarm);
 
