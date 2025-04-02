@@ -72,6 +72,7 @@ class Alarm {
   protected:
   private:
 
+// Protected variables for adding new Alarms
   std::vector<int> daysSelected;
   bool gettingTime = true;
   bool gettingMeridiem = false;

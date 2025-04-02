@@ -33,16 +33,28 @@ AlarmData::AlarmData(
   const bool& on,
   const std::string& meridiem,
   const AlarmData::Vibrate& vibrate
+  const std::string& message
 ):
 daysOfWeek(daysOfWeek),
 alarmTime(alarmTime),
 on(on),
 meridiem(meridiem),
-vibrate(vibrate) {}
+vibrate(vibrate),
+message(message) {}
 
 void AlarmData::changeTime(const std::string& newTime) {}
-void AlarmData::toggleOnOff() {}
-void AlarmData::toggleMeridiem() {}
+
+void AlarmData::toggleOnOff() {
+  this->on = !this->on;
+}
+
+void AlarmData::toggleMeridiem() {
+  if (this->meridiem == "AM") {
+    this->meridiem = "PM";
+  } else {
+    this->meridiem = "AM";
+  }
+}
 
 void AlarmData::print() {
   using namespace Write;

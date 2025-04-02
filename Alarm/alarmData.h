@@ -52,6 +52,7 @@ class AlarmData {
       const bool& on, 
       const std::string& meridiem, 
       const Vibrate& vibrate
+      const std::string& message
     );
 
     void changeTime(const std::string& newTime);

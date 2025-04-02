@@ -219,5 +219,4 @@ void Alarm::handleAddAlarm() {
   alarms.push_back(newAlarm);
 
   daysSelected = {};
-
 }
