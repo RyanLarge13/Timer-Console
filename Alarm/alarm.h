@@ -43,7 +43,8 @@ class Alarm {
     SUNDAY = 7
   };
 
-  std::map<int code, std::string day> daysOfTheWeek = {
+  std::map < int code,
+  std::string day > daysOfTheWeek = {
     1: "Mo",
     2: "Tu",
     3: "We",
@@ -53,10 +54,11 @@ class Alarm {
     7: "Su"
   };
 
-  std::vector<AlarmData> alarms;
+  std::vector < AlarmData > alarms;
 
   Alarm();
 
+  bool includes(const int& dayCode, const std::vector < int>& daysSelected);
   void loadAlarms();
   void createAlarm();
   void printOptions();
@@ -74,16 +76,8 @@ class Alarm {
 
   protected:
   private:
-
-// Protected variables for adding new Alarms
-  std::vector<int> daysSelected;
-  bool gettingTime = true;
-  bool gettingMeridiem = false;
-  bool gettingDays = false;
-
-  int hour = -1;
-  int minute = -1;
-  std::string newMeridiem = "-1";
+  
+  AlarmData getAlarm();
 }
 
 #endif
