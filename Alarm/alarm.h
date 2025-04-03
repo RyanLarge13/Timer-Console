@@ -30,6 +30,9 @@ SOFTWARE.
 #include <map>
 #include "./alarmData.h"
 
+/**
+ * @brief Alarm.class handles all high level alarm tasks and managment including adding, removing, providing interface for updating and defining crucial data for alarm functionality
+ */
 class Alarm {
   public:
 

@@ -1,3 +1,11 @@
-includes/
+# external includes 
+includes
+
+# Out file / program file
 timerOut
-docs/
+
+# doxygen html, css, & js files
+docs/html
+
+# node modules
+node_modules
