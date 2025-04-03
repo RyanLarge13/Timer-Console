@@ -26,6 +26,11 @@ SOFTWARE.
 #include "./Timer/timer.h"
 #include "./Alarm/alarm.h"
 
+/**
+* @brief predefined functions
+* @params selection is queried from the user to choose which functionality they want. Alarm, timer, stopwatch...
+* @see branchApp()
+*/
 void branchApp(const int& selection);
 
 enum AppFunction {
@@ -42,6 +47,10 @@ void printMenu() {
   std::cout << "4. Quit" << "\n";
 }
 
+
+/**
+* @breif Instruct user to select a valid functionality via integer to map to local ENUM @see AppFunction eg: alarm, timer, stopwatch
+*/
 int takeInput() {
   int selection;
 
@@ -49,7 +58,6 @@ int takeInput() {
   std::cin >> selection;
 
   if (selection < 1 || selection > 4) {
-    // Print correction
     system("clear");
     std::cout << "Please select 1 through 3" << "\n" << "\n";
     printMenu();
@@ -71,15 +79,13 @@ void handleAlarm() {
 
 void handleTimer() {
   Timer timer;
-  //reset();
-  //int selection = takeInput();
-
- // branchApp(selection);
 }
 // Functionality Methods - - - - - - - - -
 
+/**
+* @brief Take user selection and branch it to crwate rhe correct class instance
+*/
 void branchApp(const int& selection) {
-  // Flip through the various cases comparing selection to local ENUM
   switch (selection) {
     case AppFunction::ALARM:
     {
@@ -88,7 +94,6 @@ void branchApp(const int& selection) {
     break;
     case AppFunction::STOPWATCH:
     {
-      // Handle stopwatch
       reset();
     }
     break;
@@ -110,13 +115,9 @@ void branchApp(const int& selection) {
 }
 
 int main() {
-  // Print menu and provide options
   printMenu();
 
-  // Query selection
   int selection = takeInput();
-
-  // Take selection and branch off to handle each functionality
   branchApp(selection);
 
   return 0;
