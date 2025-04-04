@@ -49,7 +49,7 @@ void printMenu() {
 
 
 /**
-* @breif Instruct user to select a valid functionality via integer to map to local ENUM @see AppFunction eg: alarm, timer, stopwatch
+* @brief Instruct user to select a valid functionality via integer to map to local ENUM @see AppFunction eg: alarm, timer, stopwatch
 */
 int takeInput() {
   int selection;
@@ -83,7 +83,7 @@ void handleTimer() {
 // Functionality Methods - - - - - - - - -
 
 /**
-* @brief Take user selection and branch it to crwate rhe correct class instance
+* @brief Take user selection and branch it to create the correct class instance
 */
 void branchApp(const int& selection) {
   switch (selection) {

@@ -31,11 +31,18 @@ SOFTWARE.
 #include "./alarmData.h"
 
 /**
- * @brief Alarm.class handles all high level alarm tasks and managment including adding, removing, providing interface for updating and defining crucial data for alarm functionality
- */
+* @brief Alarm.class handles all high level alarm tasks and managment including adding, removing, providing interface for updating and defining crucial data for alarm functionality
+*/
 class Alarm {
   public:
+  Alarm();
 
+  protected:
+  private:
+  /**
+  * @brief For easy interfacing between days of the week an alarm is triggered and the integer which reprisents them
+  * @see daysOfTheWeek map
+  */
   enum DaysOfWeek = {
     MONDAY = 1,
     TUESDAY = 2,
@@ -57,15 +64,27 @@ class Alarm {
     7: "Su"
   };
 
+  /**
+  *@brief All user alarms to be stored in this vector from persistent memory and ram
+  */
   std::vector < AlarmData > alarms;
 
-  Alarm();
-
-  bool includes(const int& dayCode, const std::vector < int>& daysSelected);
+  /**
+  * @brief Member methods
+  */
   void loadAlarms();
   void createAlarm();
+
+  /**
+  * @brief Print and prompt user for input yo be handled
+  */
   void printOptions();
   void handleOption(const int& answer);
+
+
+  /**
+  * @brief All alarm member methods branched from @see handleOption()
+  */
   void handleAddAlarm();
   void handleRemoveAlarm();
   void handleUpdateAlarmDay();
@@ -73,14 +92,27 @@ class Alarm {
   void handleToggleOnOffAlarm();
   void handleRemoveAllAlarms();
   void handleQuit();
+
+  /**
+  * @brief Helper methods
+  */
+
+  /**
+  * @brief Prompt the user for input  selecting a valid existing alarm
+  * @return @see AlarmData to the caller of this method
+  */
+  AlarmData getAlarm();
+
+  /**
+  * @brief Checks if an integer exists within a vector
+  * @param dayCode: the integer in search for 
+  * @param daysSelected: the vector you check in fir specified integer
+  */
+  bool includes(const int& dayCode, const std::vector < int>& daysSelected);
   void setAlarmMeridiem(AlarmData& alarmToUpdate);
   void setAlarmTime(AlarmData& alarmToUpdate);
   void setAlarmDays(AlarmData& alarmToUpdate);
 
-  protected:
-  private:
-  
-  AlarmData getAlarm();
 }
 
 #endif

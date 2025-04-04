@@ -39,21 +39,15 @@ Alarm::Alarm() {
   loadAlarms();
 }
 
-
 void Alarm::loadAlarms() {
   alarms = Files::getAlarms();
 
-  // Allow input and printing at the same time
-  std::thread printOptionsThread(&printOptions);
-  std::thread printAlarmThread(&printAlarms);
-
-  printOptionsThread.join();
-  printAlarmThread.join();
+  printAlarms();
+  printOptions();
 }
 
 
 void Alarm::printAlarms() {
-  //Print at appropriate space with Write::
   for (AlarmData alarm: alarms) {
     alarm.print();
   }
@@ -61,8 +55,6 @@ void Alarm::printAlarms() {
 
 
 void Alarm::printOptions() {
-  Write::clearAllConsole();
-
   int answer;
 
   std::cout <<
@@ -160,6 +152,7 @@ void Alarm::setAlarmTime(AlarmData& alarmToUpdate) {
 }
 
 
+
 void Alarm::setAlarmMeridiem(AlarmData& alarmToUpdate) {
   Write::clearAllConsole();
 
@@ -180,6 +173,7 @@ void Alarm::setAlarmMeridiem(AlarmData& alarmToUpdate) {
 }
 
 
+
 bool Alarm::includes(const int& dayCode, const std::vector < int>& daysSelected) {
   bool isPresent = false;
 
@@ -191,6 +185,7 @@ bool Alarm::includes(const int& dayCode, const std::vector < int>& daysSelected)
 
   return isPresent;
 }
+
 
 
 void Alarm::setAlarmDays(AlarmData& alarmToUpdate) {
@@ -232,6 +227,7 @@ void Alarm::setAlarmDays(AlarmData& alarmToUpdate) {
 }
 
 
+
 void Alarm::handleUpdateAlarmTime() {
   AlarmData selectedAlarm = getAlarm();
 
@@ -252,6 +248,7 @@ void Alarm::handleUpdateAlarmTime() {
 }
 
 
+
 void Alarm::handleRemoveAlarm() {
   int alarmIndex;
 
@@ -270,6 +267,7 @@ void Alarm::handleRemoveAlarm() {
 }
 
 
+
 void Alarm::handleAddAlarm() {
   int daysSelectedDefault = 1;
 
@@ -283,6 +281,8 @@ void Alarm::handleAddAlarm() {
   alarms.push_back(newAlarm);
 }
 
+
+
 void Alarm::handleToggleOnOffAlarm() {
   AlaData selectedAlarm = getAlarm();
 
@@ -293,6 +293,8 @@ void Alarm::handleToggleOnOffAlarm() {
 
   selectedAlarm.toggleOnOff();
 }
+
+
 
 AlarmData Alarm::getAlarm() {
   int selectedAlarmIndex;
@@ -314,9 +316,13 @@ AlarmData Alarm::getAlarm() {
   return selectedAlarm;
 }
 
+
+
 void Alarm::handleRemoveAllAlarms() {
   alarms = {};
 }
+
+
 
 void Alarm::handleQuit() {
   return;
