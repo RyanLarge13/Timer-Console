@@ -36,12 +36,14 @@ SOFTWARE.
 std::atomic < bool > running(true);
 
 Alarm::Alarm() {
+  // Immediately load alarms from config file and place them in memory
   loadAlarms();
 }
 
 void Alarm::loadAlarms() {
   alarms = Files::getAlarms();
 
+  // Print and prompt for input right away
   printAlarms();
   printOptions();
 }
@@ -77,6 +79,7 @@ void Alarm::printOptions() {
 void Alarm::handleOption(const int& answer) {
   Write::clearAllConsole();
 
+  // Switch statement to handle large amount of options
   switch (answer) {
     case 1: {
       handleAddAlarm();
@@ -119,6 +122,7 @@ void Alarm::handleOption(const int& answer) {
 
 
 void Alarm::setAlarmTime(AlarmData& alarmToUpdate) {
+  // Prompt user, for minutes and hours. Then set those values as the alarm instance alarm.alarmTime from params
   std::cout << "What would you like your new time to be? \nHour: ";
 
   int newHour;
@@ -133,7 +137,7 @@ void Alarm::setAlarmTime(AlarmData& alarmToUpdate) {
       return setAlarmTime(alarmToUpdate);
     }
 
-    alarmToUpdate->alarmTime.hour = newHour;
+    alarmToUpdate.alarmTime.hour = newHour;
   }
 
   if (alarmToUpdate.alarmTime.minute == -1) {
@@ -154,6 +158,7 @@ void Alarm::setAlarmTime(AlarmData& alarmToUpdate) {
 
 
 void Alarm::setAlarmMeridiem(AlarmData& alarmToUpdate) {
+  // Prompt and set meridiem of alarm
   Write::clearAllConsole();
 
   std::string newMeridiem;

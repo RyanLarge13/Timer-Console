@@ -31,7 +31,7 @@ SOFTWARE.
 #include "./alarmData.h"
 
 /**
-* @brief Alarm.class handles all high level alarm tasks and managment including adding, removing, providing interface for updating and defining crucial data for alarm functionality
+* @brief Alarm class handles all high level alarm tasks and managment including adding, removing, providing interface for updating and defining crucial data for alarm functionality
 */
 class Alarm {
   public:
@@ -69,16 +69,17 @@ class Alarm {
   */
   std::vector < AlarmData > alarms;
 
-  /**
-  * @brief Member methods
-  */
   void loadAlarms();
-  void createAlarm();
 
   /**
-  * @brief Print and prompt user for input yo be handled
+  * @brief Print and prompt user for input to be handled
   */
   void printOptions();
+  
+  /**
+   * @brief Run the input from user through switch statement to better handle many choices
+   * @param answer: Integer selection from options menu
+   */
   void handleOption(const int& answer);
 
 
@@ -105,10 +106,16 @@ class Alarm {
 
   /**
   * @brief Checks if an integer exists within a vector
-  * @param dayCode: the integer in search for 
+  * @param dayCode: the integer in search for
   * @param daysSelected: the vector you check in fir specified integer
   */
   bool includes(const int& dayCode, const std::vector < int>& daysSelected);
+
+  /**
+  * @brief Alarm instance updating methods.
+  * @param alarmToUpdate: the alarm instance needing to be updated
+  * @see AlarmData
+  */
   void setAlarmMeridiem(AlarmData& alarmToUpdate);
   void setAlarmTime(AlarmData& alarmToUpdate);
   void setAlarmDays(AlarmData& alarmToUpdate);
