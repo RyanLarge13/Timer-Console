@@ -61,13 +61,11 @@ void AlarmData::print() {
 
   // Print alarm with colors
   if (this->on) {
-    std::cout << c(Colors::BLUE) << this->alarmTime.hour c(Colors::ENDCOLOR) << " " << this->meridiem << "\n";
     // Print days of week where alarm is active
-    // Refactor. alarmTime has now changed structure to hour int minute int
+    std::cout << c(Colors::BLUE) << this->alarmTime.hour c(Colors::ENDCOLOR) << " " << this->meridiem << "\n";
   } else {
-    std::cout << c(Colors::RED) << this->alarmTime.hour c(Colors::ENDCOLOR) << " " << this->meridiem << "\n";
     // Print days of week where alarm is not active
-    // Refactor. alarmTime has now changed structure to hour int minute int
+    std::cout << c(Colors::RED) << this->alarmTime.hour c(Colors::ENDCOLOR) << " " << this->meridiem << "\n";
   }
 
   for ([int& key, std::string& day]: Alarm::daysOfWeek) {
@@ -79,6 +77,7 @@ void AlarmData::print() {
       }
     }
 
+    // If the alarm is on today print the day string with a blue color
     std::cout << isOnToday ? c(Colors::BLUE): c(Colors::RED) << day <<
     c(Colors::ENDCOLOR) << " ";
   }

@@ -29,36 +29,52 @@ SOFTWARE.
 #include <vector>
 #include <map>
 
+/**
+* @brief AlarmData class handles the implementation of the actual alarm that is stored or in memory to be manipulated and used
+*/
 class AlarmData {
   public:
 
-    struct Vibrate {
-      bool on;
-      double intensity;
+  /**
+  * @brief Vibrate struct provides more customization over how the device will react to an alarm being triggered
+  * @param on: Boolean discribing if the alarm should or should not vibrate when triggered
+  * @note The application will automatically set on to false if the device does not support vibration
+  * @param intensity: Double to describe how intense the vibration should be
+  */
+  struct Vibrate {
+    bool on;
+    double intensity;
 
-      Vibrate(const bool& on, const double& intensity): on(on), intensity(intensity) {}
-    };
+    Vibrate(const bool& on, const double& intensity): on(on),
+    intensity(intensity) {}
+  };
 
-    struct AlarmTime {
-      int hour;
-      int minute;
+  /**
+  * @brief AlarmTime struct enables an integer pair for defining the time the alarm should be set for by hour and minute
+  * @param hour: Int defining the hour the alarm should go off 1 - 12
+  * @param minute: Int defining the minutes the alarm should trigger 0 - 59
+  */
+  struct AlarmTime {
+    int hour;
+    int minute;
 
-      AlarmTime(const int& h, cont int& m): hour(h), minute(m) {}
-    }
+    AlarmTime(const int& h, cont int& m): hour(h),
+    minute(m) {}
+  }
 
-    AlarmData(
-      const std::vector < Alarm::DaysOfWeek>& daysOfWeek, 
-      const AlarmTime& alarmTime, 
-      const bool& on, 
-      const std::string& meridiem, 
-      const Vibrate& vibrate
-      const std::string& message
-    );
+  AlarmData(
+    const std::vector < Alarm::DaysOfWeek>& daysOfWeek,
+    const AlarmTime& alarmTime,
+    const bool& on,
+    const std::string& meridiem,
+    const Vibrate& vibrate
+    const std::string& message
+  );
 
-    void changeTime(const std::string& newTime);
-    void toggleOnOff();
-    void toggleMeridiem();
-    void print();
+  void changeTime(const std::string& newTime);
+  void toggleOnOff();
+  void toggleMeridiem();
+  void print();
 
   protected:
   private:

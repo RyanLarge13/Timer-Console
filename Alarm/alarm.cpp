@@ -180,6 +180,7 @@ void Alarm::setAlarmMeridiem(AlarmData& alarmToUpdate) {
 
 
 bool Alarm::includes(const int& dayCode, const std::vector < int>& daysSelected) {
+  // Specifically checks for days existing within the days vector of an alarm being created
   bool isPresent = false;
 
   for (int i = 0; i < daysSelected.size(); i++) {
@@ -245,10 +246,6 @@ void Alarm::handleUpdateAlarmTime() {
   setAlarmTime(selectedAlarm);
   setAlarmMeridiem(selectedAlarm);
 
-  /*
-  TODO
-  1. Implement all these print functions below
-  */
   std::cout << "Your alarm is now updated to go off at " << selectedAlarm.printTime() << "\n";
 }
 
@@ -265,6 +262,8 @@ void Alarm::handleRemoveAlarm() {
 
   if (alarmIndex > alarms.size() || alarmIndex < 1) {
     std::cout << "That was an invalid option. Please try again" << "\n";
+
+    // Recursively call if failed for new prompt
     return handleRemoveAlarm();
   }
 
@@ -292,7 +291,9 @@ void Alarm::handleToggleOnOffAlarm() {
   AlaData selectedAlarm = getAlarm();
 
   if (!selectedAlarm) {
-    std::cout << "Please make a valid selectiom on am existong alarm" << "\n";
+    std::cout << "Please make a valid selectiom on an existing alarm" << "\n";
+
+    // Recursively call upon to reprompt the user
     return handleToggleOnOffAlarm();
   }
 
@@ -302,6 +303,7 @@ void Alarm::handleToggleOnOffAlarm() {
 
 
 AlarmData Alarm::getAlarm() {
+  // Select provided alarms from alarms vector by indexing and user input
   int selectedAlarmIndex;
 
   std::cout << "which alarm would you like to change the time on?" << "\n";
@@ -313,7 +315,8 @@ AlarmData Alarm::getAlarm() {
   if (selectedAlarmIndex > alarms.size() || selectedAlarmIndex < 1) {
     std::cout << "Please select an alarm that exists" << "\n";
 
-    return handleUpdateAlarmTime();
+    // Recursively prompt user for selecting a valid alarm index
+    return getAlarm();
   }
 
   AlarmData selectedAlarm = alarms[selectedAlarmIndex - 1];
@@ -324,7 +327,13 @@ AlarmData Alarm::getAlarm() {
 
 
 void Alarm::handleRemoveAllAlarms() {
+  // Clear the alarms in memory
   alarms = {};
+
+  /*
+  TODO
+    1. Remove all alarms from storage
+  */
 }
 
 
