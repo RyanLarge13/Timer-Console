@@ -62,6 +62,15 @@ class AlarmData {
     minute(m) {}
   }
 
+  /**
+  * @brief AlarmData constructor takes in all necessary data to build a functional alarm to be stored and used in the app
+  * @param daysOfWeek: Vector of integers corrolating to the days of the week an alarm will be triggered on
+  * @param alarmTime: @see AlarmTime struct. Gives the hour and minute the alarm should be triggered
+  * @param on: Boolean indicating if the alarm is active or not
+  * @param meridiem: String indicating if the alarm is for AM or PM. Used only when creating an alarm and when showing the user
+  * @param vibrate: @see Vibrate struct. Indicating the type of vibration pattern should be applied to the device when the alarm triggers
+  * @param message: String optional. Provided to the user when the alarm triggers
+  */
   AlarmData(
     const std::vector < Alarm::DaysOfWeek>& daysOfWeek,
     const AlarmTime& alarmTime,
@@ -71,7 +80,11 @@ class AlarmData {
     const std::string& message
   );
 
-  void changeTime(const std::string& newTime);
+  /**
+  * @brief change the time of the alarm by creating a new AlarmTime struct after prompting. This method also updates AlarmData.meridiem
+  * @param newTome: @see AlarmTime which provides the hour and minute the alarm should trigger
+  */
+  void changeTime(const AlarmTime& newTime);
   void toggleOnOff();
   void toggleMeridiem();
   void print();
