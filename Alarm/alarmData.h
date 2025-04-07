@@ -37,7 +37,7 @@ class AlarmData {
 
   /**
   * @brief Vibrate struct provides more customization over how the device will react to an alarm being triggered
-  * @param on: Boolean discribing if the alarm should or should not vibrate when triggered
+  * @param on: Boolean describing if the alarm should or should not vibrate when triggered
   * @note The application will automatically set on to false if the device does not support vibration
   * @param intensity: Double to describe how intense the vibration should be
   */
@@ -64,7 +64,7 @@ class AlarmData {
 
   /**
   * @brief AlarmData constructor takes in all necessary data to build a functional alarm to be stored and used in the app
-  * @param daysOfWeek: Vector of integers corrolating to the days of the week an alarm will be triggered on
+  * @param daysOfWeek: Vector of integers correlating to the days of the week an alarm will be triggered on
   * @param alarmTime: @see AlarmTime struct. Gives the hour and minute the alarm should be triggered
   * @param on: Boolean indicating if the alarm is active or not
   * @param meridiem: String indicating if the alarm is for AM or PM. Used only when creating an alarm and when showing the user

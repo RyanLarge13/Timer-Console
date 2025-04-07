@@ -39,16 +39,31 @@ SOFTWARE.
 #include <shlobj.h>
 #endif
 
-
+/**
+* @brief Files class introduces an abstraction of the filesystem api, and json parsing. This class handles reading and writing to JSON configuration files for the persistent data (Alarms, Timers, Stopwatches) within the application.
+*/
 class Files {
   public:
+  /**
+* @brief Files constructor takes in no parameters and executes no initializing logic
+ */
   Files();
 
   // Timer Methods
+  /**
+  * @brief getTimers takes in no parameters. This method is made to fetch timers stored from a configuration file
+  which is either existing or being created by the application and returns them to the caller of the method or an empty vector
+  * @return A vector of TimerData structures. @see TimerData
+  */
   std::vector < TimerData > getTimers();
   void saveTimers(const std::vector<TimerData>& times);
 
   // Alarm Methods
+  /**
+* @brief getAlarms takes in no parameters. This method is made to fetch alarms from a configuration file
+which is either existing or being created by the application and returns them to the caller of the method or an empty vector
+* @return A vector of AlarmData structures. @see AlarmData
+*/
   std::vector<AlarmData> getAlarms();
 
   protected:

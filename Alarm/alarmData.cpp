@@ -27,6 +27,7 @@ SOFTWARE.
 #include <vector>
 #include <iostream>
 
+// Initialize all AlarmData variables upon creation
 AlarmData::AlarmData(
   const std::vector < Alarm::DaysOfWeek>& daysOfWeek,
   const AlarmData::AlarmTime& alarmTime,
@@ -50,6 +51,7 @@ void AlarmData::toggleOnOff() {
   this->on = !this->on;
 }
 
+// Plus or minus hours, for program purpose only. Not display purpose
 void AlarmData::toggleMeridiem() {
   if (this->meridiem == "AM") {
     this->meridiem = "PM";

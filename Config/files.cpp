@@ -31,6 +31,9 @@ SOFTWARE.
 #include "../Timer/timerData.h"
 #include "../includes/nlohmann/json.hpp"
 
+/**
+* @brief For better readability and development process 
+*/
 using json = nlohmann::json;
 
 Files::Files() {}
