@@ -42,7 +42,9 @@ meridiem(meridiem),
 vibrate(vibrate),
 message(message) {}
 
-void AlarmData::changeTime(const std::string& newTime) {}
+void AlarmData::changeTime(const AlarmData::AlarmTime& newTime) {
+  this->alarmTime = newTime;
+}
 
 void AlarmData::toggleOnOff() {
   this->on = !this->on;
@@ -51,8 +53,10 @@ void AlarmData::toggleOnOff() {
 void AlarmData::toggleMeridiem() {
   if (this->meridiem == "AM") {
     this->meridiem = "PM";
+    this->alarmTime.hour += 12;
   } else {
     this->meridiem = "AM";
+    this->alarmTime.hour -= 12;
   }
 }
 

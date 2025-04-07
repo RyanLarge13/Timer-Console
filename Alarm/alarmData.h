@@ -85,8 +85,21 @@ class AlarmData {
   * @param newTome: @see AlarmTime which provides the hour and minute the alarm should trigger
   */
   void changeTime(const AlarmTime& newTime);
-  void toggleOnOff();
+
+  /**
+  * @brief toggleOnOff turns the alarm on state to the opposite of what it current is set as
+  * @return Boolean
+  */
+  bool toggleOnOff();
+  
+  /**
+   * @brief toggleMeridiem will ch age the string value to AM if currently PM and PM if currently AM. This method also updates the hour in the instances alarmTime struct @see AlarmData.alarmTime
+   */
   void toggleMeridiem();
+  
+  /**
+   * @brief Print specializes in printing the alarm in a user friendly way to the console along with the shortened day of the week strings associated with @see Alarm::DaysOfWeek. 
+   */
   void print();
 
   protected:
