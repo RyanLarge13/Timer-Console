@@ -31,7 +31,7 @@ SOFTWARE.
 #include "./alarmData.h"
 
 /**
-* @brief Alarm class handles all high level alarm tasks and managment including adding, removing, providing interface for updating and defining crucial data for alarm functionality
+* @brief Alarm class handles all high level alarm tasks and management including adding, removing, providing interface for updating and defining crucial data for alarm functionality
 */
 class Alarm {
   public:
@@ -40,7 +40,7 @@ class Alarm {
   protected:
   private:
   /**
-  * @brief For easy interfacing between days of the week an alarm is triggered and the integer which reprisents them
+  * @brief For easy interfacing between days of the week an alarm is triggered and the integer which represents them
   * @see daysOfTheWeek map
   */
   enum DaysOfWeek = {
