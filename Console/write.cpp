@@ -28,6 +28,7 @@ SOFTWARE.
 
 #include "./write.h"
 
+// Define the static terminal size, initializing it to 0 height and 0 width
 Write::TerminalSize Write::myTerminalSize = {
   0,
   0
@@ -103,5 +104,7 @@ std::string Write::c(const Write::Colors& color) {
 }
 
 void Write::clearAllConsole() {
+
+  // Using ASCII to clear console. Quicker and more efficient
   std::cout << "\033[2J\033[1;1H";
 };
