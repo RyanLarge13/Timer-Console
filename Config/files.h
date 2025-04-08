@@ -45,8 +45,8 @@ SOFTWARE.
 class Files {
   public:
   /**
-* @brief Files constructor takes in no parameters and executes no initializing logic
- */
+  * @brief Files constructor takes in no parameters and executes no initializing logic
+  */
   Files();
 
   // Timer Methods
@@ -56,17 +56,21 @@ class Files {
   * @return A vector of TimerData structures. @see TimerData
   */
   std::vector < TimerData > getTimers();
-  void saveTimers(const std::vector<TimerData>& times);
+  void saveTimers(const std::vector < TimerData>& times);
 
   // Alarm Methods
   /**
-* @brief getAlarms takes in no parameters. This method is made to fetch alarms from a configuration file
-which is either existing or being created by the application and returns them to the caller of the method or an empty vector
-* @return A vector of AlarmData structures. @see AlarmData
-*/
-  std::vector<AlarmData> getAlarms();
+  * @brief getAlarms takes in no parameters. This method is made to fetch alarms from a configuration file
+  which is either existing or being created by the application and returns them to the caller of the method or an empty vector
+  * @return A vector of AlarmData structures. @see AlarmData
+  */
+  std::vector < AlarmData > getAlarms();
 
   protected:
+  /**
+  * @brief getAppDataPath returns the string that represents the file path which locates the configuration directory in storage for the application
+  * @note This directory will be created if there is none in first search
+  */
   std::string getAppDataPath() {
     #ifdef _WIN32
     char path[MAX_PATH];
@@ -83,8 +87,18 @@ which is either existing or being created by the application and returns them to
     return "";
   }
 
+  /**
+  * @brief deserializeJson returns a valid JSON object
+  * @note json being returned can take any shape or form and must be checked by the caller
+  * @param inFile: String reprisenting the path to the file which should be read from on the user's system
+  */
   nlohmann::json deserializeJson(std::ifstream& inFile);
 
+  /**
+  * @brief saveJsonToFile does as it says. It takes any json shape and saves it to a file found or created at the location provided in params
+  * @param fileName: string representing the path to the file in question 
+  * @param j: a valid json object taking any shape to be saved to the file
+  */
   void saveJsonToFile(const std::string& fileName, json j);
 
   private:
