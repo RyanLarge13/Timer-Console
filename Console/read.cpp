@@ -30,6 +30,7 @@ SOFTWARE.
 
 Read::Read() {}
 
+// Change the input mode to either only accept a single character and continue or accept input from user as usual to create a better user experience, one that feels more automatic and simple
 void Read::setCanonicalMode(const bool& on) {
   struct termios settings;
 

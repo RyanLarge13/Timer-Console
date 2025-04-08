@@ -24,11 +24,18 @@ SOFTWARE.
 
 #ifndef READ_H
 #define READ_H
+/**
+* @brief Read class is a small abstraction offering up simple solutions to manipulating console input
+*/
 
 class Read {
  public:
   Read();
 
+  /**
+  * @brief setCanonicalMode method changes how the terminal will accept input
+  * @param on: Sets the terminal input method to accept input and immediately close prompting (true) or keep input regular (false)
+  */
   static void setCanonicalMode(const bool& on);
 
  protected:
