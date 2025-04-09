@@ -23,17 +23,8 @@ Timer/timerData.cpp Console/write.cpp Console/read.cpp
 -Iincludes/nlohman -IConfig -ITimer -IConsole -IAlarm
 ```
 
-## Compile with GCC
-
-Make sure you have GCC installed first. If you are using Linux you should
-already have GCC installed
-
-(https://gcc.gnu.org/install/)[Install GCC]
-
-### Compile
-
-```
-
-```
-
 ## How to use
+
+Check out the docs for developers if you are interested in learning how to use this code or develop further with this project 
+
+[Docs](https://legendary-narwhal-a2300f.netlify.app/)
