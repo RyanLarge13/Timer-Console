@@ -202,6 +202,79 @@ void Files::saveTimers(const std::vector<TimerData>& timers) {
 }
 // Timer methods ----------------------------------------------------------------------------------
 
+// Stopwatch methods -------------------------------------------------------------
+StopWatchData Files::getStopWatch() {
+   std::string basePath = Files::getAppDataPath();
+  std::filesystem::create_directories(basePath);
+
+  std::ifstream stopwatchFile(basePath + "stopwatch.json");
+
+  json stopWatchData = deserializeJson(stopwatchFile);
+
+  // Build a default stopwatch with no elapsed time to send back if any failure happens when reading json file
+  StopWatchData defaultWatch();
+
+  if (stopWatchData["error"] == true) {
+    return defaultWatch;
+  }
+
+  if (!stopwatchFile.contains("stopwatch")) {
+    return defaultWatch;
+  }
+  
+  /*
+  Stopwatch json data structure
+    {
+      "exists": boolean, 
+      "elapsedTime": {
+          "hours": int,
+          "minutes": int,
+          "seconds": int,
+          "miliseconds": int,
+      },
+      "paused": boolean,
+      "lastTime": {
+          "hours": int,
+          "minutes": int,
+          "seconds": int,
+          "miliseconds": int,
+      }
+    }
+  */
+
+  if (stopWatchData["exists"]) {
+    /*
+    TODO:
+    1. Do not forget to validate and make sure data exists before initializing these class instances
+    */
+    
+    Timer::Times elapsedTime(
+      stopWatchData["elapsedTime"]["hours"],
+      stopWatchData["elapsedTime"]["minutes"],
+      stopWatchData["elapsedTime"]["seconds"],
+      stopWatchData["elapsedTime"]["milliseconds"],
+    );
+    
+    Timer::Times lastTime(
+      stopWatchData["lastTime"]["hours"],
+      stopWatchData["lastTime"]["minutes"],
+      stopWatchData["lastTime"]["seconds"],
+      stopWatchData["lastTime"]["milliseconds"],
+    );
+    
+    bool paused = stopWatchData["paused"];
+    
+    StopWatchData existingWatch(elapsedTime, paused, lastTime);
+
+    return existingWatch;
+    
+  } else {
+    return defaultWatch;
+  }
+
+  return defaultWatch;
+}
+// Stopwatch methods -------------------------------------------------------------
 
 // Store json of any shape into json nlohmann::json type and return it to the caller of the method
 // Catch errors of many sorts returning j with j["error"] set to true

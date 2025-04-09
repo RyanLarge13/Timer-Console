@@ -25,15 +25,35 @@ SOFTWARE.
 #ifndef STOPWATCH_H
 #define STOPWATCH_H
 
+#include "./stopwatchData.h"
+
+/**
+* @brief Stopwatch class defines the application interface into handling all users stopwatches, retrieving and updating them in memory and in storage
+*/
 class Stopwatch {
   public:
-  Stopwatch();
-  
-  void start();
-  void end();
 
+  /**
+  * @brief member variable holding in memory the active timer and its associated data. 
+  * @see StopWatchData
+  */
+  StopWatchData stopWatch;
+
+  /**
+  * @brief Constructor calls immediately loadStopwatch upon initialization
+  * @see loadStopWatch
+  */
+  Stopwatch();
+
+  
   protected:
   private:
+
+  /**
+  * @brief loadStopwatch method calls upon Files to read json and find if there was a previous stopwatch set from a previous session, if there is it loads it into memory as stopWatch. 
+  * @see stopWatch
+  */
+  void loadStopWatch();
 };
 
 #endif

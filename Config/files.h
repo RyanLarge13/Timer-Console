@@ -66,6 +66,14 @@ class Files {
   */
   std::vector < AlarmData > getAlarms();
 
+  // Stopwatch methods
+
+  /**
+  * @brief getStopWatch method reads or creates JSON config file for stopwatch data and returns the data as StopWatchData to the caller of the method
+  * @see StopWatchData
+  */
+  StopWatchData getStopWatch();
+
   protected:
   /**
   * @brief getAppDataPath returns the string that represents the file path which locates the configuration directory in storage for the application

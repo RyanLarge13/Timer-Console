@@ -22,12 +22,25 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "./stopwatch.h"
+#include ".StopWatchData.h"
 
-Stopwatch::Stopwatch() {
-    loadStopWatch();
+StopWatchData::StopWatchData(
+    const Times& elapsedTime, 
+    const bool& paused, 
+    const Times& lastTime
+) : 
+    elapsedTime(elapsedTime), 
+    paused(paused), 
+    lastTime(lastTime) {}
+
+StopWatchData::~StopWatchData() {
+ // Remove or update stopwatch data in config file      
 }
 
-Stopwatch::loadStopWatch() {
-    
+void StopWatchData::print() {
+    // Print data to console
+}
+
+void StopWatchData::updateTimes() {
+    // Update the elapsed time
 }
