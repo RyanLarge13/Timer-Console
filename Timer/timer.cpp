@@ -61,6 +61,7 @@ void Timer::loadTimers() {
 
   while (running.load()) {
     printTimers();
+    // Give time between new prints so the program doesn't overwhelm itself
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
   }
 }
@@ -89,7 +90,7 @@ void Timer::listenForInput() {
   Read::setCanonicalMode(true);
 
   char answer;
-  
+
   // Errors found in Termux. Code not working properly with atomic variable. --------------------------------
   // Termux printing 0 instead of 1/true when printing running.load()
 
@@ -160,7 +161,7 @@ void Timer::handleResetAllTimers() {
 }
 
 void Timer::handleAddtimer() {
-  Writer::clearAllConsole(); 
+  Writer::clearAllConsole();
 
   if (timeData.size() > 8) {
     // Return early. Only allow the user to have 9 timers at once
@@ -182,9 +183,9 @@ void Timer::handleRemoveTimer() {
   // Query for input by index to remove specific timer
   Write::clearAllConsole();
 
-  for (TimerData& time : timeData) {
+  for (TimerData& time: timeData) {
     std::cout << time.index << ". " << time.printRemainingTime() << "\n";
-  } 
+  }
 
   std::cout << "Which timer do you want to remove? ";
 
@@ -205,10 +206,10 @@ TimerData::Times Timer::getUserTimer() {
 
   bool isQuerying = true;
 
-  std::cout << 
-    hours == -1 ? "00" : hours < 10 ? "0" : "" << hours << ":" << 
-    minutes == -1 ? "00" : minutes < 10 ? "0" : "" << minutes << ":" <<
-    seconds == -1 ? "00" : seconds < 10 ? "0" : "" << seconds << ":000" << "\n";
+  std::cout <<
+  hours == -1 ? "00": hours < 10 ? "0": "" << hours << ":" <<
+  minutes == -1 ? "00": minutes < 10 ? "0": "" << minutes << ":" <<
+  seconds == -1 ? "00": seconds < 10 ? "0": "" << seconds << ":000" << "\n";
 
   while (isQuerying) {
     if (hours == -1) {
@@ -228,9 +229,9 @@ TimerData::Times Timer::getUserTimer() {
   }
 
   TimerData::Times returnTimes = TimerData::Times(
-    hours == -1 ? 0 : hours, 
-    minutes == -1 ? 0 : minutes, 
-    seconds == -1 ? 0 : seconds
+    hours == -1 ? 0: hours,
+    minutes == -1 ? 0: minutes,
+    seconds == -1 ? 0: seconds
   );
 
   Write::clearAllConsole();
