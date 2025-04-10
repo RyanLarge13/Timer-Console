@@ -23,11 +23,18 @@ SOFTWARE.
 */
 
 #include "./stopwatch.h"
+#include "../Config/files.h"
+#include <atomic>
+#include <thread>
+
+std::atomic < bool > running(true);
 
 Stopwatch::Stopwatch() {
-    loadStopWatch();
+  loadStopWatch();
 }
 
 Stopwatch::loadStopWatch() {
-    
+  stopWatch = Files::getStopWatch();
+
+  
 }
