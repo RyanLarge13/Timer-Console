@@ -24,6 +24,7 @@ SOFTWARE.
 
 #include "./files.h"
 
+#include <chrono>
 #include <fstream>
 
 #include "../Alarm/alarm.h"
@@ -222,7 +223,8 @@ StopWatchData Files::getStopWatch() {
     return defaultWatch;
   }
   
-  /*
+  /**
+  * @brief Stopwatch JSON structure
   Stopwatch json data structure
     {
       "exists": boolean, 
@@ -233,19 +235,14 @@ StopWatchData Files::getStopWatch() {
           "miliseconds": int,
       },
       "paused": boolean,
-      "lastTime": {
-          "hours": int,
-          "minutes": int,
-          "seconds": int,
-          "miliseconds": int,
-      }
+      "lastTime": std::chrono::milliseconds
     }
   */
 
   if (stopWatchData["exists"]) {
     /*
     TODO:
-    1. Do not forget to validate and make sure data exists before initializing these class instances
+    1. Do not forget to validate and make sure data exists before initializing existingWatch class instance
     */
     
     Timer::Times elapsedTime(
@@ -255,13 +252,7 @@ StopWatchData Files::getStopWatch() {
       stopWatchData["elapsedTime"]["milliseconds"],
     );
     
-    Timer::Times lastTime(
-      stopWatchData["lastTime"]["hours"],
-      stopWatchData["lastTime"]["minutes"],
-      stopWatchData["lastTime"]["seconds"],
-      stopWatchData["lastTime"]["milliseconds"],
-    );
-    
+    std::chrono::milliseconds = stopWatchData["lastTime"];
     bool paused = stopWatchData["paused"];
     
     StopWatchData existingWatch(elapsedTime, paused, lastTime);

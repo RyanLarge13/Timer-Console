@@ -22,15 +22,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+#include <chrono>
 #include ".StopWatchData.h"
 
 StopWatchData::StopWatchData(
     const Times& elapsedTime, 
-    const bool& paused, 
-    const Times& lastTime
+    const bool& paused,
+    const std::chrono::milliseconds& lastTime 
 ) : 
     elapsedTime(elapsedTime), 
-    paused(paused), 
+    paused(paused),
     lastTime(lastTime) {}
 
 StopWatchData::~StopWatchData() {

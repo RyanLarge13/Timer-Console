@@ -25,8 +25,9 @@ SOFTWARE.
 #ifndef STOPWATCHDATA_H
 #define STOPWATCHDATA_H
 
-#include "../Timer/timerData.h"
 #include <atomic>
+#include <chrono>
+#include "../Timer/timerData.h"
 
 class StopWatchData {
     public:
@@ -35,13 +36,12 @@ class StopWatchData {
     * @brief StopWAtchData constructor takes in all data necessary for a stopwatch in this app and initializes member variables
     * @param elapsedTime: Times data showing how much time has passed on the stop watch
     * @param paused: Boolean indicating if the timer is running or has been running
-    * @param lastTime Times data there for if the stopwatch was not put on pause when the application was exited or the class instance destroyed the application has a way of telling how much time has elapsed
     * @see Times
     */
     StopWatchData(
         const Times& elapsedTime, 
         const bool& paused, 
-        const Times& lastTime
+        const std::chrono::milliseconds& lastTime
     );
 
     ~StopWatchData();
@@ -58,10 +58,9 @@ class StopWatchData {
     bool paused;
 
     /**
-    * @brief lastTime is a Times data structure showing how much time has passed on the stop watch if it was left running and saved to a file which includes hours, minutes, seconds and milliseconds
-    * @see Times
+    * @brief lastTime is milliseconds stored since last time the stopwatch config was saved to give the application a way of telling how much time has passed since it was last closed
     */
-    Times lastTime;
+    std::chrono::milliseconds lastTime;
 
 
     // Class methods -----------------------------------

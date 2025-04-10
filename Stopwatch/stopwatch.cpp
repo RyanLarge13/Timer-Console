@@ -24,17 +24,152 @@ SOFTWARE.
 
 #include "./stopwatch.h"
 #include "../Config/files.h"
+#include "../Console/write.h"
+#include "../Console/read.h"
 #include <atomic>
 #include <thread>
+#include <iostream>
+#include <chrono>
 
 std::atomic < bool > running(true);
 
 Stopwatch::Stopwatch() {
+  // Set startTime to now
+  startTime = std::chrono::system_clock::now();
+
   loadStopWatch();
 }
 
 Stopwatch::loadStopWatch() {
-  stopWatch = Files::getStopWatch();
+  stopwatch = Files::getStopWatch();
 
-  
+  if (!stopwatch.paused) {
+    std::chrono::system_clock::time_point timeAtLastSave = std::chrono::system_clock::time_point(std::chrono::milliseconds(stopwatch.lastTime));
+
+    std::chrono::duration timeElapsed = timeAtLastSave - startTime;
+    updateElapsedTime(timeElapsed);
+  }
+
+  std::thread displayWatch(&StopWatch::printTime, this);
+  std::thread promptUser(&StopWatch::printOptions, this);
+
+  displayWatch.join();
+  promptUser.join();
+}
+
+std::string getStopwatchTimeString() {
+  Times t = stopwatch.elapsedTime;
+
+  std::string timeString = 
+    std::to_string(t.hour) + ":" + 
+    std::to_string(t.minute) + ":" + 
+    std::to_string(t.seconds) + ":" + 
+    std::to_string(t.milliseconds) + "\n";
+
+  return timeString;
+}
+
+void StopWatch::updateElapsedTime(std::chrono::duration t) {
+  using namespace std::chrono;
+
+  int h = t.hours.count();
+  int m = t.minutes.count();
+  int s = t.seconds.count();
+  int mill = t.milliseconds.count();
+
+  Times newTime = Times(h,m,s,mill);
+
+  stopwatch.elapsedTime = newTime;
+}
+
+void StopWatch::printTime() {
+
+  while (running && stopwatch.paused) {
+    startTime = std::chrono::system_clock::now();
+  }
+
+  while (running && !stopwatch.paused) {
+    using namespace std::chrono;
+
+    Write::clearSection(1,1, Write::myTerminalSize.width, 1);
+    std::string nowTime = getStopwatchTimeString();
+    Write::printInSection(1,1, nowTime);
+
+    // Find the time elapsed and update this->elapsedTime
+    system_clock::time_point now = system_clock::now();
+    duration timeElapsed = now - this->startTime;
+    updateElapsedTime(timeElapsed);
+
+    // Update startTime to the latest for next round
+    this->startTime = now;
+
+    std::thread::sleep_for(milliseconds(100));
+  }
+}
+
+void StopWatch::printOptions() {
+  std::string options = stopwatch.paused ? "1. Resume, " : "1. Stop, " + "2. Reset, 3. Quit" + "\n" + "Option: ";
+  Write::clearSection(3, 1, Write::myTerminalSize.width, 1);
+  Write::printInSection(3,1, options);
+
+  while (running) {
+    int option;
+    std::cin >> option;
+
+    switch (option)
+    {
+      case 1: {
+        if (stopwatch.paused) {
+          handleResume();
+        } else {
+          handleStop();
+        }
+      }
+      break;
+      case 2: {
+        handleReset();
+      }
+      break;
+      case 3: {
+        handleQuit();
+      }
+      break;
+      default: {
+        std::cout << "Please input a valid option" << "\n" << "Option: ";
+      }
+      break;
+    }
+  }
+}
+
+void StopWatch::handleReset() {
+  // Reset elapsed time back to 00:00:00::000 and pause the timer
+  Times resetStopwatch = Times(0,0,0,0);
+  stopwatch.elapsedTime = resetStopwatch;
+
+  stopwatch.paused = true;
+}
+
+void StopWatch::handleStop() {
+  stopwatch.paused = true;
+}
+
+void StopWatch::handleResume() {
+  stopwatch.paused = false;
+}
+
+void StopWatch::handleQuit() {
+  using namespace std::chrono;
+
+  running = false;
+
+  system_clock::time_point now = system_clock::now();
+  duration timeElapsed = now - this->startTime;
+  updateElapsedTime(timeElapsed);
+
+
+  milliseconds millis = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+  stopwatch.lastTime = millis;
+
+  // Files::saveStopwatch(stopwatch);
 }
