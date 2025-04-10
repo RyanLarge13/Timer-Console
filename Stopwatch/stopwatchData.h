@@ -44,8 +44,6 @@ class StopWatchData {
         const std::chrono::milliseconds& lastTime
     );
 
-    ~StopWatchData();
-
     /**
     * @brief elapsedTime is a Times data structure showing how much time has passed on the stop watch which includes hours, minutes, seconds and milliseconds
     * @see Times
@@ -64,6 +62,18 @@ class StopWatchData {
 
 
     // Class methods -----------------------------------
+    /**
+    * @brief getStopwatchTimeString adds the elapsed time variables into a formatted string to be printed and returns it to the caller of the method
+    * @return std::string formatted like: hh:mm:ss:mmm 
+    */
+    std::string getStopwatchTimeString();
+
+    /**
+    * @brief updateElapsedTime updates this->elapsedTime with values representing how much time exactly has passed since last print using chrono::steady_clock.
+    * @param t: chrono::duration representing the time change between last print and now
+    */
+    void updateElapsedTime(const std::chrono::duration& t);
+
     /**
     * @brief print method handles printing the Times data in a friendly way to the terminal
     */

@@ -63,12 +63,6 @@ class Stopwatch {
   void loadStopWatch();
 
   /**
-  * @brief getStopwatchTimeString adds the elapsed time variables into a formatted string to be printed and returns it to the caller of the method
-  * @return std::string formatted like: hh:mm:ss:mmm 
-  */
-  std::string getStopwatchTimeString();
-
-  /**
   * @brief printTime prints the current elapsed time of the stopwatch to the console
   */
   void printTime();
@@ -77,12 +71,6 @@ class Stopwatch {
   * @brief printOptions prints options the user can take on the stopwatch eg. pause, reset and prompts the user for input on the options listed
   */
   void printOptions();
-
-  /**
-  * @brief updateElapsedTime updates this->elapsedTime with values representing how much time exactly has passed since last print using chrono::steady_clock.
-  * @param t: chrono::duration representing the time change between last print and now
-  */
-  void updateElapsedTime(const std::chrono::duration& t);
 
   /// Handle option methods from user selection
   void handleReset();

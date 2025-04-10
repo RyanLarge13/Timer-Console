@@ -47,7 +47,7 @@ Stopwatch::loadStopWatch() {
     std::chrono::system_clock::time_point timeAtLastSave = std::chrono::system_clock::time_point(std::chrono::milliseconds(stopwatch.lastTime));
 
     std::chrono::duration timeElapsed = timeAtLastSave - startTime;
-    updateElapsedTime(timeElapsed);
+    stopwatch.updateElapsedTime(timeElapsed);
   }
 
   std::thread displayWatch(&StopWatch::printTime, this);
@@ -55,31 +55,6 @@ Stopwatch::loadStopWatch() {
 
   displayWatch.join();
   promptUser.join();
-}
-
-std::string getStopwatchTimeString() {
-  Times t = stopwatch.elapsedTime;
-
-  std::string timeString = 
-    std::to_string(t.hour) + ":" + 
-    std::to_string(t.minute) + ":" + 
-    std::to_string(t.seconds) + ":" + 
-    std::to_string(t.milliseconds) + "\n";
-
-  return timeString;
-}
-
-void StopWatch::updateElapsedTime(std::chrono::duration t) {
-  using namespace std::chrono;
-
-  int h = t.hours.count();
-  int m = t.minutes.count();
-  int s = t.seconds.count();
-  int mill = t.milliseconds.count();
-
-  Times newTime = Times(h,m,s,mill);
-
-  stopwatch.elapsedTime = newTime;
 }
 
 void StopWatch::printTime() {
@@ -91,14 +66,12 @@ void StopWatch::printTime() {
   while (running && !stopwatch.paused) {
     using namespace std::chrono;
 
-    Write::clearSection(1,1, Write::myTerminalSize.width, 1);
-    std::string nowTime = getStopwatchTimeString();
-    Write::printInSection(1,1, nowTime);
+    stopwatch.print();
 
     // Find the time elapsed and update this->elapsedTime
     system_clock::time_point now = system_clock::now();
     duration timeElapsed = now - this->startTime;
-    updateElapsedTime(timeElapsed);
+    stopwatch.updateElapsedTime(timeElapsed);
 
     // Update startTime to the latest for next round
     this->startTime = now;
@@ -165,7 +138,7 @@ void StopWatch::handleQuit() {
 
   system_clock::time_point now = system_clock::now();
   duration timeElapsed = now - this->startTime;
-  updateElapsedTime(timeElapsed);
+  stopwatch.updateElapsedTime(timeElapsed);
 
 
   milliseconds millis = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();

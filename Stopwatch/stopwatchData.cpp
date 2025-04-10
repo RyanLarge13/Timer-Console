@@ -34,14 +34,33 @@ StopWatchData::StopWatchData(
     paused(paused),
     lastTime(lastTime) {}
 
-StopWatchData::~StopWatchData() {
- // Remove or update stopwatch data in config file      
+std::string StopWatchData::getStopwatchTimeString() {
+  Times t = this->elapsedTime;
+
+  std::string timeString = 
+    std::to_string(t.hour) + ":" + 
+    std::to_string(t.minute) + ":" + 
+    std::to_string(t.seconds) + ":" + 
+    std::to_string(t.milliseconds) + "\n";
+
+  return timeString;
 }
 
 void StopWatchData::print() {
-    // Print data to console
+    Write::clearSection(1,1, Write::myTerminalSize.width, 1);
+    std::string nowTime = getStopwatchTimeString();
+    Write::printInSection(1,1, nowTime);
 }
 
-void StopWatchData::updateTimes() {
-    // Update the elapsed time
+void StopWatchData::updateElapsedTime(std::chrono::duration t) {
+  using namespace std::chrono;
+
+  int h = t.hours.count();
+  int m = t.minutes.count();
+  int s = t.seconds.count();
+  int mill = t.milliseconds.count();
+
+  Times newTime = Times(h,m,s,mill);
+
+  this->elapsedTime = newTime;
 }
