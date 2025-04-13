@@ -31,7 +31,7 @@ $ chmod 777 build.sh
 4. Run build script using bash
 
 ```
-$ ./build.sh
+$ bash build.sh
 ```
 
 **If you ran into build errors you most likely do not have clang installed or a version of clang that is too outdated for the program. Required clang version 17+.**

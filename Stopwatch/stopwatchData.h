@@ -27,66 +27,67 @@ SOFTWARE.
 
 #include <atomic>
 #include <chrono>
+#include <string>
 #include "../Timer/timerData.h"
 
 class StopWatchData {
-    public:
+  public:
 
-    /**
-    * @brief StopWAtchData constructor takes in all data necessary for a stopwatch in this app and initializes member variables
-    * @param elapsedTime: Times data showing how much time has passed on the stop watch
-    * @param paused: Boolean indicating if the timer is running or has been running
-    * @see Times
-    */
-    StopWatchData(
-        const Times& elapsedTime, 
-        const bool& paused, 
-        const std::chrono::milliseconds& lastTime
-    );
+  /**
+  * @brief StopWAtchData constructor takes in all data necessary for a stopwatch in this app and initializes member variables
+  * @param elapsedTime: Times data showing how much time has passed on the stop watch
+  * @param paused: Boolean indicating if the timer is running or has been running
+  * @see Times
+  */
+  StopWatchData(
+    const TimerData::Times& elapsedTime,
+    const bool& paused,
+    const std::chrono::milliseconds& lastTime
+  );
 
-    /**
-    * @brief elapsedTime is a Times data structure showing how much time has passed on the stop watch which includes hours, minutes, seconds and milliseconds
-    * @see Times
-    */
-    Times elapsedTime;
+  /**
+  * @brief elapsedTime is a Times data structure showing how much time has passed on the stop watch which includes hours, minutes, seconds and milliseconds
+  * @see Times
+  */
+  TimerData::Times elapsedTime;
 
-    /**
-    * @brief Indicating if the stopwatch should be running and printing or not
-    */
-    bool paused;
+  /**
+  * @brief Indicating if the stopwatch should be running and printing or not
+  */
+  bool paused;
 
-    /**
-    * @brief lastTime is milliseconds stored since last time the stopwatch config was saved to give the application a way of telling how much time has passed since it was last closed
-    */
-    std::chrono::milliseconds lastTime;
-
-
-    // Class methods -----------------------------------
-    /**
-    * @brief getStopwatchTimeString adds the elapsed time variables into a formatted string to be printed and returns it to the caller of the method
-    * @return std::string formatted like: hh:mm:ss:mmm 
-    */
-    std::string getStopwatchTimeString();
-
-    /**
-    * @brief updateElapsedTime updates this->elapsedTime with values representing how much time exactly has passed since last print using chrono::steady_clock.
-    * @param t: chrono::duration representing the time change between last print and now
-    */
-    void updateElapsedTime(const std::chrono::duration& t);
-
-    /**
-    * @brief print method handles printing the Times data in a friendly way to the terminal
-    */
-    void print();
-
-    /**
-    * @brief updateTimes updates the Times structure for the class instance
-    */
-    void updateTimes();
+  /**
+  * @brief lastTime is milliseconds stored since last time the stopwatch config was saved to give the application a way of telling how much time has passed since it was last closed
+  */
+  std::chrono::milliseconds lastTime;
 
 
-    protected:
-    private:
+  // Class methods -----------------------------------
+  /**
+  * @brief getStopwatchTimeString adds the elapsed time variables into a formatted string to be printed and returns it to the caller of the method
+  * @return std::string formatted like: hh:mm:ss:mmm
+  */
+  std::string getStopwatchTimeString();
+
+  /**
+  * @brief updateElapsedTime updates this->elapsedTime with values representing how much time exactly has passed since last print using chrono::steady_clock.
+  * @param t: chrono::duration representing the time change between last print and now
+  */
+  void updateElapsedTime(const std::chrono::duration& t);
+
+  /**
+  * @brief print method handles printing the Times data in a friendly way to the terminal
+  */
+  void print();
+
+  /**
+  * @brief updateTimes updates the Times structure for the class instance
+  */
+  void updateTimes();
+
+
+  protected:
+  private:
 };
 
 #endif

@@ -58,9 +58,9 @@ class AlarmData {
     int hour;
     int minute;
 
-    AlarmTime(const int& h, cont int& m): hour(h),
+    AlarmTime(const int& h, const int& m): hour(h),
     minute(m) {}
-  }
+  };
 
   /**
   * @brief AlarmData constructor takes in all necessary data to build a functional alarm to be stored and used in the app
@@ -72,11 +72,11 @@ class AlarmData {
   * @param message: String optional. Provided to the user when the alarm triggers
   */
   AlarmData(
-    const std::vector < Alarm::DaysOfWeek>& daysOfWeek,
+    const std::vector < int >& daysOfWeek,
     const AlarmTime& alarmTime,
     const bool& on,
     const std::string& meridiem,
-    const Vibrate& vibrate
+    const Vibrate& vibrate,
     const std::string& message
   );
 
@@ -91,15 +91,15 @@ class AlarmData {
   * @return Boolean
   */
   bool toggleOnOff();
-  
+
   /**
-   * @brief toggleMeridiem will ch age the string value to AM if currently PM and PM if currently AM. This method also updates the hour in the instances alarmTime struct @see AlarmData.alarmTime
-   */
+  * @brief toggleMeridiem will ch age the string value to AM if currently PM and PM if currently AM. This method also updates the hour in the instances alarmTime struct @see AlarmData.alarmTime
+  */
   void toggleMeridiem();
-  
+
   /**
-   * @brief Print specializes in printing the alarm in a user friendly way to the console along with the shortened day of the week strings associated with @see Alarm::DaysOfWeek. 
-   */
+  * @brief Print specializes in printing the alarm in a user friendly way to the console along with the shortened day of the week strings associated with @see Alarm::DaysOfWeek.
+  */
   void print();
 
   protected:

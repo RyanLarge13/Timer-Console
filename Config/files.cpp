@@ -28,8 +28,11 @@ SOFTWARE.
 #include <fstream>
 
 #include "../Alarm/alarm.h"
+#include "../Alarm/alarmData.h"
 #include "../Timer/timer.h"
 #include "../Timer/timerData.h"
+#include "../Stopwatch/stopwatch.h"
+#include "../Stopwatch/stopwatchData.h"
 #include "../includes/nlohmann/json.hpp"
 
 /**
@@ -40,7 +43,7 @@ using json = nlohmann::json;
 Files::Files() {}
 
 // Read alarms from file, create AlarmData instances from json returned from file and return AlarmData instances in a vector
-std::vector<AlarmData> Files::getAlarms() {
+std::vector < AlarmData > Files::getAlarms() {
   std::string basePath = Files::getAppDataPath();
   std::filesystem::create_directories(basePath);
 
@@ -48,25 +51,25 @@ std::vector<AlarmData> Files::getAlarms() {
 
   /**
   * @brief alarmFileData return type
-    {
-      "error": boolean // did the read fail or not  
-      "alarms": [ // array of AlarmData types @see AlarmData
-        {
-          "dow": int[],
-          "time": {
-            "hour": int,
-            "minute": int
-          },
-          "on": boolean,
-          "meridiem": "string",
-          "vibrate": {
-            "on": boolean,
-            "intensity": double
-          }
-        },
-        ...
-      ]
-    }
+  {
+  "error": boolean // did the read fail or not
+  "alarms": [ // array of AlarmData types @see AlarmData
+  {
+  "dow": int[],
+  "time": {
+  "hour": int,
+  "minute": int
+  },
+  "on": boolean,
+  "meridiem": "string",
+  "vibrate": {
+  "on": boolean,
+  "intensity": double
+  }
+  },
+  ...
+  ]
+  }
   */
   json alarmFileData = deserializeJson(alarmFile);
 
@@ -80,7 +83,7 @@ std::vector<AlarmData> Files::getAlarms() {
 
   int index = 0;
 
-  std::vector<AlarmData> alarms;
+  std::vector < AlarmData > alarms;
 
   // For each field in alarms create the alarm in memory and add it to the alarms vector the function plans to return
 
@@ -88,16 +91,16 @@ std::vector<AlarmData> Files::getAlarms() {
     TODO:
       1. Verify all this data and or return valid options if it does not exist before creating AlarmData object
   */
-  for (AlarmData alarm: alarmFileData["alarms"]) {
-    
-    std::vector<Alarm::DaysOfWeek> daysOfWeek = alarm["dow"];
+  for (const json& alarm: alarmFileData["alarms"]) {
+
+    std::vector < Alarm::DaysOfWeek > daysOfWeek = alarm["dow"];
 
     std::string alarmTimeHours = alarm["time"]["hour"];
     std::string alarmTimeMinutes = alarm["time"]["minute"];
 
     bool on = alarm["on"];
     std::string meridiem = alarm["meridiem"];
-    
+
     bool vibrateOn = alarm["vibrate"]["on"];
     double intensity = alarm["vibrate"]["intensity"];
 
@@ -108,7 +111,7 @@ std::vector<AlarmData> Files::getAlarms() {
 
     // Loop through days of week to make sure that map contains the alarm and week day
     alarms.push_back(existingAlarm);
-    
+
     index++;
   }
 }
@@ -126,17 +129,17 @@ std::vector < TimerData > Files::getTimers() {
   /**
   * @brief timerFileData json data structure
   {
-    "error": boolean,
-    "timers": [ // array of TimerData data. @see TimerData
-      {
-        "hours": int,
-        "minutes": int,
-        "seconds": int,
-        "running": boolean,
-        "paused": boolean
-      },
-      ...
-    ]
+  "error": boolean,
+  "timers": [ // array of TimerData data. @see TimerData
+  {
+  "hours": int,
+  "minutes": int,
+  "seconds": int,
+  "running": boolean,
+  "paused": boolean
+  },
+  ...
+  ]
   }
   */
 
@@ -159,7 +162,7 @@ std::vector < TimerData > Files::getTimers() {
       timer["minutes"].get < int > () || 0,
       timer["seconds"].get < int > () || 0,
     );
-    
+
     bool isRunning = timer["running"].get < bool > () || false;
     bool isPaused = timer["paused"].get < bool > () || true;
 
@@ -175,37 +178,37 @@ std::vector < TimerData > Files::getTimers() {
   return times;
 };
 
-void Files::saveTimers(const std::vector<TimerData>& timers) {
-    // Loop over timers to save correct data
-    json timerConfig;
+void Files::saveTimers(const std::vector < TimerData>& timers) {
+  // Loop over timers to save correct data
+  json timerConfig;
 
-    timerConfig["error"] = false;
-    std::vector<json> timersToSave = {};
+  timerConfig["error"] = false;
+  std::vector < json > timersToSave = {};
 
-    for (TimerData timer : timers) {
-      json time;
+  for (TimerData timer: timers) {
+    json time;
 
-      TimerData::Times timerTimes = timer.getTimes();
-      time["running"] =  timer.getIsRunning();
-      time["paused"] = timer.getIsPaused();
-      time["hours"] = timerTimes.hours;
-      time["minutes"] = timerTimes.minutes;
-      time["seconds"] = timerTimes.seconds;
+    TimerData::Times timerTimes = timer.getTimes();
+    time["running"] = timer.getIsRunning();
+    time["paused"] = timer.getIsPaused();
+    time["hours"] = timerTimes.hours;
+    time["minutes"] = timerTimes.minutes;
+    time["seconds"] = timerTimes.seconds;
 
-      // Push the new timer to the timers json vector
-      timersToSave.push_back(time);
-    } 
+    // Push the new timer to the timers json vector
+    timersToSave.push_back(time);
+  }
 
-    // Save the vector as the json timers in config
-    timerConfig["timers"] = timersToSave;
+  // Save the vector as the json timers in config
+  timerConfig["timers"] = timersToSave;
 
-    saveJsonToFile("timer.json", timerConfig);
+  saveJsonToFile("timer.json", timerConfig);
 }
 // Timer methods ----------------------------------------------------------------------------------
 
 // Stopwatch methods -------------------------------------------------------------
 StopWatchData Files::getStopWatch() {
-   std::string basePath = Files::getAppDataPath();
+  std::string basePath = Files::getAppDataPath();
   std::filesystem::create_directories(basePath);
 
   std::ifstream stopwatchFile(basePath + "stopwatch.json");
@@ -222,21 +225,21 @@ StopWatchData Files::getStopWatch() {
   if (!stopwatchFile.contains("stopwatch")) {
     return defaultWatch;
   }
-  
+
   /**
   * @brief Stopwatch JSON structure
   Stopwatch json data structure
-    {
-      "exists": boolean, 
-      "elapsedTime": {
-          "hours": int,
-          "minutes": int,
-          "seconds": int,
-          "miliseconds": int,
-      },
-      "paused": boolean,
-      "lastTime": std::chrono::milliseconds
-    }
+  {
+  "exists": boolean,
+  "elapsedTime": {
+  "hours": int,
+  "minutes": int,
+  "seconds": int,
+  "miliseconds": int,
+  },
+  "paused": boolean,
+  "lastTime": std::chrono::milliseconds
+  }
   */
 
   if (stopWatchData["exists"]) {
@@ -244,21 +247,21 @@ StopWatchData Files::getStopWatch() {
     TODO:
     1. Do not forget to validate and make sure data exists before initializing existingWatch class instance
     */
-    
+
     Timer::Times elapsedTime(
       stopWatchData["elapsedTime"]["hours"],
       stopWatchData["elapsedTime"]["minutes"],
       stopWatchData["elapsedTime"]["seconds"],
       stopWatchData["elapsedTime"]["milliseconds"],
     );
-    
+
     std::chrono::milliseconds = stopWatchData["lastTime"];
     bool paused = stopWatchData["paused"];
-    
+
     StopWatchData existingWatch(elapsedTime, paused, lastTime);
 
     return existingWatch;
-    
+
   } else {
     return defaultWatch;
   }
@@ -298,16 +301,16 @@ json Files::deserializeJson(std::ifstream& inFile) {
 
 // Save any json type to specified file
 void Files::saveJsonToFile(const std::string& fileName, json j) {
-    std::string basePath = Files::getAppDataPath();
-    std::filesystem::create_directories(basePath);
+  std::string basePath = Files::getAppDataPath();
+  std::filesystem::create_directories(basePath);
 
-    std::ofstream file(basePath + fileName);
+  std::ofstream file(basePath + fileName);
 
-    if (!file.is_open()) {
-      return;
-    }
+  if (!file.is_open()) {
+    return;
+  }
 
-    file << j;
+  file << j;
 
-    file.close();
+  file.close();
 }

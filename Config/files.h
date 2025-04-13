@@ -32,6 +32,7 @@ SOFTWARE.
 #include "../Alarm/alarm.h"
 #include "../Timer/timer.h"
 #include "../Timer/timerData.h"
+#include "../Stopwatch/stopwatchData.h"
 #include "../includes/nlohmann/json.hpp"
 
 #ifdef _WIN32
@@ -107,7 +108,7 @@ class Files {
   * @param fileName: string representing the path to the file in question 
   * @param j: a valid json object taking any shape to be saved to the file
   */
-  void saveJsonToFile(const std::string& fileName, json j);
+  void saveJsonToFile(const std::string& fileName, nlohmann::json j);
 
   private:
 };

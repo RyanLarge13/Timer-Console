@@ -23,33 +23,35 @@ SOFTWARE.
 */
 
 #include <chrono>
-#include ".StopWatchData.h"
+#include <string>
+#include "./stopwatchData.h"
+#include "../Console/write.h"
 
 StopWatchData::StopWatchData(
-    const Times& elapsedTime, 
-    const bool& paused,
-    const std::chrono::milliseconds& lastTime 
-) : 
-    elapsedTime(elapsedTime), 
-    paused(paused),
-    lastTime(lastTime) {}
+  const TimerData::Times& elapsedTime,
+  const bool& paused,
+  const std::chrono::milliseconds& lastTime
+):
+elapsedTime(elapsedTime),
+paused(paused),
+lastTime(lastTime) {}
 
 std::string StopWatchData::getStopwatchTimeString() {
-  Times t = this->elapsedTime;
+  TimerData::Times t = this->elapsedTime;
 
-  std::string timeString = 
-    std::to_string(t.hour) + ":" + 
-    std::to_string(t.minute) + ":" + 
-    std::to_string(t.seconds) + ":" + 
-    std::to_string(t.milliseconds) + "\n";
+  std::string timeString =
+  std::to_string(t.hours) + ":" +
+  std::to_string(t.minutes) + ":" +
+  std::to_string(t.seconds) + ":" +
+  std::to_string(t.milliseconds) + "\n";
 
   return timeString;
 }
 
 void StopWatchData::print() {
-    Write::clearSection(1,1, Write::myTerminalSize.width, 1);
-    std::string nowTime = getStopwatchTimeString();
-    Write::printInSection(1,1, nowTime);
+  Write::clearSection(1, 1, Write::myTerminalSize.width, 1);
+  std::string nowTime = getStopwatchTimeString();
+  Write::printInSection(1, 1, nowTime);
 }
 
 void StopWatchData::updateElapsedTime(std::chrono::duration t) {
@@ -60,7 +62,7 @@ void StopWatchData::updateElapsedTime(std::chrono::duration t) {
   int s = t.seconds.count();
   int mill = t.milliseconds.count();
 
-  Times newTime = Times(h,m,s,mill);
+  TimerData::Times newTime = TimerData::Times(h, m, s, mill);
 
   this->elapsedTime = newTime;
 }

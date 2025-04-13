@@ -36,10 +36,10 @@ class Stopwatch {
   public:
 
   /**
-  * @brief member variable holding in memory the active timer and its associated data. 
+  * @brief member variable holding in memory the active timer and its associated data.
   * @see StopWatchData
   */
-  StopWatchData stopWatch;
+  StopWatchData stopwatch;
 
   /**
   * @brief startTime will represent the time that was captured upon opening the instance of stopwatch using system_clock
@@ -52,12 +52,12 @@ class Stopwatch {
   */
   Stopwatch();
 
-  
+
   protected:
   private:
 
   /**
-  * @brief loadStopwatch method calls upon Files to read json and find if there was a previous stopwatch set from a previous session, if there is it loads it into memory as stopWatch. 
+  * @brief loadStopwatch method calls upon Files to read json and find if there was a previous stopwatch set from a previous session, if there is it loads it into memory as stopWatch.
   * @see stopWatch
   */
   void loadStopWatch();

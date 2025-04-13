@@ -35,15 +35,7 @@ SOFTWARE.
 */
 class Alarm {
   public:
-  Alarm();
-
-  protected:
-  private:
-  /**
-  * @brief For easy interfacing between days of the week an alarm is triggered and the integer which represents them
-  * @see daysOfTheWeek map
-  */
-  enum DaysOfWeek = {
+  enum DaysOfWeek {
     MONDAY = 1,
     TUESDAY = 2,
     WEDNESDAY = 3,
@@ -52,16 +44,46 @@ class Alarm {
     SATURDAY = 6,
     SUNDAY = 7
   };
+  
+  Alarm();
 
-  std::map < int code,
-  std::string day > daysOfTheWeek = {
-    1: "Mo",
-    2: "Tu",
-    3: "We",
-    4: "Th",
-    5: "Fr",
-    6: "Sa",
-    7: "Su"
+  protected:
+  private:
+  /**
+  * @brief For easy interfacing between days of the week an alarm is triggered and the integer which represents them
+  * @see daysOfTheWeek map
+  */
+
+  std::map < int,
+  std::string > daysOfTheWeek = {
+    {
+      1,
+      "Mo"
+    },
+    {
+      2,
+      "Tu"
+    },
+    {
+      3,
+      "We"
+    },
+    {
+      4,
+      "Th"
+    },
+    {
+      5,
+      "Fr"
+    },
+    {
+      6,
+      "Sa"
+    },
+    {
+      7,
+      "Su"
+    }
   };
 
   /**
@@ -75,11 +97,11 @@ class Alarm {
   * @brief Print and prompt user for input to be handled
   */
   void printOptions();
-  
+
   /**
-   * @brief Run the input from user through switch statement to better handle many choices
-   * @param answer: Integer selection from options menu
-   */
+  * @brief Run the input from user through switch statement to better handle many choices
+  * @param answer: Integer selection from options menu
+  */
   void handleOption(const int& answer);
 
 
@@ -120,6 +142,6 @@ class Alarm {
   void setAlarmTime(AlarmData& alarmToUpdate);
   void setAlarmDays(AlarmData& alarmToUpdate);
 
-}
+};
 
 #endif

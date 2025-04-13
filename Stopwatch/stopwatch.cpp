@@ -26,6 +26,7 @@ SOFTWARE.
 #include "../Config/files.h"
 #include "../Console/write.h"
 #include "../Console/read.h"
+#include "../Timer/TimerData.h"
 #include <atomic>
 #include <thread>
 #include <iostream>
@@ -40,8 +41,10 @@ Stopwatch::Stopwatch() {
   loadStopWatch();
 }
 
-Stopwatch::loadStopWatch() {
-  stopwatch = Files::getStopWatch();
+void Stopwatch::loadStopWatch() {
+  StopWatchData storedWatch = Files::getStopWatch();
+
+  stopwatch = storedWatch;
 
   if (!stopwatch.paused) {
     std::chrono::system_clock::time_point timeAtLastSave = std::chrono::system_clock::time_point(std::chrono::milliseconds(stopwatch.lastTime));
@@ -50,14 +53,14 @@ Stopwatch::loadStopWatch() {
     stopwatch.updateElapsedTime(timeElapsed);
   }
 
-  std::thread displayWatch(&StopWatch::printTime, this);
-  std::thread promptUser(&StopWatch::printOptions, this);
+  std::thread displayWatch(&Stopwatch::printTime, this);
+  std::thread promptUser(&Stopwatch::printOptions, this);
 
   displayWatch.join();
   promptUser.join();
 }
 
-void StopWatch::printTime() {
+void Stopwatch::printTime() {
 
   while (running && stopwatch.paused) {
     startTime = std::chrono::system_clock::now();
@@ -76,21 +79,20 @@ void StopWatch::printTime() {
     // Update startTime to the latest for next round
     this->startTime = now;
 
-    std::thread::sleep_for(milliseconds(100));
+    std::this_thread::sleep_for(milliseconds(100));
   }
 }
 
-void StopWatch::printOptions() {
-  std::string options = stopwatch.paused ? "1. Resume, " : "1. Stop, " + "2. Reset, 3. Quit" + "\n" + "Option: ";
+void Stopwatch::printOptions() {
+  std::string options = stopwatch.paused ? "1. Resume, ": "1. Stop, " + "2. Reset, 3. Quit" + "\n" + "Option: ";
   Write::clearSection(3, 1, Write::myTerminalSize.width, 1);
-  Write::printInSection(3,1, options);
+  Write::printInSection(3, 1, options);
 
   while (running) {
     int option;
     std::cin >> option;
 
-    switch (option)
-    {
+    switch (option) {
       case 1: {
         if (stopwatch.paused) {
           handleResume();
@@ -115,23 +117,23 @@ void StopWatch::printOptions() {
   }
 }
 
-void StopWatch::handleReset() {
+void Stopwatch::handleReset() {
   // Reset elapsed time back to 00:00:00::000 and pause the timer
-  Times resetStopwatch = Times(0,0,0,0);
+  TimerData::Times resetStopwatch = TimerData::Times(0, 0, 0, 0);
   stopwatch.elapsedTime = resetStopwatch;
 
   stopwatch.paused = true;
 }
 
-void StopWatch::handleStop() {
+void Stopwatch::handleStop() {
   stopwatch.paused = true;
 }
 
-void StopWatch::handleResume() {
+void Stopwatch::handleResume() {
   stopwatch.paused = false;
 }
 
-void StopWatch::handleQuit() {
+void Stopwatch::handleQuit() {
   using namespace std::chrono;
 
   running = false;
@@ -141,7 +143,7 @@ void StopWatch::handleQuit() {
   stopwatch.updateElapsedTime(timeElapsed);
 
 
-  milliseconds millis = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+  milliseconds millis = duration_cast < milliseconds > (system_clock::now().time_since_epoch()).count();
   stopwatch.lastTime = millis;
 
   // Files::saveStopwatch(stopwatch);

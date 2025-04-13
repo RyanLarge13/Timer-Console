@@ -7,7 +7,6 @@ json_file_path="$include_path/json.hpp"
 json_url="https://raw.githubusercontent.com/nlohmann/json/develop/single_include/nlohmann/json.hpp"
 
 checkJson() {
-  echo "Building deps"
 
   if [ ! -d "$include_path" ]; then
     mkdir -p "$include_path"
