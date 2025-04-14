@@ -26,27 +26,32 @@ SOFTWARE.
 #include <string>
 #include "./stopwatchData.h"
 #include "../Console/write.h"
+#include <iomanip>
+#include <sstream>
 
 StopWatchData::StopWatchData(
-  const TimerData::Times& elapsedTime,
-  const bool& paused,
-  const std::chrono::milliseconds& lastTime
+  TimerData::Times elapsedTime,
+  bool paused,
+  std::chrono::milliseconds lastTime
 ):
 elapsedTime(elapsedTime),
 paused(paused),
 lastTime(lastTime) {}
 
+
 std::string StopWatchData::getStopwatchTimeString() {
   TimerData::Times t = this->elapsedTime;
 
-  std::string timeString =
-  std::to_string(t.hours) + ":" +
-  std::to_string(t.minutes) + ":" +
-  std::to_string(t.seconds) + ":" +
-  std::to_string(t.milliseconds) + "\n";
+  std::ostringstream ss;
+  ss << std::setfill('0')
+     << std::setw(2) << t.hours << ":"
+     << std::setw(2) << t.minutes << ":"
+     << std::setw(2) << t.seconds << ":"
+     << std::setw(3) << t.milliseconds;
 
-  return timeString;
+  return ss.str();
 }
+
 
 void StopWatchData::print() {
   Write::clearSection(1, 1, Write::myTerminalSize.width, 1);
@@ -54,15 +59,16 @@ void StopWatchData::print() {
   Write::printInSection(1, 1, nowTime);
 }
 
-void StopWatchData::updateElapsedTime(const std::chrono::duration& t) {
+void StopWatchData::updateElapsedTime(const std::chrono::duration<double>& t) {
   using namespace std::chrono;
 
-  int h = t.hours.count();
-  int m = t.minutes.count();
-  int s = t.seconds.count();
-  int mill = t.milliseconds.count();
+  int ms = duration_cast<milliseconds>(t);
+  int h = duration_cast<hours>(ms);
+  int m = duration_cast<minutes>(ms - h);
+  int s = duration_cast<seconds>(ms - h - m);
+  int mill = duration_cast<milliseconds>(ms - h - m - s);
 
-  TimerData::Times newTime = TimerData::Times(h, m, s, mill);
+  TimerData::Times newTime = TimerData::Times(h.count(), m.count(), s.count(), mill.count());
 
   this->elapsedTime = newTime;
 }

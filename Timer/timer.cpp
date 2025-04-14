@@ -169,12 +169,12 @@ void Timer::handleAddtimer() {
     return;
   }
 
-  int newIndex = timeData.size() | 1;
+  int newIndex = timeData.size();
 
   TimerData::Times newTimerTimes = getUserTimer();
 
   TimerData newTimer(newIndex);
-  newTimer.setTime(newTimerTimes.hours, newTimerTimes.minutes, newtimerTimes.seconds);
+  newTimer.setTime(newTimerTimes.hours, newTimerTimes.minutes, newTimerTimes.seconds);
 
   timeData.push_back(newTimer);
 }
@@ -192,7 +192,9 @@ void Timer::handleRemoveTimer() {
   Read::setCanonicalMode(true);
 
   int timerIndex;
-  read(STDIN_FILENO, &timerIndex, 1);
+  char c;
+  read(STDIN_FILENO, &c, 1);
+  int timerIndex = c - '0';
 
   Read::setCanonicalMode(false);
 
@@ -206,10 +208,13 @@ TimerData::Times Timer::getUserTimer() {
 
   bool isQuerying = true;
 
-  std::cout <<
-  hours == -1 ? "00": hours < 10 ? "0": "" << hours << ":" <<
-  minutes == -1 ? "00": minutes < 10 ? "0": "" << minutes << ":" <<
-  seconds == -1 ? "00": seconds < 10 ? "0": "" << seconds << ":000" << "\n";
+auto format = [](int v) {
+  if (v == -1) return std::string("00");
+  return v < 10 ? "0" + std::to_string(v) : std::to_string(v);
+};
+
+// Use lambda to clean up the standard output logic
+std::cout << format(hours) << ":" << format(minutes) << ":" << format(seconds) << "\n";
 
   while (isQuerying) {
     if (hours == -1) {
@@ -226,6 +231,8 @@ TimerData::Times Timer::getUserTimer() {
       std::cout << "Seconds: ";
       std::cin >> seconds;
     }
+
+    isQuerying = false;
   }
 
   TimerData::Times returnTimes = TimerData::Times(

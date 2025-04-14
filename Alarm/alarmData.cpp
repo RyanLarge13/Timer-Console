@@ -33,7 +33,7 @@ AlarmData::AlarmData(
   const AlarmData::AlarmTime& alarmTime,
   const bool& on,
   const std::string& meridiem,
-  const AlarmData::Vibrate& vibrate
+  const AlarmData::Vibrate& vibrate,
   const std::string& message
 ):
 daysOfWeek(daysOfWeek),
@@ -68,13 +68,13 @@ void AlarmData::print() {
   // Print alarm with colors
   if (this->on) {
     // Print days of week where alarm is active
-    std::cout << c(Colors::BLUE) << this->alarmTime.hour c(Colors::ENDCOLOR) << " " << this->meridiem << "\n";
+    std::cout << c(Colors::BLUE) << this->alarmTime.hour << c(Colors::ENDCOLOR) << " " << this->meridiem << "\n";
   } else {
     // Print days of week where alarm is not active
-    std::cout << c(Colors::RED) << this->alarmTime.hour c(Colors::ENDCOLOR) << " " << this->meridiem << "\n";
+    std::cout << c(Colors::RED) << this->alarmTime.hour << c(Colors::ENDCOLOR) << " " << this->meridiem << "\n";
   }
 
-  for ([int& key, std::string& day]: Alarm::daysOfWeek) {
+  for (const auto& [key, day]: Alarm::daysOfWeek) {
     bool isOnToday = false;
 
     for (int& weekday: this->daysOfWeek) {
@@ -84,7 +84,7 @@ void AlarmData::print() {
     }
 
     // If the alarm is on today print the day string with a blue color
-    std::cout << isOnToday ? c(Colors::BLUE): c(Colors::RED) << day <<
+    std::cout << (isOnToday ? c(Colors::BLUE) : c(Colors::RED)) << day <<
     c(Colors::ENDCOLOR) << " ";
   }
 

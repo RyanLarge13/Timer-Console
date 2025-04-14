@@ -117,7 +117,7 @@ class TimerData {
   * @brief getTimes method returns the time of the timer as a Times structure
   * @see Times
   */
-  std::vector < Times > getTimes();
+  Times getTimes();
 
   protected:
 

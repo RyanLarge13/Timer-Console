@@ -95,8 +95,8 @@ std::vector < AlarmData > Files::getAlarms() {
 
     std::vector < int > daysOfWeek = alarm["dow"];
 
-    std::string alarmTimeHours = alarm["time"]["hour"];
-    std::string alarmTimeMinutes = alarm["time"]["minute"];
+    int alarmTimeHours = alarm["time"]["hour"];
+    int alarmTimeMinutes = alarm["time"]["minute"];
 
     bool on = alarm["on"];
     std::string meridiem = alarm["meridiem"];
@@ -114,6 +114,8 @@ std::vector < AlarmData > Files::getAlarms() {
 
     index++;
   }
+
+  return alarms;
 }
 
 // Timer methods ----------------------------------------------------------------------------------
@@ -158,9 +160,9 @@ std::vector < TimerData > Files::getTimers() {
   for (const json& timer: timerFileData["timers"]) {
     TimerData newtimer = TimerData(
       index,
-      timer["hours"].get < int > () || 0,
-      timer["minutes"].get < int > () || 0,
-      timer["seconds"].get < int > () || 0,
+      timer.contains("hours") ? timer["hours"].get < int > () : 0,
+      timer.contains("minutes") ? timer["minutes"].get < int > () : 0,
+      timer.contains("seconds") ? timer["seconds"].get < int > () : 0,
     );
 
     bool isRunning = timer["running"].get < bool > () || false;
@@ -216,7 +218,7 @@ StopWatchData Files::getStopWatch() {
   json stopWatchData = deserializeJson(stopwatchFile);
 
   // Build a default stopwatch with no elapsed time to send back if any failure happens when reading json file
-  StopWatchData defaultWatch();
+  StopWatchData defaultWatch;
 
   if (stopWatchData["error"] == true) {
     return defaultWatch;
@@ -255,7 +257,7 @@ StopWatchData Files::getStopWatch() {
       stopWatchData["elapsedTime"]["milliseconds"],
     );
 
-    std::chrono::milliseconds = stopWatchData["lastTime"];
+    std::chrono::milliseconds = stopWatchData["lastTime"].get<int>();
     bool paused = stopWatchData["paused"];
 
     StopWatchData existingWatch(elapsedTime, paused, lastTime);
@@ -265,8 +267,6 @@ StopWatchData Files::getStopWatch() {
   } else {
     return defaultWatch;
   }
-
-  return defaultWatch;
 }
 // Stopwatch methods -------------------------------------------------------------
 
@@ -286,12 +286,15 @@ json Files::deserializeJson(std::ifstream& inFile) {
     j["error"] = false;
     return j;
   } catch (const json::parse_error& e) {
+    j["error"] = true;
     std::cerr << "Parse error: " << e.what() << std::endl;
     return j;
   } catch (const json::type_error& e) {
+    j["error"] = true;
     std::cerr << "Type error: " << e.what() << std::endl;
     return j;
   } catch (const json::out_of_range& e) {
+    j["error"] = true;
     std::cerr << "Out of range error: " << e.what() << std::endl;
     return j;
   }

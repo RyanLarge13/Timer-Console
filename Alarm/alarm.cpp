@@ -69,7 +69,7 @@ void Alarm::printOptions() {
   "7. Main Menu" << "\n" << "\n";
 
   Read::setCanonicalMode(true);
-  read(STDIN_FILENO, &answer, 1);
+  read(STDIN_FILENO, &answer, 4);
   Read::setCanonicalMode(false);
 
   handleOption(answer);
@@ -166,7 +166,7 @@ void Alarm::setAlarmMeridiem(AlarmData& alarmToUpdate) {
   std::cout << "AM or PM? ";
   std::cin >> newMeridiem;
 
-  if (newMeridiem != "AM" || newMeridiem != "PM") {
+  if (newMeridiem != "AM" && newMeridiem != "PM") {
     return setAlarmMeridiem(alarmToUpdate);
   }
 
@@ -203,7 +203,7 @@ void Alarm::setAlarmDays(AlarmData& alarmToUpdate) {
     int index = 1;
 
     // Print days selected with color
-    for ([const int& code, const std::string& day]: Alarm::DaysOfWeek) {
+    for (const auto& [code, day]: Alarm::DaysOfWeek) {
       if (includes(code, daysSelected)) {
         std::cout << index << Write::c(Write::Colors::YELLOW) << day <<
         Write::c(Write::Colors::ENDCOLOR) << " ";
@@ -229,7 +229,7 @@ void Alarm::setAlarmDays(AlarmData& alarmToUpdate) {
     daysSelected.push_back(answer);
   }
 
-  alarmToUpdate.daysOfWeek = daysSelecteod;
+  alarmToUpdate.daysOfWeek = daysSelected;
 }
 
 
@@ -240,7 +240,8 @@ void Alarm::handleUpdateAlarmTime() {
   if (!selectedAlarm) {
     std::cout << "Please select an alarm that exists" << "\n";
 
-    return handleUpdateAlarmTime();
+    handleUpdateAlarmTime();
+    return;
   }
 
   setAlarmTime(selectedAlarm);
@@ -288,14 +289,14 @@ void Alarm::handleAddAlarm() {
 
 
 void Alarm::handleToggleOnOffAlarm() {
-  AlaData selectedAlarm = getAlarm();
+  AlarmData selectedAlarm = getAlarm();
 
-  if (!selectedAlarm) {
-    std::cout << "Please make a valid selectiom on an existing alarm" << "\n";
+  // if (!selectedAlarm) {
+  //   std::cout << "Please make a valid selection on an existing alarm" << "\n";
 
-    // Recursively call upon to reprompt the user
-    return handleToggleOnOffAlarm();
-  }
+  //   // Recursively call upon to re-prompt the user
+  //   return handleToggleOnOffAlarm();
+  // }
 
   selectedAlarm.toggleOnOff();
 }
