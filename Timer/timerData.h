@@ -46,7 +46,7 @@ class TimerData {
     Times(const int& h, const int& m, const int& s, const int& mill): hours(h),
     minutes(m),
     seconds(s),
-    milliseconds(mill) {};
+    milliseconds(mill) {}
   };
 
   /**
@@ -112,11 +112,11 @@ class TimerData {
   * @brief getIsRunning tells the caller of the method if the timer is counting down
   */
   bool getIsRunning();
-  
+
   /**
-   * @brief getTimes method returns the time of the timer as a Times structure 
-   * @see Times
-   */
+  * @brief getTimes method returns the time of the timer as a Times structure
+  * @see Times
+  */
   std::vector < Times > getTimes();
 
   protected:

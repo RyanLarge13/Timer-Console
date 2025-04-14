@@ -93,7 +93,7 @@ std::vector < AlarmData > Files::getAlarms() {
   */
   for (const json& alarm: alarmFileData["alarms"]) {
 
-    std::vector < Alarm::DaysOfWeek > daysOfWeek = alarm["dow"];
+    std::vector < int > daysOfWeek = alarm["dow"];
 
     std::string alarmTimeHours = alarm["time"]["hour"];
     std::string alarmTimeMinutes = alarm["time"]["minute"];

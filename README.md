@@ -1,4 +1,4 @@
-# Timer Console
+# ⏱️ Timer Console 
 
 Handle time with this console based time management application. Set multiple
 timers, alrams and start the stopwatch!
@@ -9,7 +9,7 @@ system and is also compatable on windows systems using powershell.
 This is a bare bones project. You are welcome to configure a cmake file or just
 simply compile with GCC or clang
 
-## Compiling
+## 🏗️ Compiling 
 
 First make sure clang is installed. If you are on Mac it comes pre installed
 
@@ -38,27 +38,27 @@ $ bash build.sh
 
 ## Testing
 
-### 🧪 Types of Testing
+### 🧪 Types of Testing With Timer Console
 
 Here are the main types of testing relevant to this project and what should be
 performed per new feature
 
 In this project we use gtest
 
-1. Unit Testing
-   Tests individual functions or classes in isolation
+**Unit Testing**
+Tests individual functions or classes in isolation
 
 Should be fast and run frequently
 
 Example: Testing a Timer::create() method
 
-3. System Testing
-   Tests the entire application as a whole
+**System Testing**
+Tests the entire application as a whole
 
 Run it. Compile and run it often. Try to break it
 
-4. Regression Testing
-   Ensures that new changes don’t break old functionality
+**Regression Testing**
+Ensures that new changes don’t break old functionality
 
 Run after every change or before pushing new feature
 
@@ -78,7 +78,7 @@ When running build.sh gtest should be installed automatically for you and the te
 
 [gtest intstall](https://github.com/google/googletest/blob/main/googletest/README.md)
 
-## How to use
+## 📖 How to use
 
 Check out the docs for developers if you are interested in learning how to use this code or develop further with this project.
 

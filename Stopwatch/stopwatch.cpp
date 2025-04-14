@@ -26,7 +26,7 @@ SOFTWARE.
 #include "../Config/files.h"
 #include "../Console/write.h"
 #include "../Console/read.h"
-#include "../Timer/TimerData.h"
+#include "../Timer/timerData.h"
 #include <atomic>
 #include <thread>
 #include <iostream>
@@ -84,7 +84,11 @@ void Stopwatch::printTime() {
 }
 
 void Stopwatch::printOptions() {
-  std::string options = stopwatch.paused ? "1. Resume, ": "1. Stop, " + "2. Reset, 3. Quit" + "\n" + "Option: ";
+  std::string options = stopwatch.paused ? "1. Resume, ": "1. Stop,";
+  
+  std::string optionsStr = options + "2. Reset, 3. Quit" + "\n" + "Option: ";
+  
+  
   Write::clearSection(3, 1, Write::myTerminalSize.width, 1);
   Write::printInSection(3, 1, options);
 

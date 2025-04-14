@@ -73,7 +73,7 @@ class StopWatchData {
   * @brief updateElapsedTime updates this->elapsedTime with values representing how much time exactly has passed since last print using chrono::steady_clock.
   * @param t: chrono::duration representing the time change between last print and now
   */
-  void updateElapsedTime(const std::chrono::duration& t);
+  void updateElapsedTime(const std::chrono::duration<std::chrono::milliseconds>& t);
 
   /**
   * @brief print method handles printing the Times data in a friendly way to the terminal

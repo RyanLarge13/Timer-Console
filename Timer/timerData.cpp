@@ -30,8 +30,7 @@ SOFTWARE.
 
 #include "../Console/write.h"
 
-TimerData::TimerData(const int& i)
-    : index(i), running(false), paused(false), elapsedTime(0) {}
+TimerData::TimerData(const int& i): index(i), running(false), paused(false), elapsedTime(0) {}
 
 void TimerData::setTime(const int& hours, const int& minutes, const int& seconds) {
   duration = std::chrono::milliseconds(hours * 3600 + minutes * 60 + seconds);
@@ -76,17 +75,17 @@ bool TimerData::isComplete() {
 }
 
 std::chrono::milliseconds TimerData::getTimeRemaining() {
-    if (!running) {
+  if (!running) {
     return duration - elapsedTime;
   } else if (paused) {
     return duration - elapsedTime;
   } else {
     using namespace std::chrono;
 
-    // What the fuck is going on here?
+    // What is going on here?
     steady_clock::time_point now = steady_clock::now();
     duration currentElapsedTime = now - startTime;
-    return duration - duration_cast<milliseconds>(currentElapsedTime);
+    return duration - duration_cast < milliseconds >(currentElapsedTime);
   }
 }
 
@@ -100,11 +99,11 @@ void TimerData::printRemainingTime() {
   int secondsLeft = remainingTime % 60;
   int millisecondsLeft = remainingTime - hoursLeft - minutesLeft - secondsLeft;
 
-  std::string timeTxt = 
-    (hoursLeft < 10 ? "0" : "") + std::to_string(hoursLeft) + ":"
-    (minutesLeft < 10 ? "0" : "") + std::to_string(minutesLeft) + ":"
-    (secondsLeft < 10 ? "0" : "") + std::to_string(secondsLeft) + ":"
-    (millisecondsLeft < 100 ? "0" : millisecondsLeft < 10 : "00" : "") + std::to_string(millisecondsLeft) + "\n";
+  std::string timeTxt =
+  (hoursLeft < 10 ? "0": "") + std::to_string(hoursLeft) + ":"
+  (minutesLeft < 10 ? "0": "") + std::to_string(minutesLeft) + ":"
+  (secondsLeft < 10 ? "0": "") + std::to_string(secondsLeft) + ":"
+  (millisecondsLeft < 100 ? "0": millisecondsLeft < 10: "00": "") + std::to_string(millisecondsLeft) + "\n";
 
   //You do not need to clear any area in console before printing, as Timer handles clearing the entire timer area before reprinting
   Write::printInSection(1, this->index, timeTxt);
@@ -122,7 +121,9 @@ bool TimerData::getIsPaused() {
   return paused;
 }
 
-std::vector<TimerData::Times> TimerData::getTimes() {
+std::vector < TimerData::Times > TimerData::getTimes() {
+
+  std::chrono::milliseconds remainingTime = getTimeRemaining().count();
 
   int hoursLeft = remainingTime / 3600;
   int minutesLeft = (remainingTime % 3600) / 60;

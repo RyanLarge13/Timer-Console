@@ -54,7 +54,7 @@ void StopWatchData::print() {
   Write::printInSection(1, 1, nowTime);
 }
 
-void StopWatchData::updateElapsedTime(std::chrono::duration t) {
+void StopWatchData::updateElapsedTime(const std::chrono::duration& t) {
   using namespace std::chrono;
 
   int h = t.hours.count();
