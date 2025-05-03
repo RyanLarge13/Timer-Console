@@ -42,7 +42,7 @@ class StopWatchData {
   StopWatchData(
     const TimerData::Times& elapsedTime,
     const bool& paused,
-    const std::chrono::milliseconds& lastTime
+    const int& lastTime
   );
 
   /**

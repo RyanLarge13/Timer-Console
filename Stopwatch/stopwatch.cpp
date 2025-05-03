@@ -49,7 +49,7 @@ void Stopwatch::loadStopWatch() {
   if (!stopwatch.paused) {
     std::chrono::system_clock::time_point timeAtLastSave = std::chrono::system_clock::time_point(std::chrono::milliseconds(stopwatch.lastTime));
 
-    std::chrono::duration<double> timeElapsed = timeAtLastSave - startTime;
+    std::chrono::duration < double > timeElapsed = timeAtLastSave - startTime;
     stopwatch.updateElapsedTime(timeElapsed);
   }
 
@@ -64,7 +64,7 @@ void Stopwatch::printTime() {
 
   while (running && stopwatch.paused) {
     startTime = std::chrono::system_clock::now();
-    std::this_thread::sleep_for(std::chrono::milliseconds(100))
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
   }
 
   while (running && !stopwatch.paused) {
@@ -74,7 +74,7 @@ void Stopwatch::printTime() {
 
     // Find the time elapsed and update this->elapsedTime
     system_clock::time_point now = system_clock::now();
-    duration<double> timeElapsed = now - this->startTime;
+    duration < double > timeElapsed = now - this->startTime;
     stopwatch.updateElapsedTime(timeElapsed);
 
     // Update startTime to the latest for next round
@@ -86,8 +86,8 @@ void Stopwatch::printTime() {
 
 void Stopwatch::printOptions() {
   std::string options = (stopwatch.paused ? "1. Resume, ": "1. Stop,") + "2. Reset, 3. Quit" + "\n" + "Option: ";
-  
-  
+
+
   Write::clearSection(3, 1, Write::myTerminalSize.width, 1);
   Write::printInSection(3, 1, options);
 
@@ -146,7 +146,7 @@ void Stopwatch::handleQuit() {
   stopwatch.updateElapsedTime(timeElapsed);
 
 
-  milliseconds millis = duration_cast < milliseconds > (system_clock::now().time_since_epoch()).count();
+  milliseconds millis = duration_cast < milliseconds > (system_clock::now().time_since_epoch());
   stopwatch.lastTime = millis;
 
   // Files::saveStopwatch(stopwatch);

@@ -73,7 +73,7 @@ class Files {
   * @brief getStopWatch method reads or creates JSON config file for stopwatch data and returns the data as StopWatchData to the caller of the method
   * @see StopWatchData
   */
-  StopWatchData getStopWatch();
+  static StopWatchData getStopWatch();
 
   protected:
   /**

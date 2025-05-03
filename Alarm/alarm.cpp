@@ -30,8 +30,8 @@ SOFTWARE.
 #include <chrono>
 #include <atomic>
 #include "../Config/files.h"
-#include "../Consle/write.h"
-#include "../Consle/read.h"
+#include "../Console/write.h"
+#include "../Console/read.h"
 
 std::atomic < bool > running(true);
 

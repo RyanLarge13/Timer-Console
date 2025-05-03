@@ -34,7 +34,7 @@ buildWithClang() {
   # Check is nlohmann json is included with the project
   checkJson
 
-  clang++ -o timerOut main.cpp Config/files.cpp Timer/timer.cpp Alarm/alarm.cpp Alarm/alarmData.cpp Timer/timerData.cpp Console/write.cpp Console/read.cpp Stopwatch/stopwatch.cpp Stopwatch/stopwatchData.cpp -Iincludes/nlohman -IConfig -ITimer -IConsole -IAlarm -IStopwatch
+  clang++ -ferror-limit=2 -std=c++17 -o timerOut main.cpp Config/files.cpp Timer/timer.cpp Alarm/alarm.cpp Alarm/alarmData.cpp Timer/timerData.cpp Console/write.cpp Console/read.cpp Stopwatch/stopwatch.cpp Stopwatch/stopwatchData.cpp -Iincludes/nlohmann -IConfig -ITimer -IConsole -IAlarm -IStopwatch
 }
 
 if command -v clang >/dev/null 2>&1; then

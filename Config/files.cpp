@@ -65,7 +65,8 @@ std::vector < AlarmData > Files::getAlarms() {
   "vibrate": {
   "on": boolean,
   "intensity": double
-  }
+  },
+  "message": ""
   },
   ...
   ]
@@ -106,8 +107,10 @@ std::vector < AlarmData > Files::getAlarms() {
 
     AlarmData::Vibrate vibrate(vibrateOn, intensity);
 
+    std::string message = alarm["message"];
+
     // Build the alarm with data pulled from file
-    AlarmData existingAlarm = AlarmData(daysOfWeek, AlarmData::AlarmTime(alarmTimeHours, alarmTimeMinutes), on, meridiem, vibrate);
+    AlarmData existingAlarm = AlarmData(daysOfWeek, AlarmData::AlarmTime(alarmTimeHours, alarmTimeMinutes), on, meridiem, vibrate, message);
 
     // Loop through days of week to make sure that map contains the alarm and week day
     alarms.push_back(existingAlarm);
@@ -159,17 +162,19 @@ std::vector < TimerData > Files::getTimers() {
 
   for (const json& timer: timerFileData["timers"]) {
     TimerData newtimer = TimerData(
-      index,
-      timer.contains("hours") ? timer["hours"].get < int > () : 0,
-      timer.contains("minutes") ? timer["minutes"].get < int > () : 0,
-      timer.contains("seconds") ? timer["seconds"].get < int > () : 0,
+      index);
+
+    newtimer.setTime(
+      timer.contains("hours") ? timer["hours"].get < int > (): 0,
+      timer.contains("minutes") ? timer["minutes"].get < int > (): 0,
+      timer.contains("seconds") ? timer["seconds"].get < int > (): 0
     );
 
     bool isRunning = timer["running"].get < bool > () || false;
     bool isPaused = timer["paused"].get < bool > () || true;
 
     if (isRunning && !isPaused) {
-      newTimer.start();
+      newtimer.start();
     }
 
     times.push_back(newtimer);
@@ -218,13 +223,13 @@ StopWatchData Files::getStopWatch() {
   json stopWatchData = deserializeJson(stopwatchFile);
 
   // Build a default stopwatch with no elapsed time to send back if any failure happens when reading json file
-  StopWatchData defaultWatch;
+  StopWatchData defaultWatch(TimerData::Times(0, 0, 0, 0), true, 0);
 
   if (stopWatchData["error"] == true) {
     return defaultWatch;
   }
 
-  if (!stopwatchFile.contains("stopwatch")) {
+  if (!stopWatchData.contains("stopwatch")) {
     return defaultWatch;
   }
 
@@ -250,15 +255,16 @@ StopWatchData Files::getStopWatch() {
     1. Do not forget to validate and make sure data exists before initializing existingWatch class instance
     */
 
-    Timer::Times elapsedTime(
-      stopWatchData["elapsedTime"]["hours"],
-      stopWatchData["elapsedTime"]["minutes"],
-      stopWatchData["elapsedTime"]["seconds"],
-      stopWatchData["elapsedTime"]["milliseconds"],
+    TimerData::Times elapsedTime(
+      stopWatchData["elapsedTime"]["hours"].get < int > (),
+      stopWatchData["elapsedTime"]["minutes"].get < int > (),
+      stopWatchData["elapsedTime"]["seconds"].get < int > (),
+      stopWatchData["elapsedTime"]["milliseconds"].get < int > ()
     );
 
-    std::chrono::milliseconds = stopWatchData["lastTime"].get<int>();
-    bool paused = stopWatchData["paused"];
+    std::chrono::milliseconds lastTime = std::chrono::milliseconds (stopWatchData["lastTime"].get < int > ());
+
+    bool paused = stopWatchData["paused"].get < bool > ();
 
     StopWatchData existingWatch(elapsedTime, paused, lastTime);
 

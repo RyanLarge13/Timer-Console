@@ -161,7 +161,7 @@ void Timer::handleResetAllTimers() {
 }
 
 void Timer::handleAddtimer() {
-  Writer::clearAllConsole();
+  Write::clearAllConsole();
 
   if (timeData.size() > 8) {
     // Return early. Only allow the user to have 9 timers at once

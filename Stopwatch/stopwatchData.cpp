@@ -62,11 +62,11 @@ void StopWatchData::print() {
 void StopWatchData::updateElapsedTime(const std::chrono::duration<double>& t) {
   using namespace std::chrono;
 
-  int ms = duration_cast<milliseconds>(t);
-  int h = duration_cast<hours>(ms);
-  int m = duration_cast<minutes>(ms - h);
-  int s = duration_cast<seconds>(ms - h - m);
-  int mill = duration_cast<milliseconds>(ms - h - m - s);
+  milliseconds ms = duration_cast<milliseconds>(t);
+  hours h = duration_cast<hours>(ms);
+  minutes m = duration_cast<minutes>(ms - h);
+  seconds s = duration_cast<seconds>(ms - h - m);
+  milliseconds mill = duration_cast<milliseconds>(ms - h - m - s);
 
   TimerData::Times newTime = TimerData::Times(h.count(), m.count(), s.count(), mill.count());
 

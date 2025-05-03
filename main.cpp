@@ -34,10 +34,10 @@ SOFTWARE.
 void branchApp(const int& selection);
 
 enum AppFunction {
-  ALARM = 1,
-  STOPWATCH = 2,
-  TIMER = 3,
-  QUIT = 4
+  ALARM_FUNC,
+  STOPWATCH,
+  TIMER,
+  QUIT
 };
 
 void printMenu() {
@@ -78,7 +78,7 @@ void handleAlarm() {
 }
 
 void handleTimer() {
-  Timer timer;
+ // Timer timer;
 }
 // Functionality Methods - - - - - - - - -
 
@@ -87,7 +87,7 @@ void handleTimer() {
 */
 void branchApp(const int& selection) {
   switch (selection) {
-    case AppFunction::ALARM:
+    case AppFunction::ALARM_FUNC:
     {
       handleAlarm();
     }
@@ -118,7 +118,7 @@ int main() {
   printMenu();
 
   int selection = takeInput();
-  branchApp(selection);
+  branchApp(selection - 1);
 
   return 0;
 }
